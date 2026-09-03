@@ -21,7 +21,10 @@ import StatCard from "../../components/common/StatCard";
 
 import NepaliDate from "nepali-date-converter";
 
+import CategoryModal from "../../components/category/CategoryModal";
+
 const Categories = () => {
+
   const [categories, setCategories] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -29,6 +32,11 @@ const Categories = () => {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+   const [actionId, setActionId] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   // Fetch Categories
   const fetchCategories = async () => {
@@ -76,6 +84,8 @@ const Categories = () => {
   // Toggle Status
   const handleToggleStatus = async (id, isActive) => {
     try {
+        setActionId(id);
+
       const newStatus = !isActive;
       await updateCategoryStatus(id, newStatus);
 
@@ -95,6 +105,8 @@ const Categories = () => {
       setError(
         error.response?.data?.message || "Failed to update category status",
       );
+    }finally {
+        setActionId(null);
     }
   };
 
@@ -118,11 +130,16 @@ const Categories = () => {
   };
 
   return (
+    <>
     <div className="space-y-6">
       {/* ================= HEADER ================= */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <Header title="Categories" description="Manage your news categories." />
         <Button
+        onClick={() =>{
+            setSelectedCategory(null);
+            setIsModalOpen(true)
+        }}
           value={
             <>
               {" "}
@@ -299,15 +316,17 @@ const Categories = () => {
                     </td>
 
                     {/* Status */}
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <button
                         type="button"
+                        disabled={actionId === category._id}
                         onClick={() =>
                           handleToggleStatus(category._id, category.isActive)
                         }
-                        className="inline-flex items-center gap-2"
                       >
-                        {category.isActive ? (
+                        {actionId === category._id ? (
+                            " ... "
+                        ) : category.isActive ? (
                           <span className="inline-flex cursor-pointer items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 hover:text-green-800 hover:bg-green-50">
                             <CheckCircle size={16} />
                             Active
@@ -345,6 +364,10 @@ const Categories = () => {
                     <td className="px-6 py-4">
                       <div className="flex justify-end gap-2">
                         <button
+                          onClick={() => {
+                            setSelectedCategory(category);
+                            setIsModalOpen(true);
+                          }}
                           type="button"
                           className="rounded-lg p-2 text-gray-400 transition
                             hover:bg-blue-500/10 hover:text-blue-400"
@@ -371,6 +394,16 @@ const Categories = () => {
         </div>
       </div>
     </div>
+    <CategoryModal
+    isOpen={isModalOpen}
+    onClose={() => {
+        setIsModalOpen(false);
+        setSelectedCategory(null);
+    }}
+    category={selectedCategory}
+    onSuccess={fetchCategories}
+    />
+    </>
   );
 };
 
