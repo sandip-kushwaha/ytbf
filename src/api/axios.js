@@ -8,6 +8,15 @@ const api = axios.create({
     },
 });
 
+// REQUEST INTERCEPTOR
+api.interceptors.request.use((config) => {
+      // If sending FormData/image
+      if(config.data instanceof FormData){
+        delete config.headers["Content-Type"];
+      }
+      return config;
+});
+
 
 // RESPONSE INTERCEPTOR
 

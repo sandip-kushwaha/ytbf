@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import {
+  CheckCircle,
+  Eye,
+  FileEdit,
+  FileText,
+  Folder,
+  RefreshCw,
+  Star,
+} from "lucide-react";
 
 import {
   getDashboardStats,
@@ -7,9 +15,11 @@ import {
   getMostViewedNews,
 } from "../../api/dashboard.api";
 
-import DashboardStatCard from "../../components/dashboard/DashboardStatCard";
 import RecentNews from "../../components/dashboard/RecentNews";
 import MostViewedNews from "../../components/dashboard/MostViewedNews";
+import Header from "../../components/common/Header";
+import Button from "../../components/common/Button";
+import StatCard from "../../components/common/StatCard";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -53,25 +63,20 @@ const Dashboard = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="flex items-center gap-2">
+        <Header
+          title="Dashboard"
+          description="Welcome back! Here's what's happening with your news."
+        />
 
-            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          </div>
-
-          <p className="mt-1 text-sm text-gray-400">
-            Welcome back! Here's what's happening with your news.
-          </p>
-        </div>
-
-        <button
+        <Button
           onClick={fetchDashboard}
-          disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
-          Refresh
-        </button>
+          value={
+            <>
+              <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+              Refresh
+            </>
+          }
+        />
       </div>
 
       {/* Error */}
@@ -83,46 +88,50 @@ const Dashboard = () => {
 
       {/* Statistics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <DashboardStatCard
+        <StatCard
           title="Total News"
           value={loading ? "..." : (stats?.totalNews ?? 0)}
-          type="news"
-          description="All news articles"
+          icon={<FileText size={22} />}
+          iconClass="bg-blue-500/10 text-blue-400"
         />
 
-        <DashboardStatCard
+        <StatCard
           title="Published News"
           value={loading ? "..." : (stats?.publishedNews ?? 0)}
-          type="published"
-          description="Currently published"
+          icon={<CheckCircle size={22} />}
+          iconClass="bg-green-500/10 text-green-400"
+          valueClass="text-green-400"
         />
 
-        <DashboardStatCard
+        <StatCard
           title="Draft News"
           value={loading ? "..." : (stats?.draftNews ?? 0)}
-          type="draft"
-          description="Unpublished articles"
+          icon={<FileEdit size={22} />}
+          iconClass="bg-red-500/10 text-red-400"
+          valueClass="text-red-400"
         />
 
-        <DashboardStatCard
+        <StatCard
           title="Categories"
           value={loading ? "..." : (stats?.totalCategories ?? 0)}
-          type="categories"
-          description="Total categories"
+          icon={<Folder size={22} />}
+          iconClass="bg-blue-500/10 text-blue-400"
         />
 
-        <DashboardStatCard
+        <StatCard
           title="Total Views"
           value={loading ? "..." : (stats?.totalViews ?? 0)}
-          type="views"
-          description="All-time article views"
+          icon={<Eye size={22} />}
+          iconClass="bg-green-500/10 text-green-400"
+          valueClass="text-green-400"
         />
 
-        <DashboardStatCard
+        <StatCard
           title="Featured News"
           value={loading ? "..." : (stats?.featuredNews ?? 0)}
-          type="featured"
-          description="Featured published articles"
+          icon={<Star size={22} />}
+          iconClass="bg-yellow-500/10 text-yellow-400"
+          valueClass="text-yellow-400"
         />
       </div>
 

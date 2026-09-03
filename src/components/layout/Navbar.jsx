@@ -1,8 +1,5 @@
-import {
-  Bell,
-  Menu,
-  UserCircle,
-} from "lucide-react";
+import { Menu, UserCircle } from "lucide-react";
+import NepaliDate from "nepali-date-converter";
 
 import { useEffect, useState } from "react";
 
@@ -16,6 +13,9 @@ const Navbar = ({ setIsOpen }) => {
 
     return () => clearInterval(timer);
   }, []);
+
+
+  const formatNepaliDate = new NepaliDate(new Date()).format("D MMMM YYYY")
 
   const formattedDate = currentTime.toLocaleDateString("en-NP", {
     weekday: "short",
@@ -31,7 +31,8 @@ const Navbar = ({ setIsOpen }) => {
   });
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between
+    <header
+      className="sticky top-0 z-30 flex h-16 items-center justify-between
         border-b border-gray-800 bg-gray-950/95 px-4 backdrop-blur sm:px-6"
     >
       {/* Left */}
@@ -40,14 +41,13 @@ const Navbar = ({ setIsOpen }) => {
         <button
           onClick={() => setIsOpen(true)}
           className="rounded-lg p-2 text-gray-400 hover:bg-gray-800
-           hover:text-white lg:hidden">
+           hover:text-white lg:hidden"
+        >
           <Menu size={22} />
         </button>
 
         <div>
-          <h2 className="text-lg font-semibold text-white">
-            Admin Dashboard
-          </h2>
+          <h2 className="text-lg font-semibold text-white">Admin Dashboard</h2>
 
           <p className="hidden text-xs text-gray-500 sm:block">
             Manage your news website
@@ -59,13 +59,9 @@ const Navbar = ({ setIsOpen }) => {
       <div className="flex items-center gap-2 sm:gap-4">
         {/* Date & Time */}
         <div className="hidden text-right md:block">
-          <p className="text-sm font-medium text-gray-300">
-            {formattedTime}
-          </p>
+          <p className="text-sm font-medium text-gray-300">{formattedTime}</p>
 
-          <p className="text-xs text-gray-500">
-            {formattedDate}
-          </p>
+          <p className="text-xs text-gray-500">{formatNepaliDate} / {formattedDate}</p>
         </div>
 
         {/* Divider */}
@@ -73,16 +69,12 @@ const Navbar = ({ setIsOpen }) => {
 
         {/* Admin profile */}
         <div className="flex items-center gap-2">
-          <UserCircle size={34} className="text-gray-400"/>
+          <UserCircle size={34} className="text-gray-400" />
 
           <div className="hidden sm:block">
-            <p className="text-sm font-medium text-white">
-              Admin
-            </p>
+            <p className="text-sm font-medium text-white">Admin</p>
 
-            <p className="text-xs text-gray-500">
-              Administrator
-            </p>
+            <p className="text-xs text-gray-500">Administrator</p>
           </div>
         </div>
       </div>

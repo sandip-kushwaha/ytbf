@@ -3,6 +3,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/admin/Dashboard";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import Categories from "../pages/category/Categories";
 
 const AppRoute = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoute = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/categories" element={<Categories/>} />
         </Route>
       </Route>
     </Routes>

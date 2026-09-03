@@ -17,7 +17,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const menuItems = [
     {
       name: "Dashboard",
-      path: "/admin/dashboard",
+      path: "/admin",
+      end: true,
       icon: Home,
     },
     {
@@ -38,6 +39,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     {
       name: "Settings",
       path: "/admin/settings",
+      end: true,
       icon: Settings,
     },
   ];
@@ -96,6 +98,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 <NavLink
                   key={item.path}
                   to={item.path}
+                  end={item.end}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
                     `
@@ -103,7 +106,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     text-sm font-medium transition-all
                     ${
                       isActive
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/10"
                         : "text-gray-400 hover:bg-gray-800 hover:text-white"
                     }
                     `
