@@ -1,8 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import RoleRoute from "./RoleRoute";
 import Login from "../pages/auth/Login";
-import AdminDashboard from "../pages/admin/AdminDashboard";
+import Dashboard from "../pages/admin/Dashboard";
 import DashboardLayout from "../components/layout/DashboardLayout";
 
 const AppRoute = () => {
@@ -13,9 +12,8 @@ const AppRoute = () => {
 
       {/* Protected route */}
       <Route element={<ProtectedRoute />}>
-        <Route element={<RoleRoute allowedRoles={["admin"]} />} />
         <Route element={<DashboardLayout />}>
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={<Dashboard />} />
         </Route>
       </Route>
     </Routes>

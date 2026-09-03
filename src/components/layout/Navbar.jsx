@@ -68,17 +68,6 @@ const Navbar = ({ setIsOpen }) => {
           </p>
         </div>
 
-        {/* Notification */}
-        <button
-          className="relative rounded-lg p-2.5 text-gray-400 transition
-            hover:bg-gray-800 hover:text-white">
-          <Bell size={20} />
-
-          <span
-            className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"
-          />
-        </button>
-
         {/* Divider */}
         <div className="hidden h-8 w-px bg-gray-800 sm:block" />
 
