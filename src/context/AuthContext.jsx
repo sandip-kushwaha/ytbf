@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!user,
     };
 
-    return <AuthProvider.Provider value={value}>{children}</AuthProvider.Provider>
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 };
 
 export const useAuth = () => {
