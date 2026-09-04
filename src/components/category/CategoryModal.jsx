@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, ImagePlus, Loader2 } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { createCategory, updateCategory } from "../../api/category.api";
 import Button from "../common/Button";
 
@@ -16,6 +16,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Reset / Load Category
   useEffect(() => {
     if (category) {
       setFormData({
@@ -40,6 +41,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
 
   if (!isOpen) return null;
 
+  // Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -47,12 +49,27 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
       ...prev,
       [name]: value,
     }));
+
+    setError("");
   };
 
+  // Image Change
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
+
+    // Check image type
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image.");
+      return;
+    }
+
+    // Check image size
+    if (file.size > 1 * 1024 * 1024) {
+      setError("Image must be less than 1MB.");
+      return;
+    }
 
     setFormData((prev) => ({
       ...prev,
@@ -60,8 +77,11 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
     }));
 
     setPreview(URL.createObjectURL(file));
+
+    setError("");
   };
 
+  // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,8 +91,8 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
 
       const data = new FormData();
 
-      data.append("name", formData.name);
-      data.append("description", formData.description);
+      data.append("name", formData.name.trim());
+      data.append("description", formData.description.trim());
 
       if (formData.image) {
         data.append("image", formData.image);
@@ -84,7 +104,8 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
         await createCategory(data);
       }
 
-      onSuccess();
+      await onSuccess();
+
       onClose();
     } catch (error) {
       console.error("Category error:", error);
@@ -99,12 +120,12 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-m">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-gray-900 text-white shadow-2xl border border-gray-700 scrollbar-thin overflow-auto">
-        {/* Header */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
+        {/* ================= Header ================= */}
         <div className="flex items-center justify-between border-b border-gray-700 px-6 py-5">
           <div>
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold">
               {isEdit ? "Edit Category" : "Add Category"}
             </h2>
 
@@ -118,14 +139,15 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-800 hover:text-white"
+            disabled={loading}
+            className="cursor-pointer rounded-lg p-2 text-gray-400 transition hover:bg-gray-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 p-6">
+        {/* ================= Form ================= */}
+        <form onSubmit={handleSubmit} className="space-y-5 p-6">
           {/* Error */}
           {error && (
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
@@ -133,13 +155,14 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
             </div>
           )}
 
-          {/* Image */}
-          <div className="mb-6">
+          {/* ================= Image ================= */}
+          <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Category Image
             </label>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              {/* Preview */}
               <div className="h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-gray-700 bg-gray-800">
                 {preview ? (
                   <img
@@ -148,18 +171,19 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-center text-xs text-gray-500">
+                  <div className="flex h-full items-center justify-center text-xs text-gray-500">
                     No Image
                   </div>
                 )}
               </div>
 
+              {/* Upload */}
               <div>
                 <label className="inline-block cursor-pointer rounded-lg bg-gray-700 px-4 py-2.5 text-sm font-medium transition hover:bg-gray-600">
                   Choose Image
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/png,image/jpeg,image/webp"
                     onChange={handleImageChange}
                     className="hidden"
                   />
@@ -172,7 +196,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
             </div>
           </div>
 
-          {/* Name */}
+          {/* ================= Name ================= */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Category Name
@@ -183,15 +207,19 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="e.g. Technology, politics..."
+              placeholder="e.g. Technology, Politics..."
               required
               minLength={2}
               maxLength={50}
               className="w-full rounded-xl border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-blue-500"
             />
+
+            <p className="mt-1 text-right text-xs text-gray-500">
+              {formData.name.length}/50
+            </p>
           </div>
 
-          {/* Description */}
+          {/* ================= Description ================= */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Description
@@ -212,24 +240,23 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
             </p>
           </div>
 
-          {/* Buttons */}
+          {/* ================= Buttons ================= */}
           <div className="flex justify-end gap-3 border-t border-gray-700 pt-5">
             <Button onClick={onClose} disabled={loading} value="Cancel" />
 
             <button
               type="submit"
               disabled={loading}
-              className="flex  items-center justify-center  gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
+
                   {isEdit ? "Updating..." : "Creating..."}
                 </>
-              ) : isEdit ? (
-                "Update Category"
               ) : (
-                "Create Category"
+                <>{isEdit ? "Update Category" : "Create Category"}</>
               )}
             </button>
           </div>
