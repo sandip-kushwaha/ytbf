@@ -4,6 +4,7 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../pages/admin/Dashboard";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import Categories from "../pages/category/Categories";
+import News from "../pages/news/News";
 
 const AppRoute = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoute = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/news" element={<News />} />
           <Route path="/admin/categories" element={<Categories/>} />
         </Route>
       </Route>

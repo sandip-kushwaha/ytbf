@@ -4,6 +4,7 @@ import { createCategory, updateCategory } from "../../api/category.api";
 import Button from "../common/Button";
 
 const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
+
   const isEdit = Boolean(category);
 
   const [formData, setFormData] = useState({
@@ -120,7 +121,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-s">
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
         {/* ================= Header ================= */}
         <div className="flex items-center justify-between border-b border-gray-700 px-6 py-5">
@@ -130,9 +131,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
             </h2>
 
             <p className="mt-1 text-sm text-gray-400">
-              {isEdit
-                ? "Update category information"
-                : "Create a new news category"}
+              {isEdit ? "Update category information" : "Create a new news category"}
             </p>
           </div>
 

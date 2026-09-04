@@ -101,11 +101,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   end={item.end}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `
-                    flex items-center gap-3 rounded-lg px-3 py-3
+                    `flex items-center gap-3 rounded-lg px-3 py-3
                     text-sm font-medium transition-all
-                    ${
-                      isActive
+                    ${isActive
                         ? "bg-blue-600 text-white shadow-lg shadow-blue-600/10"
                         : "text-gray-400 hover:bg-gray-800 hover:text-white"
                     }
