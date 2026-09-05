@@ -47,3 +47,9 @@ export const incrementNewsViews = async (id) =>{
 
    return response.data;
 }
+
+export const getPublishedNews = async (params = {}) => {
+    const response = await api.get("/news/published", { params });
+
+    return response.data;
+}
