@@ -193,28 +193,6 @@ const News = () => {
     setSelectedNews(null);
   };
 
-  // Loading
-  //   if (loading && news.length === 0) {
-  //     return (
-  //       <div className="space-y-6">
-
-  //         <div className="h-10 w-48 animate-pulse rounded-lg bg-gray-800" />
-
-  //         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-  //           {[1, 2, 3, 4].map((item) => (
-  //             <div
-  //               key={item}
-  //               className="h-28 animate-pulse rounded-2xl bg-gray-800"
-  //             />
-  //           ))}
-  //         </div>
-
-  //         <div className="h-96 animate-pulse rounded-2xl bg-gray-800" />
-
-  //       </div>
-  //     );
-  //   }
-
   return (
     <>
       <div className="space-y-6">
@@ -239,7 +217,7 @@ const News = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
-            title="Total news"
+            title="Total News"
             value={loading ? "..." : (pagination.totalNews ?? 0)}
             icon={<FileText size={22} />}
             iconClass="bg-blue-500/10 text-blue-400"
@@ -351,7 +329,17 @@ const News = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {filteredNews.length === 0 ? (
+                {/* Loading */}
+                {loading &&
+                  [1, 2, 3, 4].map((item) => (
+                    <tr key={item}>
+                      <td colSpan="7" className="px-6 py-5">
+                        <div className="h-15 w-full animate-pulse rounded-2xl bg-gray-800" />
+                      </td>
+                    </tr>
+                  ))}
+
+                {!loading && filteredNews.length === 0 ? (
                   <tr>
                     <td colSpan="7" className="px-6 py-16 text-center">
                       <FileText
@@ -365,6 +353,7 @@ const News = () => {
                     </td>
                   </tr>
                 ) : (
+                  !loading &&
                   filteredNews.map((item) => (
                     <tr
                       key={item._id}
@@ -400,7 +389,7 @@ const News = () => {
 
                       {/* Category */}
                       <td className="px-6 py-4">
-                        <span className="rounded-lg bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400">
+                        <span className="flex rounded-lg bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400">
                           {item.category?.name || "Uncategorized"}
                         </span>
                       </td>
@@ -468,7 +457,7 @@ const News = () => {
                             className="cursor-pointer rounded-lg p-2 text-blue-400 transition hover:bg-blue-500/10"
                             title="Edit"
                           >
-                            <Edit size={18} />
+                            <Edit size={20} />
                           </button>
 
                           <button
@@ -476,7 +465,7 @@ const News = () => {
                             className="cursor-pointer rounded-lg p-2 text-red-400 transition hover:bg-red-500/10"
                             title="Delete"
                           >
-                            <Trash2 size={18} />
+                            <Trash2 size={20} />
                           </button>
                         </div>
                       </td>

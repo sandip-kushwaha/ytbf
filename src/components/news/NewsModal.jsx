@@ -27,9 +27,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
 
   const [error, setError] = useState("");
 
-  // ================================
+  
   // Load Existing News
-  // ================================
   useEffect(() => {
     if (!isOpen) return;
 
@@ -62,9 +61,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
     setError("");
   }, [news, isOpen]);
 
-  // ================================
+  
   // Get Categories
-  // ================================
   useEffect(() => {
     if (!isOpen) return;
 
@@ -89,9 +87,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
 
   if (!isOpen) return null;
 
-  // ================================
+  
   // Input Change
-  // ================================
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -103,9 +100,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
     setError("");
   };
 
-  // ================================
+
   // Thumbnail Change
-  // ================================
   const handleThumbnailChange = (e) => {
     const file = e.target.files?.[0];
 
@@ -131,9 +127,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
     setError("");
   };
 
-  // ================================
+
   // Submit
-  // ================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -182,8 +177,8 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-s">
-      <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
-        {/* ================= Header ================= */}
+      <div className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
+        {/* ==== Header ====*/}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-700 bg-gray-900 px-6 py-5">
           <div>
             <h2 className="text-xl font-semibold">
@@ -205,7 +200,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
           </button>
         </div>
 
-        {/* ================= Form ================= */}
+        {/* ========== Form ========= */}
         <form onSubmit={handleSubmit} className="space-y-6 p-6">
           {/* Error */}
           {error && (
@@ -214,14 +209,14 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </div>
           )}
 
-          {/* ================= Thumbnail ================= */}
+          {/* ========= Thumbnail ========= */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               News Thumbnail
             </label>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-40 w-64 overflow-hidden rounded-xl border border-gray-700 bg-gray-800">
+              <div className="h-35 w-48 overflow-hidden rounded-xl border border-gray-700 bg-gray-800">
                 {preview ? (
                   <img
                     src={preview}
@@ -230,8 +225,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
                   />
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center text-gray-500">
-                    <ImagePlus size={32} />
-
+                    <ImagePlus size={25} />
                     <span className="mt-2 text-xs">No Image</span>
                   </div>
                 )}
@@ -255,7 +249,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </div>
           </div>
 
-          {/* ================= Title ================= */}
+          {/* ========== Title ========= */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Title
@@ -278,7 +272,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </p>
           </div>
 
-          {/* ================= Category + Status ================= */}
+          {/* ========== Category + Status ========= */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {/* Category */}
             <div>
@@ -329,7 +323,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </div>
           </div>
 
-          {/* ================= Summary ================= */}
+          {/* ============ Summary =========== */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Summary
@@ -351,7 +345,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </p>
           </div>
 
-          {/* ================= Content ================= */}
+          {/* =========== Content =========== */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-300">
               Content
@@ -368,7 +362,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             />
           </div>
 
-          {/* ================= Featured ================= */}
+          {/* ========= Featured ========== */}
           <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-700 bg-gray-800/50 p-4">
             <input
               type="checkbox"
@@ -387,7 +381,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
             </div>
           </label>
 
-          {/* ================= Buttons ================= */}
+          {/* ======== Buttons ======== */}
           <div className="flex justify-end gap-3 border-t border-gray-700 pt-5">
             <Button onClick={onClose} disabled={loading} value="Cancel" />
 

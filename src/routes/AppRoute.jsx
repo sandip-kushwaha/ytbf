@@ -5,6 +5,8 @@ import Dashboard from "../pages/admin/Dashboard";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import Categories from "../pages/category/Categories";
 import News from "../pages/news/News";
+import Profile from "../pages/profile/Profile";
+import Analysis from "../pages/analysis/Analysis";
 
 const AppRoute = () => {
   return (
@@ -16,8 +18,10 @@ const AppRoute = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/news" element={<News />} />
           <Route path="/admin/categories" element={<Categories/>} />
+          <Route path="/admin/news" element={<News />} />
+          <Route path="/admin/analytics" element={<Analysis />} />
+          <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Route>
     </Routes>

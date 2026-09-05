@@ -4,15 +4,14 @@ import {
   Folder,
   Home,
   LogOut,
-  Settings,
+  UserPen,
   X,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-
-    const { logout } = useAuth();
+  const { logout } = useAuth();
 
   const menuItems = [
     {
@@ -22,14 +21,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       icon: Home,
     },
     {
-      name: "News",
-      path: "/admin/news",
-      icon: FileText,
-    },
-    {
       name: "Categories",
       path: "/admin/categories",
       icon: Folder,
+    },
+    {
+      name: "News",
+      path: "/admin/news",
+      icon: FileText,
     },
     {
       name: "Analytics",
@@ -37,13 +36,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       icon: BarChart3,
     },
     {
-      name: "Settings",
-      path: "/admin/settings",
+      name: "Profile",
+      path: "/admin/profile",
       end: true,
-      icon: Settings,
+      icon: UserPen,
     },
   ];
-
 
   return (
     <>
@@ -103,7 +101,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-lg px-3 py-3
                     text-sm font-medium transition-all
-                    ${isActive
+                    ${
+                      isActive
                         ? "bg-blue-600 text-white shadow-lg shadow-blue-600/10"
                         : "text-gray-400 hover:bg-gray-800 hover:text-white"
                     }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, ImagePlus } from "lucide-react";
 import { createCategory, updateCategory } from "../../api/category.api";
 import Button from "../common/Button";
 
@@ -67,8 +67,8 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
     }
 
     // Check image size
-    if (file.size > 1 * 1024 * 1024) {
-      setError("Image must be less than 1MB.");
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image must be less than 2MB.");
       return;
     }
 
@@ -122,7 +122,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-s">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 text-white shadow-2xl scrollbar-thin">
         {/* ================= Header ================= */}
         <div className="flex items-center justify-between border-b border-gray-700 px-6 py-5">
           <div>
@@ -162,7 +162,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               {/* Preview */}
-              <div className="h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-gray-700 bg-gray-800">
+              <div className="h-35 w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 bg-gray-800">
                 {preview ? (
                   <img
                     src={preview}
@@ -170,8 +170,9 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-gray-500">
-                    No Image
+                  <div className="flex h-full flex-col items-center justify-center text-gray-500">
+                   <ImagePlus />
+                    <span className="mt-2 text-xs">No Image</span>
                   </div>
                 )}
               </div>
@@ -189,7 +190,7 @@ const CategoryModal = ({ isOpen, onClose, category, onSuccess }) => {
                 </label>
 
                 <p className="mt-2 text-xs text-gray-500">
-                  JPG, PNG, WEBP • Maximum 1MB
+                  JPG, PNG, WEBP • Maximum 2MB
                 </p>
               </div>
             </div>

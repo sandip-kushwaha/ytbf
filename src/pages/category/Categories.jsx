@@ -37,6 +37,10 @@ const Categories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // Delete
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   // Fetch Categories
   const fetchCategories = async () => {
     try {
@@ -109,24 +113,47 @@ const Categories = () => {
     }
   };
 
-  // Delete
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this category?",
-    );
-
-    if (!confirmed) return;
+  // Delete category
+  const handleDeleteCategory = async (id) => {
+    if (!deleteId) return;
 
     try {
-      await deleteCategory(id);
+      setDeleteLoading(true);
+      await deleteCategory(deleteId);
 
-      setCategories((prev) => prev.filter((category) => category._id !== id));
+      setDeleteId(null);
+
+      await fetchCategories();
+
+      // setCategories((prev) => prev.filter((category) => category._id !== id));
     } catch (error) {
       console.error("Failed to delete category:", error);
 
       setError(error.response?.data?.message || "Failed to delete category");
+    } finally {
+      setDeleteLoading(false);
     }
   };
+  //Delete news
+  // const handleDeleteNews = async () => {
+  //   if (!deleteId) return;
+
+  //   try {
+  //     setDeleteLoading(true);
+
+  //     await deleteNews(deleteId);
+
+  //     setDeleteId(null);
+
+  //     await fetchNews();
+  //   } catch (error) {
+  //     console.error("Failed to deleted news: ", error);
+
+  //     setError(error.response?.data?.message || "Failed to deleted news");
+  //   } finally {
+  //     setDeleteLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -151,7 +178,7 @@ const Categories = () => {
           />
         </div>
 
-            {/* Stats */}
+        {/* Stats */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <StatCard
             title="Total Category"
@@ -164,7 +191,8 @@ const Categories = () => {
             value={
               loading
                 ? "..."
-                : (categories.filter((category) => category.isActive).length ?? 0)
+                : (categories.filter((category) => category.isActive).length ??
+                  0)
             }
             icon={<CheckCircle size={22} />}
             iconClass="bg-green-500/10 text-green-400"
@@ -176,7 +204,8 @@ const Categories = () => {
             value={
               loading
                 ? "..."
-                : (categories.filter((category) => !category.isActive).length ?? 0)
+                : (categories.filter((category) => !category.isActive).length ??
+                  0)
             }
             icon={<XCircle size={22} />}
             iconClass="bg-red-500/10 text-red-400"
@@ -371,8 +400,7 @@ const Categories = () => {
                               setIsModalOpen(true);
                             }}
                             type="button"
-                            className="rounded-lg p-2 text-gray-400 transition
-                            hover:bg-blue-500/10 hover:text-blue-400"
+                            className="cursor-pointer rounded-lg p-2 text-blue-400 transition hover:bg-blue-500/10"
                             title="Edit category"
                           >
                             <Edit size={20} />
@@ -380,10 +408,9 @@ const Categories = () => {
 
                           <button
                             type="button"
-                            onClick={() => handleDelete(category._id)}
-                            className="rounded-lg p-2 text-gray-400
-                            transition hover:bg-red-500/10 hover:text-red-400"
-                            title="Delete category"
+                            onClick={() => setDeleteId(category._id)}
+                            className="cursor-pointer rounded-lg p-2 text-red-400 transition hover:bg-red-500/10"
+                            title="Delete"
                           >
                             <Trash2 size={20} />
                           </button>
@@ -405,6 +432,45 @@ const Categories = () => {
         category={selectedCategory}
         onSuccess={fetchCategories}
       />
+
+      {/* ======== Delete Confirmation ============= */}
+      {deleteId && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 backdrop-blur-s">
+          <div className="w-full max-w-md rounded-xs border border-gray-700 bg-gray-900 p-6 shadow-2xl">
+            <h2 className="text-lg font-semibold text-white">
+              Delete Category ?
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-gray-400">
+              Are you sure you want to delete this news article? This action
+              cannot be undone.
+            </p>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <Button
+                onClick={() => setDeleteId(null)}
+                disabled={deleteLoading}
+                value="Cancel"
+              />
+
+              <button
+                onClick={handleDeleteCategory}
+                disabled={deleteLoading}
+                className="flex cursor-pointer items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {deleteLoading ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>Delete</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
