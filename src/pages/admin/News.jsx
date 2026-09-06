@@ -11,8 +11,12 @@ import {
   Search,
   Star,
   Trash2,
+  X,
+  ChevronDown,
+  Check,
+  Folder,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { getAllCategories } from "../../api/category.api";
 import { deleteNews, getAllNews, toggleFeaturedNews } from "../../api/news.api";
 
@@ -34,6 +38,12 @@ const News = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 
+  // Custom Dropdown Open States & Refs
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const categoryRef = useRef(null);
+  const statusRef = useRef(null);
+
   //pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -54,6 +64,20 @@ const News = () => {
   // Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
+
+  // Close custom dropdowns on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (categoryRef.current && !categoryRef.current.contains(event.target)) {
+        setIsCategoryOpen(false);
+      }
+      if (statusRef.current && !statusRef.current.contains(event.target)) {
+        setIsStatusOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   //Fetch News
   const fetchNews = async () => {
@@ -193,6 +217,17 @@ const News = () => {
     setSelectedNews(null);
   };
 
+  const statusOptions = [
+    { value: "all", label: "All Status", color: "bg-gray-400" },
+    { value: "published", label: "Published", color: "bg-emerald-500" },
+    { value: "draft", label: "Draft", color: "bg-amber-500" },
+  ];
+
+  const currentStatusOption =
+    statusOptions.find((opt) => opt.value === statusFilter) || statusOptions[0];
+
+  const selectedCategoryObj = categories.find((c) => c._id === categoryFilter);
+
   return (
     <>
       <div className="space-y-6">
@@ -200,16 +235,14 @@ const News = () => {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <Header
             title="News Management"
-            description="Create, manage and publish your news
-"
+            description="Create, manage and publish your news"
           />
           <Button
             onClick={handleAddNews}
             value={
               <>
-                {" "}
                 <Plus size={18} />
-                Add news{" "}
+                Add news
               </>
             }
           />
@@ -270,10 +303,10 @@ const News = () => {
         )}
 
         {/* ======= Search & Filters ============ */}
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-          <div className="flex gap-3">
+        <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+          <div className="flex flex-col gap-3 lg:flex-row">
             {/* Search */}
-            <div className="relative basis-2/3">
+            <div className="relative flex-1">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                 <Search size={18} />
               </span>
@@ -282,34 +315,132 @@ const News = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search news..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 py-3 pl-10 pr-4 text-sm text-white outline-none placeholder:text-gray-500 focus:border-blue-500"
+                className="w-full rounded-lg border border-gray-700 bg-gray-800 py-3 pl-10 pr-4 text-sm text-white outline-none placeholder:text-gray-500 focus:border-blue-500 transition"
               />
             </div>
 
-            {/* Category */}
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              disabled={categoryLoading}
-              className="bg-gray-800 rounded-xl basis-2/6 border border-gray-700 px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-pointer"
-            >
-              <option value="all">All Categories</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            {/* Category Custom Dropdown */}
+            <div className="relative lg:w-56" ref={categoryRef}>
+              <button
+                type="button"
+                disabled={categoryLoading}
+                onClick={() => {
+                  setIsCategoryOpen(!isCategoryOpen);
+                  setIsStatusOpen(false);
+                }}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white transition hover:border-gray-600 focus:border-blue-500 focus:outline-none disabled:opacity-50"
+              >
+                <span className="flex items-center gap-2 truncate">
+                  <Folder size={16} className="text-gray-400 shrink-0" />
+                  {categoryFilter === "all"
+                    ? "All Categories"
+                    : selectedCategoryObj?.name || "Category"}
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 transition-transform duration-200 shrink-0 ${
+                    isCategoryOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-gray-800 rounded-xl basis-2/6 border border-gray-700 px-4 py-3 text-sm text-white outline-none focus:border-blue-500 cursor-pointer"
-            >
-              <option value="all">All Status</option>
-              <option value="published">Published</option>
-              <option value="draft">Draft</option>
-            </select>
+              {isCategoryOpen && (
+                <ul className="absolute left-0 z-50 mt-2 max-h-60 w-full overflow-auto rounded-lg border border-gray-700 bg-gray-800 p-1.5 shadow-xl backdrop-blur-md">
+                  <li
+                    onClick={() => {
+                      setCategoryFilter("all");
+                      setIsCategoryOpen(false);
+                    }}
+                    className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition ${
+                      categoryFilter === "all"
+                        ? "bg-blue-600/20 text-blue-400"
+                        : "text-gray-300 hover:bg-gray-700/60 hover:text-white"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Folder size={16} />
+                      All Categories
+                    </span>
+                    {categoryFilter === "all" && (
+                      <Check size={16} className="text-blue-400" />
+                    )}
+                  </li>
+                  {categories.map((category) => (
+                    <li
+                      key={category._id}
+                      onClick={() => {
+                        setCategoryFilter(category._id);
+                        setIsCategoryOpen(false);
+                      }}
+                      className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition ${
+                        categoryFilter === category._id
+                          ? "bg-blue-600/20 text-blue-400"
+                          : "text-gray-300 hover:bg-gray-700/60 hover:text-white"
+                      }`}
+                    >
+                      <span className="truncate">{category.name}</span>
+                      {categoryFilter === category._id && (
+                        <Check size={16} className="text-blue-400 shrink-0" />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Status Custom Dropdown */}
+            <div className="relative lg:w-48" ref={statusRef}>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsStatusOpen(!isStatusOpen);
+                  setIsCategoryOpen(false);
+                }}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white transition hover:border-gray-600 focus:border-blue-500 focus:outline-none"
+              >
+                <span className="flex items-center gap-2 truncate">
+                  <span
+                    className={`h-2 w-2 rounded-full ${currentStatusOption.color}`}
+                  />
+                  {currentStatusOption.label}
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 transition-transform duration-200 shrink-0 ${
+                    isStatusOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isStatusOpen && (
+                <ul className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-700 bg-gray-800 p-1.5 shadow-xl backdrop-blur-md">
+                  {statusOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => {
+                        setStatusFilter(option.value);
+                        setIsStatusOpen(false);
+                      }}
+                      className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition ${
+                        statusFilter === option.value
+                          ? "bg-blue-600/20 text-blue-400"
+                          : "text-gray-300 hover:bg-gray-700/60 hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={`h-2 w-2 rounded-full ${option.color}`}
+                        />
+                        {option.label}
+                      </span>
+                      {statusFilter === option.value && (
+                        <Check size={16} className="text-blue-400" />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
 
@@ -348,7 +479,7 @@ const News = () => {
                       />
                       <p className="text-gray-400">No news found</p>
                       <p className="mt-1 text-sm text-gray-600">
-                        Try chnaging your search or filters.
+                        Try changing your search or filters.
                       </p>
                     </td>
                   </tr>

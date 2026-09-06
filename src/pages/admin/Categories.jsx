@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import {
   CheckCircle,
   Edit,
@@ -7,6 +7,8 @@ import {
   Search,
   Trash2,
   XCircle,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 
 import {
@@ -31,6 +33,8 @@ const Categories = () => {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const filterRef = useRef(null);
 
   const [actionId, setActionId] = useState(null);
 
@@ -40,6 +44,17 @@ const Categories = () => {
   // Delete
   const [deleteId, setDeleteId] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
+  // Close custom dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Fetch Categories
   const fetchCategories = async () => {
@@ -124,8 +139,6 @@ const Categories = () => {
       setDeleteId(null);
 
       await fetchCategories();
-
-      // setCategories((prev) => prev.filter((category) => category._id !== id));
     } catch (error) {
       console.error("Failed to delete category:", error);
 
@@ -134,26 +147,15 @@ const Categories = () => {
       setDeleteLoading(false);
     }
   };
-  //Delete news
-  // const handleDeleteNews = async () => {
-  //   if (!deleteId) return;
 
-  //   try {
-  //     setDeleteLoading(true);
+  const statusOptions = [
+    { value: "all", label: "All Status", color: "bg-gray-400" },
+    { value: "active", label: "Active", color: "bg-emerald-500" },
+    { value: "inactive", label: "Inactive", color: "bg-rose-500" },
+  ];
 
-  //     await deleteNews(deleteId);
-
-  //     setDeleteId(null);
-
-  //     await fetchNews();
-  //   } catch (error) {
-  //     console.error("Failed to deleted news: ", error);
-
-  //     setError(error.response?.data?.message || "Failed to deleted news");
-  //   } finally {
-  //     setDeleteLoading(false);
-  //   }
-  // };
+  const currentOption =
+    statusOptions.find((opt) => opt.value === statusFilter) || statusOptions[0];
 
   return (
     <>
@@ -171,8 +173,7 @@ const Categories = () => {
             }}
             value={
               <>
-                {" "}
-                <Plus size={18} /> Add Category{" "}
+                <Plus size={18} /> Add Category
               </>
             }
           />
@@ -213,11 +214,11 @@ const Categories = () => {
           />
         </div>
 
-        {/* ================= SEARCH ================= */}
+        {/* ================= SEARCH & FILTER ================= */}
         <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             {/* Search */}
-            <div className="relative basis-2/3">
+            <div className="relative flex-1">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                 <Search size={18} />
               </span>
@@ -231,16 +232,56 @@ const Categories = () => {
               />
             </div>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg basis-2/6 border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white
-                       outline-none focus:border-blue-500 cursor-pointer"
-            >
-              <option value="all"> All Status </option>
-              <option value="active"> Active </option>
-              <option value="inactive"> Inactive </option>
-            </select>
+            {/* Custom Responsive Dropdown Filter */}
+            <div className="relative sm:w-56" ref={filterRef}>
+              <button
+                type="button"
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white transition hover:border-gray-600 focus:border-blue-500 focus:outline-none"
+              >
+                <span className="flex items-center gap-2 truncate">
+                  <span
+                    className={`h-2 w-2 rounded-full ${currentOption.color}`}
+                  />
+                  {currentOption.label}
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 transition-transform duration-200 ${
+                    isFilterOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isFilterOpen && (
+                <ul className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-700 bg-gray-800 p-1.5 shadow-xl backdrop-blur-md">
+                  {statusOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => {
+                        setStatusFilter(option.value);
+                        setIsFilterOpen(false);
+                      }}
+                      className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition ${
+                        statusFilter === option.value
+                          ? "bg-blue-600/20 text-blue-400"
+                          : "text-gray-300 hover:bg-gray-700/60 hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={`h-2 w-2 rounded-full ${option.color}`}
+                        />
+                        {option.label}
+                      </span>
+                      {statusFilter === option.value && (
+                        <Check size={16} className="text-blue-400" />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
 
