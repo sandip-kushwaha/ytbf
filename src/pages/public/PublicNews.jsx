@@ -3,22 +3,28 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import {
   ArrowRight,
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
-  Clock3,
   Eye,
   LayoutGrid,
   Newspaper,
   Search,
   X,
 } from "lucide-react";
+
 import { getAllCategories } from "../../api/category.api";
 import { getPublishedNews } from "../../api/news.api";
+
 import NepaliDate from "nepali-date-converter";
 
 const PublicNews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // INITIAL URL VALUES
+  const initialSearch = searchParams.get("search") || "";
+  const initialCategory = searchParams.get("category") || "all";
+  const initialPage = Math.max(Number(searchParams.get("page")) || 1, 1);
 
   // STATE
   const [news, setNews] = useState([]);
@@ -29,15 +35,13 @@ const PublicNews = () => {
 
   const [error, setError] = useState("");
 
-  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [search, setSearch] = useState(initialSearch);
 
-  const [categoryFilter, setCategoryFilter] = useState(
-    searchParams.get("category") || "all",
-  );
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
 
-  const [page, setPage] = useState(
-    Math.max(Number(searchParams.get("page")) || 1, 1),
-  );
+  const [categoryFilter, setCategoryFilter] = useState(initialCategory);
+
+  const [page, setPage] = useState(initialPage);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -50,6 +54,14 @@ const PublicNews = () => {
 
   const limit = 10;
 
+  // DEBOUNCE SEARCH
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   // FETCH CATEGORIES
   useEffect(() => {
@@ -74,9 +86,10 @@ const PublicNews = () => {
     fetchCategories();
   }, []);
 
-
   // FETCH NEWS
   useEffect(() => {
+    let cancelled = false;
+
     const fetchNews = async () => {
       try {
         setLoading(true);
@@ -85,9 +98,11 @@ const PublicNews = () => {
         const response = await getPublishedNews({
           page,
           limit,
-          search: search.trim() || undefined,
+          search: debouncedSearch.trim() || undefined,
           category: categoryFilter !== "all" ? categoryFilter : undefined,
         });
+
+        if (cancelled) return;
 
         const newsData = response.data?.news || [];
 
@@ -108,24 +123,33 @@ const PublicNews = () => {
           });
         }
       } catch (error) {
+        if (cancelled) return;
+
         console.error("Failed to load published news:", error);
 
         setError(error.response?.data?.message || "Failed to load news");
+
+        setNews([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchNews();
-  }, [page, search, categoryFilter]);
 
+    return () => {
+      cancelled = true;
+    };
+  }, [page, debouncedSearch, categoryFilter]);
 
   // UPDATE URL
   useEffect(() => {
     const params = {};
 
-    if (search.trim()) {
-      params.search = search.trim();
+    if (debouncedSearch.trim()) {
+      params.search = debouncedSearch.trim();
     }
 
     if (categoryFilter !== "all") {
@@ -139,15 +163,13 @@ const PublicNews = () => {
     setSearchParams(params, {
       replace: true,
     });
-  }, [search, categoryFilter, page, setSearchParams]);
+  }, [debouncedSearch, categoryFilter, page, setSearchParams]);
 
-  
   // SEARCH
   const handleSearch = (e) => {
     setSearch(e.target.value);
     setPage(1);
   };
-
 
   // CATEGORY
   const handleCategoryChange = (value) => {
@@ -155,23 +177,15 @@ const PublicNews = () => {
     setPage(1);
   };
 
-
-  // CLEAR FILTERS
-  const clearFilters = () => {
-    setSearch("");
-    setCategoryFilter("all");
-    setPage(1);
-  };
-
+  // CLEAR SEARCH
   const clearSearch = () => {
     setSearch("");
+    setDebouncedSearch("");
     setPage(1);
   };
-
 
   // FILTER STATUS
   const hasFilters = search.trim() || categoryFilter !== "all";
-
 
   // SELECTED CATEGORY
   const selectedCategory = categories.find(
@@ -179,29 +193,22 @@ const PublicNews = () => {
       category._id === categoryFilter || category.slug === categoryFilter,
   );
 
-
-  // LOADING
-  if (loading && news.length === 0) {
-    return <NewsPageSkeleton />;
-  }
-
-
+  // RENDER
   return (
-    <div className="min-h-screen">
-      {/* ================ PAGE HEADER ============== */}
-      <section>
+    <div className="min-h-screen bg-white text-gray-900">
+      {/* ========= PAGE HEADER ========= */}
+      <section className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            {/* Title */}
-
+            {/* TITLE */}
             <div>
-              <div className="flex items-center gap-2 text-sm text-blue-400">
+              <div className="flex items-center gap-2 text-sm font-medium text-blue-600">
                 <Newspaper size={17} />
 
                 <span>Latest News</span>
               </div>
 
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl">
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                 Latest Stories
               </h1>
 
@@ -211,14 +218,16 @@ const PublicNews = () => {
               </p>
             </div>
 
-            {/* Total Articles */}
-            <div className="flex items-center gap-2 rounded-xl border border-gray-800 bg-gray-950 px-4 py-3">
-              <Newspaper size={18} className="text-blue-400" />
+            {/* TOTAL ARTICLES */}
+            <div className="flex w-fit items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-blue-50">
+                <Newspaper size={18} className="text-blue-600" />
+              </div>
 
               <div>
-                <p className="text-xs text-gray-600">Total Articles</p>
+                <p className="text-xs text-gray-500">Total Articles</p>
 
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-semibold text-gray-900">
                   {pagination.totalNews?.toLocaleString() || 0}
                 </p>
               </div>
@@ -227,16 +236,15 @@ const PublicNews = () => {
         </div>
       </section>
 
-      {/* ================ FILTER SECTION ============= */}
-      <section className="border-b border-gray-800 bg-gray-950">
+      {/* ========== FILTER SECTION =========== */}
+      <section className="border-b border-gray-200 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row">
-            {/* Search */}
-
+            {/* SEARCH */}
             <div className="relative flex-1">
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <input
@@ -244,33 +252,39 @@ const PublicNews = () => {
                 value={search}
                 onChange={handleSearch}
                 placeholder="Search news..."
-                className="h-11 w-full rounded-xl border border-gray-800 bg-gray-900 pl-11 pr-10 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-blue-500"
+                autoComplete="off"
+                className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-11 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
-              {search && (
+              {/* SEARCH LOADING */}
+              {loading && search && (
+                <span className="absolute right-10 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
+              )}
+
+              {/* CLEAR SEARCH */}
+              {search && !loading && (
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-1 text-gray-500 transition hover:bg-gray-800 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
                 >
                   <X size={16} />
                 </button>
               )}
             </div>
 
-            {/* Category */}
-
+            {/* CATEGORY */}
             <div className="relative lg:w-64">
               <LayoutGrid
                 size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
               />
 
               <select
                 value={categoryFilter}
                 onChange={(e) => handleCategoryChange(e.target.value)}
                 disabled={categoryLoading}
-                className="h-11 w-full cursor-pointer appearance-none rounded-xl border border-gray-800 bg-gray-900 pl-11 pr-4 text-sm text-gray-300 outline-none transition focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 w-full cursor-pointer appearance-none rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-sm text-gray-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <option value="all">All Categories</option>
 
@@ -281,37 +295,13 @@ const PublicNews = () => {
                 ))}
               </select>
             </div>
-
-            {/* Clear */}
-
-            {hasFilters && (
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-800 bg-gray-900 px-5 text-sm font-medium text-gray-400 transition hover:bg-gray-800 hover:text-white"
-              >
-                <X size={16} />
-                Clear
-              </button>
-            )}
           </div>
 
-          {/* ====================================
-              ACTIVE FILTERS
-          ==================================== */}
-
+          {/* ACTIVE FILTERS */}
           {hasFilters && (
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-gray-600">Filters:</span>
-
-              {search && (
-                <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs text-blue-400">
-                  Search: {search}
-                </span>
-              )}
-
               {categoryFilter !== "all" && (
-                <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs text-purple-400">
+                <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-600">
                   Category: {selectedCategory?.name || categoryFilter}
                 </span>
               )}
@@ -320,53 +310,69 @@ const PublicNews = () => {
         </div>
       </section>
 
-      {/* ============= NEWS CONTENT ============== */}
+      {/* ================== NEWS CONTENT =============== */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* ERROR */}
+
         {error ? (
           <ErrorState
             message={error}
             onRetry={() => window.location.reload()}
           />
-        ) : news.length === 0 ? (
-          <EmptyState hasFilters={hasFilters} onClear={clearFilters} />
         ) : (
           <>
-            {/* Result Header */}
+            {/* RESULT HEADER */}
 
             <div className="mb-6 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-white">
+                <h2 className="text-lg font-semibold text-gray-900">
                   {hasFilters ? "Search Results" : "All Latest News"}
                 </h2>
 
-                <p className="mt-1 text-xs text-gray-600">
-                  Showing {news.length} of {pagination.totalNews || 0} articles
+                <p className="mt-1 text-xs text-gray-500">
+                  {loading
+                    ? "Updating results..."
+                    : `Showing ${news.length} of ${
+                        pagination.totalNews || 0
+                      } articles`}
                 </p>
               </div>
 
+              {/* LOADING */}
+
               {loading && (
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-700 border-t-blue-500" />
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
                   Updating...
                 </div>
               )}
             </div>
 
-            {/* ============ NEWS GRID ========== */}
+            {/* ============ LOADING FIRST PAGE =========== */}
+            {loading && news.length === 0 ? (
+              <NewsGridSkeleton />
+            ) : news.length === 0 ? (
+              /* ========== EMPTY ========== */
+              <EmptyState hasFilters={hasFilters} />
+            ) : (
+              /* ============= NEWS GRID ========== */
+              <>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {news.map((item) => (
+                    <PublicNewsCard key={item._id} news={item} />
+                  ))}
+                </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {news.map((item) => (
-                <PublicNewsCard key={item._id} news={item} />
-              ))}
-            </div>
+                {/* PAGINATION */}
 
-            {/* ================ PAGINATION ================== */}
-            {pagination.totalPages > 1 && (
-              <Pagination
-                pagination={pagination}
-                page={page}
-                setPage={setPage}
-              />
+                {pagination.totalPages > 1 && (
+                  <Pagination
+                    pagination={pagination}
+                    page={page}
+                    setPage={setPage}
+                  />
+                )}
+              </>
             )}
           </>
         )}
@@ -376,15 +382,14 @@ const PublicNews = () => {
 };
 
 // NEWS CARD
-
 const PublicNewsCard = ({ news }) => {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 transition duration-300 hover:-translate-y-1 hover:border-gray-700 hover:shadow-xl hover:shadow-black/20">
-      {/* Thumbnail */}
+    <article className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg">
+      {/* THUMBNAIL */}
 
       <Link
         to={`/news/${news._id}`}
-        className="block aspect-16/10 overflow-hidden bg-gray-800"
+        className="block aspect-16/10 overflow-hidden bg-gray-100"
       >
         {news.thumbnail ? (
           <img
@@ -395,34 +400,34 @@ const PublicNewsCard = ({ news }) => {
           />
         ) : (
           <div className="grid h-full w-full place-items-center">
-            <Newspaper size={38} className="text-gray-700" />
+            <Newspaper size={38} className="text-gray-300" />
           </div>
         )}
       </Link>
 
-      {/* Content */}
+      {/* CONTENT */}
 
       <div className="p-4">
-        {/* Category */}
+        {/* CATEGORY */}
 
         {news.category && (
           <Link
             to={`/categories/${news.category.slug}`}
-            className="inline-flex rounded-md bg-blue-500/10 px-2 py-1 text-[11px] font-medium capitalize text-blue-400 transition hover:bg-blue-500/20"
+            className="inline-flex rounded-md bg-blue-50 px-2 py-1 text-[11px] font-medium capitalize text-blue-600 transition hover:bg-blue-100"
           >
             {news.category.name}
           </Link>
         )}
 
-        {/* Title */}
+        {/* TITLE */}
 
         <Link to={`/news/${news._id}`}>
-          <h2 className="mt-3 line-clamp-2 text-base font-bold leading-6 text-white transition group-hover:text-blue-400">
+          <h2 className="mt-3 line-clamp-2 text-base font-bold leading-6 text-gray-900 transition group-hover:text-blue-600">
             {news.title}
           </h2>
         </Link>
 
-        {/* Summary */}
+        {/* SUMMARY */}
 
         {news.summary && (
           <p className="mt-2 line-clamp-2 text-sm leading-5 text-gray-500">
@@ -430,11 +435,11 @@ const PublicNewsCard = ({ news }) => {
           </p>
         )}
 
-        {/* Meta */}
+        {/* META */}
 
-        <div className="mt-4 flex items-center justify-between border-t border-gray-800 pt-3 text-xs text-gray-600">
+        <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
           <div className="flex items-center gap-1.5">
-            <Clock3 size={13} />
+            <CalendarDays size={13} />
 
             <span>{formatDate(news.publishedAt || news.createdAt)}</span>
           </div>
@@ -446,11 +451,11 @@ const PublicNewsCard = ({ news }) => {
           </div>
         </div>
 
-        {/* Read Article */}
+        {/* READ ARTICLE */}
 
         <Link
           to={`/news/${news._id}`}
-          className="mt-4 flex items-center justify-between rounded-lg bg-gray-800/70 px-3 py-2.5 text-xs font-medium text-gray-400 transition hover:bg-blue-600 hover:text-white"
+          className="mt-4 flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2.5 text-xs font-medium text-gray-600 transition hover:bg-blue-600 hover:text-white"
         >
           Read Article
           <ArrowRight size={15} />
@@ -488,35 +493,35 @@ const Pagination = ({ pagination, page, setPage }) => {
   };
 
   return (
-    <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-6 sm:flex-row">
-      {/* Info */}
+    <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row">
+      {/* INFO */}
 
-      <p className="text-xs text-gray-600">
+      <p className="text-xs text-gray-500">
         Page {page} of {totalPages}
       </p>
 
-      {/* Buttons */}
+      {/* BUTTONS */}
 
       <div className="flex items-center gap-1">
-        {/* Previous */}
+        {/* PREVIOUS */}
 
         <button
           type="button"
           disabled={page <= 1}
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-gray-800 text-gray-500 transition hover:bg-gray-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+          className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={17} />
         </button>
 
-        {/* Pages */}
+        {/* PAGES */}
 
         {getPageNumbers().map((pageNumber, index) => {
           if (pageNumber === "...") {
             return (
               <span
                 key={`dots-${index}`}
-                className="grid h-9 w-9 place-items-center text-sm text-gray-600"
+                className="grid h-9 w-9 place-items-center text-sm text-gray-400"
               >
                 ...
               </span>
@@ -531,7 +536,7 @@ const Pagination = ({ pagination, page, setPage }) => {
               className={`grid h-9 min-w-9 cursor-pointer place-items-center rounded-lg px-2 text-sm font-medium transition ${
                 page === pageNumber
                   ? "bg-blue-600 text-white"
-                  : "text-gray-500 hover:bg-gray-800 hover:text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               }`}
             >
               {pageNumber}
@@ -539,13 +544,13 @@ const Pagination = ({ pagination, page, setPage }) => {
           );
         })}
 
-        {/* Next */}
+        {/* NEXT */}
 
         <button
           type="button"
           disabled={page >= totalPages}
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-gray-800 text-gray-500 transition hover:bg-gray-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+          className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={17} />
         </button>
@@ -557,16 +562,16 @@ const Pagination = ({ pagination, page, setPage }) => {
 // EMPTY STATE
 const EmptyState = ({ hasFilters, onClear }) => {
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900 px-6 py-16 text-center">
-      <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gray-800">
-        <Search size={28} className="text-gray-600" />
+    <div className="rounded-2xl border border-gray-200 bg-gray-50 px-6 py-16 text-center">
+      <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gray-100">
+        <Search size={28} className="text-gray-400" />
       </div>
 
-      <h2 className="mt-5 text-lg font-semibold text-white">
+      <h2 className="mt-5 text-lg font-semibold text-gray-900">
         {hasFilters ? "No news found" : "No news available"}
       </h2>
 
-      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-600">
+      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
         {hasFilters
           ? "We couldn't find any articles matching your search or selected category."
           : "There are currently no published articles available."}
@@ -576,7 +581,7 @@ const EmptyState = ({ hasFilters, onClear }) => {
         <button
           type="button"
           onClick={onClear}
-          className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-500"
+          className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
         >
           <X size={16} />
           Clear Filters
@@ -589,21 +594,21 @@ const EmptyState = ({ hasFilters, onClear }) => {
 // ERROR STATE
 const ErrorState = ({ message, onRetry }) => {
   return (
-    <div className="rounded-2xl border border-red-500/20 bg-red-500/5 px-6 py-16 text-center">
-      <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-red-500/10">
-        <Newspaper size={28} className="text-red-400" />
+    <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-16 text-center">
+      <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-red-100">
+        <Newspaper size={28} className="text-red-500" />
       </div>
 
-      <h2 className="mt-5 text-lg font-semibold text-white">
+      <h2 className="mt-5 text-lg font-semibold text-gray-900">
         Something went wrong
       </h2>
 
-      <p className="mt-2 text-sm text-gray-500">{message}</p>
+      <p className="mt-2 text-sm text-gray-600">{message}</p>
 
       <button
         type="button"
         onClick={onRetry}
-        className="mt-5 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-500"
+        className="mt-5 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
       >
         Try Again
       </button>
@@ -611,70 +616,47 @@ const ErrorState = ({ message, onRetry }) => {
   );
 };
 
-// LOADING SKELETON
-const NewsPageSkeleton = () => {
+// NEWS GRID SKELETON
+const NewsGridSkeleton = () => {
   return (
-    <div className="animate-pulse">
-      {/* Header */}
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {Array.from({
+        length: 12,
+      }).map((_, index) => (
+        <div
+          key={index}
+          className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
+        >
+          <div className="aspect-16/10 animate-pulse bg-gray-200" />
 
-      <section className="border-b border-gray-800">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="h-4 w-28 rounded bg-gray-800" />
+          <div className="space-y-3 p-4">
+            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
 
-          <div className="mt-3 h-9 w-64 rounded bg-gray-800" />
+            <div className="h-5 w-full animate-pulse rounded bg-gray-200" />
 
-          <div className="mt-3 h-5 max-w-xl rounded bg-gray-800" />
+            <div className="h-5 w-3/4 animate-pulse rounded bg-gray-200" />
+
+            <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
+
+            <div className="h-9 w-full animate-pulse rounded bg-gray-200" />
+          </div>
         </div>
-      </section>
-
-      {/* Filters */}
-
-      <section className="border-b border-gray-800">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-5 sm:flex-row sm:px-6 lg:px-8">
-          <div className="h-11 flex-1 rounded-xl bg-gray-800" />
-
-          <div className="h-11 w-full rounded-xl bg-gray-800 sm:w-64" />
-        </div>
-      </section>
-
-      {/* Cards */}
-
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({
-            length: 12,
-          }).map((_, index) => (
-            <div
-              key={index}
-              className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-900"
-            >
-              <div className="aspect-16/10 bg-gray-800" />
-
-              <div className="space-y-3 p-4">
-                <div className="h-4 w-20 rounded bg-gray-800" />
-
-                <div className="h-5 w-full rounded bg-gray-800" />
-
-                <div className="h-5 w-3/4 rounded bg-gray-800" />
-
-                <div className="h-4 w-full rounded bg-gray-800" />
-
-                <div className="h-9 w-full rounded bg-gray-800" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
 
-// DATE FORMAT
+// DATE FORMAT — BIKRAM SAMBAT
 const formatDate = (date) => {
   if (!date) return "—";
 
-  return new NepaliDate(new Date(date)).format("D MMMM YYYY")
-};
+  try {
+    return new NepaliDate(new Date(date)).format("D MMMM YYYY");
+  } catch (error) {
+    console.error("Failed to format date:", error);
 
+    return "—";
+  }
+};
 
 export default PublicNews;
