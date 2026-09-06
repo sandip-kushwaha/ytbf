@@ -7,13 +7,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  LayoutGrid,
   Newspaper,
-  Search,
-  X,
 } from "lucide-react";
 
-import { getAllCategories } from "../../api/category.api";
 import { getPublishedNews } from "../../api/news.api";
 
 import NepaliDate from "nepali-date-converter";
@@ -22,24 +18,14 @@ const PublicNews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // INITIAL URL VALUES
-  const initialSearch = searchParams.get("search") || "";
-  const initialCategory = searchParams.get("category") || "all";
   const initialPage = Math.max(Number(searchParams.get("page")) || 1, 1);
 
   // STATE
   const [news, setNews] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const [loading, setLoading] = useState(true);
-  const [categoryLoading, setCategoryLoading] = useState(true);
 
   const [error, setError] = useState("");
-
-  const [search, setSearch] = useState(initialSearch);
-
-  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
-
-  const [categoryFilter, setCategoryFilter] = useState(initialCategory);
 
   const [page, setPage] = useState(initialPage);
 
@@ -54,38 +40,6 @@ const PublicNews = () => {
 
   const limit = 10;
 
-  // DEBOUNCE SEARCH
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [search]);
-
-  // FETCH CATEGORIES
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setCategoryLoading(true);
-
-        const response = await getAllCategories();
-
-        const activeCategories = (response.data || []).filter(
-          (category) => category.isActive,
-        );
-
-        setCategories(activeCategories);
-      } catch (error) {
-        console.error("Failed to load categories:", error);
-      } finally {
-        setCategoryLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
   // FETCH NEWS
   useEffect(() => {
     let cancelled = false;
@@ -98,8 +52,6 @@ const PublicNews = () => {
         const response = await getPublishedNews({
           page,
           limit,
-          search: debouncedSearch.trim() || undefined,
-          category: categoryFilter !== "all" ? categoryFilter : undefined,
         });
 
         if (cancelled) return;
@@ -142,19 +94,11 @@ const PublicNews = () => {
     return () => {
       cancelled = true;
     };
-  }, [page, debouncedSearch, categoryFilter]);
+  }, [page]);
 
   // UPDATE URL
   useEffect(() => {
     const params = {};
-
-    if (debouncedSearch.trim()) {
-      params.search = debouncedSearch.trim();
-    }
-
-    if (categoryFilter !== "all") {
-      params.category = categoryFilter;
-    }
 
     if (page > 1) {
       params.page = page;
@@ -163,35 +107,7 @@ const PublicNews = () => {
     setSearchParams(params, {
       replace: true,
     });
-  }, [debouncedSearch, categoryFilter, page, setSearchParams]);
-
-  // SEARCH
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    setPage(1);
-  };
-
-  // CATEGORY
-  const handleCategoryChange = (value) => {
-    setCategoryFilter(value);
-    setPage(1);
-  };
-
-  // CLEAR SEARCH
-  const clearSearch = () => {
-    setSearch("");
-    setDebouncedSearch("");
-    setPage(1);
-  };
-
-  // FILTER STATUS
-  const hasFilters = search.trim() || categoryFilter !== "all";
-
-  // SELECTED CATEGORY
-  const selectedCategory = categories.find(
-    (category) =>
-      category._id === categoryFilter || category.slug === categoryFilter,
-  );
+  }, [page, setSearchParams]);
 
   // RENDER
   return (
@@ -217,96 +133,7 @@ const PublicNews = () => {
                 events.
               </p>
             </div>
-
-            {/* TOTAL ARTICLES */}
-            <div className="flex w-fit items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-blue-50">
-                <Newspaper size={18} className="text-blue-600" />
-              </div>
-
-              <div>
-                <p className="text-xs text-gray-500">Total Articles</p>
-
-                <p className="text-sm font-semibold text-gray-900">
-                  {pagination.totalNews?.toLocaleString() || 0}
-                </p>
-              </div>
-            </div>
           </div>
-        </div>
-      </section>
-
-      {/* ========== FILTER SECTION =========== */}
-      <section className="border-b border-gray-200 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row">
-            {/* SEARCH */}
-            <div className="relative flex-1">
-              <Search
-                size={18}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="text"
-                value={search}
-                onChange={handleSearch}
-                placeholder="Search news..."
-                autoComplete="off"
-                className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-11 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              />
-
-              {/* SEARCH LOADING */}
-              {loading && search && (
-                <span className="absolute right-10 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
-              )}
-
-              {/* CLEAR SEARCH */}
-              {search && !loading && (
-                <button
-                  type="button"
-                  onClick={clearSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
-
-            {/* CATEGORY */}
-            <div className="relative lg:w-64">
-              <LayoutGrid
-                size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <select
-                value={categoryFilter}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-                disabled={categoryLoading}
-                className="h-11 w-full cursor-pointer appearance-none rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-sm text-gray-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <option value="all">All Categories</option>
-
-                {categories.map((category) => (
-                  <option key={category._id} value={category.slug}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* ACTIVE FILTERS */}
-          {hasFilters && (
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              {categoryFilter !== "all" && (
-                <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-600">
-                  Category: {selectedCategory?.name || categoryFilter}
-                </span>
-              )}
-            </div>
-          )}
         </div>
       </section>
 
@@ -326,7 +153,7 @@ const PublicNews = () => {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
-                  {hasFilters ? "Search Results" : "All Latest News"}
+                  All Latest News
                 </h2>
 
                 <p className="mt-1 text-xs text-gray-500">
@@ -337,15 +164,6 @@ const PublicNews = () => {
                       } articles`}
                 </p>
               </div>
-
-              {/* LOADING */}
-
-              {loading && (
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
-                  Updating...
-                </div>
-              )}
             </div>
 
             {/* ============ LOADING FIRST PAGE =========== */}
@@ -353,7 +171,7 @@ const PublicNews = () => {
               <NewsGridSkeleton />
             ) : news.length === 0 ? (
               /* ========== EMPTY ========== */
-              <EmptyState hasFilters={hasFilters} />
+              <EmptyState />
             ) : (
               /* ============= NEWS GRID ========== */
               <>
@@ -386,7 +204,6 @@ const PublicNewsCard = ({ news }) => {
   return (
     <article className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg">
       {/* THUMBNAIL */}
-
       <Link
         to={`/news/${news._id}`}
         className="block aspect-16/10 overflow-hidden bg-gray-100"
@@ -560,33 +377,20 @@ const Pagination = ({ pagination, page, setPage }) => {
 };
 
 // EMPTY STATE
-const EmptyState = ({ hasFilters, onClear }) => {
+const EmptyState = () => {
   return (
     <div className="rounded-2xl border border-gray-200 bg-gray-50 px-6 py-16 text-center">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gray-100">
-        <Search size={28} className="text-gray-400" />
+        <Newspaper size={28} className="text-gray-400" />
       </div>
 
       <h2 className="mt-5 text-lg font-semibold text-gray-900">
-        {hasFilters ? "No news found" : "No news available"}
+        No news available
       </h2>
 
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-        {hasFilters
-          ? "We couldn't find any articles matching your search or selected category."
-          : "There are currently no published articles available."}
+        There are currently no published articles available.
       </p>
-
-      {hasFilters && (
-        <button
-          type="button"
-          onClick={onClear}
-          className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
-        >
-          <X size={16} />
-          Clear Filters
-        </button>
-      )}
     </div>
   );
 };
@@ -621,24 +425,20 @@ const NewsGridSkeleton = () => {
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {Array.from({
-        length: 12,
+        length: 4,
       }).map((_, index) => (
         <div
           key={index}
           className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
         >
-          <div className="aspect-16/10 animate-pulse bg-gray-200" />
+          <div className="aspect-16/10 animate-pulse bg-gray-300" />
 
           <div className="space-y-3 p-4">
-            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
-
-            <div className="h-5 w-full animate-pulse rounded bg-gray-200" />
-
-            <div className="h-5 w-3/4 animate-pulse rounded bg-gray-200" />
-
-            <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
-
-            <div className="h-9 w-full animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-20 animate-pulse rounded bg-gray-300" />
+            <div className="h-5 w-full animate-pulse rounded bg-gray-300" />
+            <div className="h-5 w-3/4 animate-pulse rounded bg-gray-300" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-300" />
+            <div className="h-9 w-full animate-pulse rounded bg-gray-300" />
           </div>
         </div>
       ))}

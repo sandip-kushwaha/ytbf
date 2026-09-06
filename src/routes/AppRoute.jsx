@@ -18,6 +18,8 @@ import PublicNews from "../pages/public/PublicNews";
 import NewsDetails from "../pages/public/NewsDetails";
 import CategoryNews from "../pages/public/CategoryNews";
 import Search from "../pages/public/Search";
+import Trending from "../pages/public/Trending";
+import Featured from "../pages/public/Featured";
 
 const AppRoute = () => {
   return (
@@ -31,10 +33,10 @@ const AppRoute = () => {
         {/* <Route path="/categories" element={<CategoryNews />} /> */}
         <Route path="/categories/:slug" element={<CategoryNews />} />
 
-        <Route path="/trending" element={<h1>Trending</h1>} />
+        <Route path="/trending" element={<Trending />} />
         <Route path="/search" element={<Search />} />
 
-        <Route path="/bookmarks" element={<h1>Bookmarks</h1>} />
+        <Route path="/featured" element={<Featured />} />
 
         <Route path="/about" element={<h1>About</h1>} />
         <Route path="/contact" element={<h1>Contact</h1>} />

@@ -7,6 +7,7 @@ const PublicLayout = () => {
   return (
     <div className="min-h-screen bg-white text-black">
       <PublicNavbar />
+      <BreakingNews />
       
 
       <main className="min-h-[calc(100vh-140px)]">

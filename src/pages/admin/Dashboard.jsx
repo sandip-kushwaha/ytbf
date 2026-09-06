@@ -38,7 +38,7 @@ const Dashboard = () => {
         await Promise.all([
           getDashboardStats(),
           getRecentNews(5),
-          getMostViewedNews(5),
+          getMostViewedNews(10),
         ]);
 
       setStats(statsResponse.data);
