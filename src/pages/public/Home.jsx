@@ -15,7 +15,8 @@ import {
 
 import { getFeaturedNews, getPublishedNews } from "../../api/news.api";
 import { getAllCategories } from "../../api/category.api";
-import NepaliDate from "nepali-date-converter";
+
+import formatDate from "./NepaliDate";
 
 const Home = () => {
   const [featuredNews, setFeaturedNews] = useState([]);
@@ -291,7 +292,7 @@ const Home = () => {
                           {news.title}
                         </h3>
 
-                        <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
+                        <div className="mt-2 flex items-center gap-3 text-xs text-slate-600">
                           <span>{formatDate(news.publishedAt)}</span>
 
                           <span className="flex items-center gap-1">
@@ -584,16 +585,6 @@ const getCategoryName = (news) => {
   return news.category.name || news.category.title || "General";
 };
 
-// Date Formatter
-const formatDate = (date) => {
-  if (!date) return "—";
-
-  try {
-    return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-  } catch {
-    return "—";
-  }
-};
 
 /* ============ LOADING SKELETON =========== */
 const HomeSkeleton = () => {

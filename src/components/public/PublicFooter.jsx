@@ -3,7 +3,6 @@ import {
   FaFacebookF,
   FaInstagram,
   FaTiktok,
-  FaTwitter,
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
@@ -111,7 +110,7 @@ const PublicFooter = () => {
         </div>
 
         <div className="mt-10 border-t border-gray-800 pt-6 text-center text-sm text-gray-600">
-          © {new Date().getFullYear()} NewsPortal. All rights reserved.
+          © {new Date().getFullYear()} YouTh Brain news. All rights reserved.
         </div>
       </div>
     </footer>

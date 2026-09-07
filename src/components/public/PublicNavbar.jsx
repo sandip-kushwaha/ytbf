@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../../assets/logo.png";
 import {
   Menu,
   X,
   Search,
-  Newspaper,
   Home,
   Clock3,
   LayoutGrid,
   TrendingUp,
   Star,
-  Info,
   Mail,
   ChevronRight,
 } from "lucide-react";
 
 import { getAllCategories } from "../../api/category.api";
+
+import formatDate from "../../pages/public/NepaliDate";
 
 const PublicNavbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,42 +33,73 @@ const PublicNavbar = () => {
   // Used to prevent hover flickering
   const closeTimerRef = useRef(null);
 
-  // =========================================================
-  // MAIN LINKS
-  // =========================================================
+  //Date Time
+  const [currentTime, setCurrentTime] = useState(new Date());
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // MAIN LINKS
   const mainLinks = [
     {
-      name: "Home",
+      name: "गृह",
       path: "/",
       icon: Home,
     },
     {
-      name: "Latest",
+      name: "ताजा खवर",
       path: "/news",
       icon: Clock3,
     },
     {
-      name: "Categories",
+      name: "वर्गहरू",
       path: "/categories",
       icon: LayoutGrid,
     },
     {
-      name: "Trending",
+      name: "धेरैले पढेकाे",
       path: "/trending",
       icon: TrendingUp,
+    },
+  ];
+
+  const navbarCategories = [
+    {
+      name: "राजनीति",
+      path: "/categories/raajniiti",
+    },
+    {
+      name: "समाज",
+      path: "/categories/society",
+    },
+    {
+      name: "अर्थ",
+      path: "/categories/economy",
+    },
+    {
+      name: "खेलकुद",
+      path: "/categories/khelkud",
+    },
+    {
+      name: "अन्तर्वार्ता",
+      path: "/categories/interview",
     },
   ];
 
   // MORE LINKS
   const moreLinks = [
     {
-      name: "Featured",
+      name: "विशेष समाचार",
       path: "/featured",
       icon: Star,
     },
     {
-      name: "Contact",
+      name: "सम्पर्क",
       path: "/contact",
       icon: Mail,
     },
@@ -159,18 +191,29 @@ const PublicNavbar = () => {
             className="group flex items-center gap-3"
           >
             {/* Logo Icon */}
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/20 transition group-hover:bg-blue-500">
-              <Newspaper size={21} strokeWidth={2.2} className="text-white" />
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-white">
+              <img
+                src={logo}
+                alt="NewsPortal Logo"
+                className="h-full w-full object-contain "
+              />
             </div>
 
             {/* Logo Text */}
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-bold tracking-tight text-white">
-                समाचार पोर्टल
-              </h1>
+            <div>
+              <div className="flex items-end">
+                <h1 className="text-[27px] font-black leading-none tracking-tight">
+                  <span className="text-blue-400">युथ</span>
+                  <span className="ml-1.5 text-red-500">ब्रेन</span>
+                </h1>
 
-              <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-gray-500">
-                Stay Informed
+                <span className="text-[9px] font-extrabold tracking-widest text-blue-800 shadow-sm">
+                  न्युज
+                </span>
+              </div>
+
+              <p className="mt-1.5 text-[8px] font-medium uppercase tracking-[0.3em] text-gray-500">
+                सधैं सत्य • सधैं अगाडि
               </p>
             </div>
           </Link>
@@ -178,29 +221,73 @@ const PublicNavbar = () => {
           {/* =======DESKTOP NAVIGATION ====== */}
           <nav className="hidden items-center gap-1 md:flex">
             {mainLinks
-              .filter((link) => link.name !== "Categories")
+              .filter((link) => link.name !== "वर्गहरू")
               .map((link) => {
+                const Icon = link.icon;
+
                 return (
                   <NavLink
                     key={link.path}
                     to={link.path}
                     end={link.path === "/"}
                     className={({ isActive }) =>
-                      `rounded-lg px-4 py-2.5 text-sm font-medium transition ${
+                      `rounded-lg px-3 py-2.5 text-sm font-medium transition ${
                         isActive
-                          ? "bg-blue-600/10 text-blue-600"
-                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ? "bg-blue-600/10 text-blue-400"
+                          : "text-gray-300 hover:bg-gray-800 hover:text-white"
                       }`
                     }
                   >
-                    {link.name}
+                    {Icon ? <Icon size={18} /> : link.name}
                   </NavLink>
                 );
               })}
+
+            {navbarCategories.map((category) => (
+              <NavLink
+                key={category.path}
+                to={category.path}
+                className={({ isActive }) =>
+                  `rounded-lg px-3 py-2.5 text-lg font-medium transition ${
+                    isActive
+                      ? "bg-blue-600/10 text-blue-400"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`
+                }
+              >
+                {category.name}
+              </NavLink>
+            ))}
           </nav>
 
           {/* ======== RIGHT ACTIONS ======== */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
+
+            {/* ======== DATE & TIME ======== */}
+            <div className="flex items-center gap-2">
+              {/* Date */}
+              <div className="flex items-center">
+                <span className="text-xs font-medium text-gray-300">
+                  {formatDate(currentTime)}
+                </span>
+              </div>
+
+              {/* Divider */}
+              <div className="hidden h-5 w-px bg-gray-700 sm:block" />
+
+              {/* Time */}
+              <div className="hidden items-center gap-2 sm:flex">
+                <span className="min-w-18 text-xs font-semibold tabular-nums text-gray-300">
+                  {currentTime.toLocaleTimeString("en-NP", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                  })}
+                </span>
+              </div>
+            </div>
+
             {/* Search */}
             <Link
               to="/search"
@@ -250,15 +337,30 @@ const PublicNavbar = () => {
             onClick={closeSidebar}
             className="flex items-center gap-3"
           >
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-blue-600">
-              <Newspaper size={19} className="text-white" />
+            {/* Logo Icon */}
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-white">
+              <img
+                src={logo}
+                alt="NewsPortal Logo"
+                className="h-full w-full object-contain "
+              />
             </div>
 
+            {/* Logo Text */}
             <div>
-              <h2 className="text-sm font-bold text-white">NewsPortal</h2>
+              <div className="flex items-end">
+                <h1 className="text-[27px] font-black leading-none tracking-tight">
+                  <span className="text-blue-400">युथ</span>
+                  <span className="ml-1.5 text-red-500">ब्रेन</span>
+                </h1>
 
-              <p className="text-[9px] uppercase tracking-[0.2em] text-gray-500">
-                Navigation
+                <span className="text-[9px] font-extrabold tracking-widest text-blue-800 shadow-sm">
+                  न्युज
+                </span>
+              </div>
+
+              <p className="mt-1.5 text-[8px] font-medium uppercase tracking-[0.3em] text-gray-500">
+                सधैं सत्य • सधैं अगाडि
               </p>
             </div>
           </Link>
@@ -281,9 +383,9 @@ const PublicNavbar = () => {
               const Icon = link.icon;
 
               {
-                /* ============== CATEGORIES SPECIAL ITEM =========== */
+                /* ======= CATEGORIES SPECIAL ITEM ======== */
               }
-              if (link.name === "Categories") {
+              if (link.name === "वर्गहरू") {
                 return (
                   <div
                     key={link.path}
@@ -311,7 +413,7 @@ const PublicNavbar = () => {
                           }
                         />
 
-                        <span>Categories</span>
+                        <span>वर्गहरू</span>
                       </div>
 
                       <ChevronRight
@@ -351,7 +453,8 @@ const PublicNavbar = () => {
                           /* Empty */
                           <div className="rounded-lg bg-gray-900 px-3 py-3">
                             <p className="text-xs text-gray-500">
-                              No categories available
+                              {/* No categories available */}
+                              कुनै वर्गहरू उपलब्ध छैनन् |
                             </p>
                           </div>
                         ) : (
@@ -432,11 +535,13 @@ const PublicNavbar = () => {
 
               <div>
                 <h3 className="text-sm font-semibold text-white">
-                  Search News
+                  {/* Search News */}
+                  समाचार खोज्नुहोस् 
                 </h3>
 
                 <p className="mt-1 text-xs leading-5 text-gray-500">
-                  Find the latest stories, articles and updates.
+                  {/* Find the latest stories, articles and updates. */}
+                  ताजा खबर, लेख र अपडेटहरू खोज्नुहोस् |
                 </p>
               </div>
             </div>
@@ -447,25 +552,21 @@ const PublicNavbar = () => {
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500"
             >
               <Search size={16} />
-              Search
+              {/* Search */}
+              खोज्नुहोस्
             </Link>
           </div>
 
           {/* ========== FOOTER ==== */}
           <div className="mt-8 border-t border-gray-800 pt-5">
             <p className="text-center text-[11px] text-gray-600">
-              © {new Date().getFullYear()} NewsPortal
+              © {new Date().getFullYear()} YouTh Brain news
             </p>
           </div>
         </div>
       </aside>
 
-      {/* =====================================================
-          DESKTOP CATEGORY MEGA MENU
-
-          Hidden on mobile.
-      ====================================================== */}
-
+      {/* ========= DESKTOP CATEGORY MEGA MENU ======== */}
       {sidebarOpen && categoriesMegaOpen && (
         <div
           onMouseEnter={keepCategoriesMegaOpen}
@@ -481,10 +582,10 @@ const PublicNavbar = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-white">All Categories</h3>
+                <h3 className="text-sm font-bold text-white">सबै वर्गहरू</h3>
 
                 <p className="text-[10px] text-gray-500">
-                  Browse news categories
+                  समाचार वर्गहरू हेर्नुहोस् |
                 </p>
               </div>
             </div>
@@ -511,7 +612,8 @@ const PublicNavbar = () => {
                 <LayoutGrid size={23} className="mx-auto mb-2 text-gray-600" />
 
                 <p className="text-xs font-medium text-gray-400">
-                  No categories available
+                  {/* No categories available */}
+                  कुनै वर्गहरू उपलब्ध छैनन् |
                 </p>
               </div>
             ) : (
