@@ -182,24 +182,26 @@ const PublicNavbar = () => {
 
           {/* =======DESKTOP NAVIGATION ====== */}
           <nav className="hidden items-center gap-1 md:flex">
-            {mainLinks.map((link) => {
-              return (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  end={link.path === "/"}
-                  className={({ isActive }) =>
-                    `rounded-lg px-4 py-2.5 text-sm font-medium transition ${
-                      isActive
-                        ? "bg-blue-600/10 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
-              );
-            })}
+            {mainLinks
+              .filter((link) => link.name !== "Categories")
+              .map((link) => {
+                return (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    end={link.path === "/"}
+                    className={({ isActive }) =>
+                      `rounded-lg px-4 py-2.5 text-sm font-medium transition ${
+                        isActive
+                          ? "bg-blue-600/10 text-blue-600"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      }`
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                );
+              })}
           </nav>
 
           {/* ======== RIGHT ACTIONS ======== */}

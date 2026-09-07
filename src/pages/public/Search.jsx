@@ -288,7 +288,7 @@ const Search = () => {
                     }`}
                   >
                     <Tag size={13} className={isActive ? "text-white" : "text-gray-400"} />
-                    {item.name}
+                    {item.name} 
                   </button>
                 );
               })}
@@ -451,12 +451,12 @@ const Search = () => {
                     </div>
 
                     <Link to={`/news/${item.slug}`}>
-                      <h3 className="line-clamp-2 text-base font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
+                      <h3 className="line-clamp-2 text-xl font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
                         {item.title}
                       </h3>
                     </Link>
 
-                    <p className="mt-2 line-clamp-3 text-xs leading-5 text-gray-600">
+                    <p className="mt-2 line-clamp-3 text-lg leading-6 text-gray-600">
                       {item.summary}
                     </p>
 

@@ -15,7 +15,6 @@ import {
 
 import { getFeaturedNews, getPublishedNews } from "../../api/news.api";
 import { getAllCategories } from "../../api/category.api";
-import BreakingNews from "../../components/public/BreakingNews";
 import NepaliDate from "nepali-date-converter";
 
 const Home = () => {
@@ -175,12 +174,12 @@ const Home = () => {
                         </span>
                       </div>
 
-                      <h1 className="max-w-4xl text-2xl font-black leading-tight text-white sm:text-3xl lg:text-4xl">
+                      <h1 className="max-w-4xl text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">
                         {mainHeroStory.title}
                       </h1>
 
                       {mainHeroStory.summary && (
-                        <p className="mt-3 hidden max-w-3xl line-clamp-2 text-sm leading-6 text-white/80 sm:block">
+                        <p className="mt-2 max-w-3xl line-clamp-2 text-lg leading-7 text-white/80 sm:text-xl md:text-2xl md:leading-9 lg:text-3xl lg:leading-11">
                           {mainHeroStory.summary}
                         </p>
                       )}
@@ -199,7 +198,7 @@ const Home = () => {
 
                   <Link
                     to="/news"
-                    className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                    className="text-sm font-semibold text-blue-600 hover:text-blue-700"
                   >
                     View all
                   </Link>
@@ -469,7 +468,7 @@ const FeaturedSideCard = ({ news, index }) => {
       to={`/news/${news.slug}`}
       className="group flex gap-4 border-b border-slate-200 pb-4 last:border-0"
     >
-      <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+      <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-slate-100">
         {news.thumbnail ? (
           <img
             src={news.thumbnail}
@@ -486,11 +485,11 @@ const FeaturedSideCard = ({ news, index }) => {
       </div>
 
       <div className="min-w-0 flex-1">
-        <span className="text-[10px] font-bold uppercase tracking-wide text-blue-600">
+        <span className="text-[11px] font-bold uppercase tracking-wide text-blue-600">
           {getCategoryName(news)}
         </span>
 
-        <h3 className="mt-1 line-clamp-3 text-sm font-bold leading-5 text-slate-800 transition group-hover:text-blue-600">
+        <h3 className="mt-1 line-clamp-3 text-lg font-bold leading-5 text-slate-800 transition group-hover:text-blue-600">
           {news.title}
         </h3>
 
@@ -506,7 +505,7 @@ const FeaturedSideCard = ({ news, index }) => {
 const NewsListItem = ({ news }) => {
   return (
     <Link to={`/news/${news.slug}`} className="group flex gap-4 py-5">
-      <div className="h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-32 sm:w-52">
+      <div className="h-28 w-42 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-32 sm:w-52">
         {news.thumbnail ? (
           <img
             src={news.thumbnail}
