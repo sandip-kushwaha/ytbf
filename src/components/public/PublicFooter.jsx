@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTiktok,
+  FaTwitter,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
 import { MoveUpRight } from "lucide-react";
 
 const PublicFooter = () => {
@@ -9,18 +16,44 @@ const PublicFooter = () => {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            <h2 className="text-xl font-bold text-white">NewsPortal</h2>
+            {/* <h2 className="text-xl font-bold text-white">NewsPortal</h2> */}
+            <h2 className="text-xl font-bold text-white">समाचार पोर्टल</h2>
 
-            <p className="mt-3 max-w-md text-sm leading-6 text-gray-500">
+            {/* <p className="mt-3 max-w-md text-sm leading-6 text-gray-500">
               Stay informed with the latest news, stories, and updates from
               around the world.
+            </p> */}
+            <p className="mt-3 max-w-md text-sm leading-6 text-gray-500">
+              विश्वभरका नवीनतम समाचार, कथा तथा महत्वपूर्ण जानकारीहरूसँग सधैं
+              अपडेट रहनुहोस्।
             </p>
 
             <div className="mt-5 flex gap-2">
-              <SocialIcon icon={FaFacebookF} />
-              <SocialIcon icon={FaInstagram} />
-              <SocialIcon icon={FaTwitter} />
-              <SocialIcon icon={FaYoutube} />
+              <SocialIcon
+                icon={FaFacebookF}
+                href="https://www.facebook.com/youthbrain.media"
+                className="hover:bg-[#1877F2] hover:text-white"
+              />
+              <SocialIcon
+                icon={FaWhatsapp}
+                href="https://wa.me/977982-8058803"
+                className="hover:bg-[#25D366] hover:text-white"
+              />
+              <SocialIcon
+                icon={FaTiktok}
+                href="https://www.tiktok.com/@youthbrain47"
+                className="hover:bg-black hover:text-white"
+              />
+              <SocialIcon
+                icon={FaInstagram}
+                href="https://www.instagram.com/youthbrain.media"
+                className="hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
+              />
+              <SocialIcon
+                icon={FaYoutube}
+                href="https://www.youtube.com/@youthbrainnews"
+                className="hover:bg-[#FF0000] hover:text-white"
+              />
             </div>
           </div>
 
@@ -61,18 +94,9 @@ const PublicFooter = () => {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-white">Company</h3>
+            <h3 className="font-semibold text-white">Get Touch Me</h3>
 
             <div className="mt-4 space-y-3">
-              <FooterLink
-                to="/about"
-                label={
-                  <span className="flex items-center gap-1">
-                    About Us{" "}
-                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </span>
-                }
-              />
               <FooterLink
                 to="/contact"
                 label={
@@ -105,14 +129,17 @@ const FooterLink = ({ to, label }) => {
   );
 };
 
-const SocialIcon = ({ icon: Icon }) => {
+const SocialIcon = ({ icon: Icon, href, className = "" }) => {
   return (
-    <button
-      type="button"
-      className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg bg-gray-900 text-gray-500 transition hover:bg-gray-800 hover:text-white"
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`grid h-9 w-9 cursor-pointer place-items-center rounded-lg 
+        bg-gray-900 text-gray-500 transition duration-200 ${className}`}
     >
       <Icon size={17} />
-    </button>
+    </a>
   );
 };
 

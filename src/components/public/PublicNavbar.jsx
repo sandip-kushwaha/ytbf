@@ -67,11 +67,6 @@ const PublicNavbar = () => {
       icon: Star,
     },
     {
-      name: "About",
-      path: "/about",
-      icon: Info,
-    },
-    {
       name: "Contact",
       path: "/contact",
       icon: Mail,
@@ -171,7 +166,7 @@ const PublicNavbar = () => {
             {/* Logo Text */}
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold tracking-tight text-white">
-                NewsPortal
+                समाचार पोर्टल
               </h1>
 
               <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-gray-500">

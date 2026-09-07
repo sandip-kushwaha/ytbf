@@ -21,7 +21,6 @@ import Search from "../pages/public/Search";
 import Trending from "../pages/public/Trending";
 import Featured from "../pages/public/Featured";
 import Contact from "../pages/public/Contact";
-import About from "../pages/public/About";
 
 const AppRoute = () => {
   return (
@@ -40,7 +39,6 @@ const AppRoute = () => {
 
         <Route path="/featured" element={<Featured />} />
 
-        <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 

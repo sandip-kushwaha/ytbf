@@ -1,21 +1,12 @@
 import { Link } from "react-router-dom";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  ShieldAlert,
-  Newspaper,
-  Megaphone,
-  UserCheck,
-  ExternalLink,
-} from "lucide-react";
+import { Mail, ShieldAlert, Newspaper } from "lucide-react";
 
 import {
   FaFacebookF,
   FaInstagram,
-  FaTwitter,
   FaYoutube,
   FaTiktok,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const Contact = () => {
@@ -77,7 +68,7 @@ const Contact = () => {
                 </div>
               </div>
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=yourNews@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=youthbrain91@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none"
@@ -85,102 +76,6 @@ const Contact = () => {
                 <Mail className="h-4 w-4" />
                 Send Confidential Tip
               </a>
-            </div>
-          </div>
-
-          {/* Desks Grid */}
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Editorial Desk */}
-            <div className="group rounded-2xl border border-gray-200/80 bg-white p-6 shadow-xs transition hover:border-blue-300 hover:shadow-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
-                <UserCheck className="h-6 w-6" />
-              </div>
-              <h3 className="mt-5 text-lg font-bold text-gray-900">
-                Editor-in-Chief
-              </h3>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-gray-400">
-                Editorial & Corrections
-              </p>
-              <p className="mt-3 text-sm text-gray-600">
-                For article corrections, editorial policy queries, or press
-                releases.
-              </p>
-              <div className="mt-6 space-y-2 border-t border-gray-100 pt-4">
-                <a
-                  href="mailto:editor@yournews.com"
-                  className="flex items-center gap-2 text-sm font-semibold text-gray-900 transition hover:text-blue-600"
-                >
-                  <Mail className="h-4 w-4 text-gray-400" />
-                  editor@yournews.com
-                </a>
-                <a
-                  href="tel:+9779800000001"
-                  className="flex items-center gap-2 text-sm text-gray-600 transition hover:text-blue-600"
-                >
-                  <Phone className="h-4 w-4 text-gray-400" />
-                  +977 9800000001
-                </a>
-              </div>
-            </div>
-
-            {/* Advertising & Commercial */}
-            <div className="group rounded-2xl border border-gray-200/80 bg-white p-6 shadow-xs transition hover:border-blue-300 hover:shadow-md">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition group-hover:bg-emerald-600 group-hover:text-white">
-                <Megaphone className="h-6 w-6" />
-              </div>
-              <h3 className="mt-5 text-lg font-bold text-gray-900">
-                Advertising & Media
-              </h3>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-gray-400">
-                Sponsorships & Ads
-              </p>
-              <p className="mt-3 text-sm text-gray-600">
-                Partner with us for display ads, sponsored stories, or brand
-                partnerships.
-              </p>
-              <div className="mt-6 space-y-2 border-t border-gray-100 pt-4">
-                <a
-                  href="mailto:ads@yournews.com"
-                  className="flex items-center gap-2 text-sm font-semibold text-gray-900 transition hover:text-blue-600"
-                >
-                  <Mail className="h-4 w-4 text-gray-400" />
-                  ads@yournews.com
-                </a>
-                <a
-                  href="tel:+9779800000002"
-                  className="flex items-center gap-2 text-sm text-gray-600 transition hover:text-blue-600"
-                >
-                  <Phone className="h-4 w-4 text-gray-400" />
-                  +977 9800000002
-                </a>
-              </div>
-            </div>
-
-            {/* Headquarters Location */}
-            <div className="group rounded-2xl border border-gray-200/80 bg-white p-6 shadow-xs transition hover:border-blue-300 hover:shadow-md sm:col-span-2 lg:col-span-1">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-purple-600 transition group-hover:bg-purple-600 group-hover:text-white">
-                <MapPin className="h-6 w-6" />
-              </div>
-              <h3 className="mt-5 text-lg font-bold text-gray-900">
-                Central Bureau
-              </h3>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-gray-400">
-                Physical Address
-              </p>
-              <p className="mt-3 text-sm text-gray-600">
-                Media Tower, Press Way, Kathmandu, Nepal
-              </p>
-              <div className="mt-6 border-t border-gray-100 pt-4">
-                <a
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
-                >
-                  View on Google Maps
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </a>
-              </div>
             </div>
           </div>
 
@@ -196,7 +91,7 @@ const Contact = () => {
 
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/youthbrain.media"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-blue-600 hover:text-white hover:border-blue-600"
@@ -205,34 +100,35 @@ const Contact = () => {
                 Facebook Page
               </a>
               <a
-                href="https://twitter.com"
+                href="https://wa.me/977982-8058803"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-green-500 hover:bg-green-500 hover:text-white"
               >
-                <FaTwitter className="h-4 w-4" />
-                Twitter / X
+                <FaWhatsapp className="h-4 w-4" />
+                WhatsApp
               </a>
+
               <a
-                href="https://tiktok.org"
+                href="https://www.tiktok.com/@youthbrain47"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-blue-500 hover:text-white hover:border-blue-500"
+                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-black hover:text-white hover:border-black"
               >
                 <FaTiktok className="h-4 w-4" />
                 Tik Tok
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/youthbrain.media"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-pink-600 hover:text-white hover:border-pink-600"
+                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
               >
                 <FaInstagram className="h-4 w-4" />
                 Instagram
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@youthbrainnews"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-red-600 hover:text-white hover:border-red-600"
