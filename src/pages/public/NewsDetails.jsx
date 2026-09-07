@@ -9,11 +9,13 @@ import {
   Share2,
   Tag,
 } from "lucide-react";
-import { getNewsById, incrementNewsViews } from "../../api/news.api";
+
+import { getPublicNewsBySlug, incrementNewsViews } from "../../api/news.api";
+
 import NepaliDate from "nepali-date-converter";
 
 const NewsDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
 
   const [news, setNews] = useState(null);
@@ -23,7 +25,7 @@ const NewsDetails = () => {
 
   const viewCounted = useRef(false);
 
-  // Fetch article data & record view once per article ID
+  // Fetch article and record view
   useEffect(() => {
     let isMounted = true;
 
@@ -32,19 +34,28 @@ const NewsDetails = () => {
         setLoading(true);
         setError("");
 
-        const response = await getNewsById(id);
+        // Get news using slug
+        const response = await getPublicNewsBySlug(slug);
 
         if (!isMounted) return;
+
         setNews(response.data);
 
-        // Record view increment only once per mount cycle for this ID
+        // Count view only once
         if (!viewCounted.current) {
           viewCounted.current = true;
+
           try {
-            const viewResponse = await incrementNewsViews(id);
-            if (isMounted && viewResponse.data?.views) {
+            const viewResponse = await incrementNewsViews(response.data._id);
+
+            if (isMounted && viewResponse.data?.views !== undefined) {
               setNews((prev) =>
-                prev ? { ...prev, views: viewResponse.data.views } : prev,
+                prev
+                  ? {
+                      ...prev,
+                      views: viewResponse.data.views,
+                    }
+                  : prev,
               );
             }
           } catch (viewErr) {
@@ -54,16 +65,19 @@ const NewsDetails = () => {
       } catch (err) {
         if (isMounted) {
           console.error("Failed to fetch news:", err);
+
           setError(
             err.response?.data?.message || "Failed to load this news article.",
           );
         }
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    if (id) {
+    if (slug) {
       viewCounted.current = false;
       fetchNewsAndCountView();
     }
@@ -71,11 +85,12 @@ const NewsDetails = () => {
     return () => {
       isMounted = false;
     };
-  }, [id]);
+  }, [slug]);
 
   // Date Formatter
   const formatDate = (date) => {
     if (!date) return "—";
+
     try {
       return new NepaliDate(new Date(date)).format("D MMMM YYYY");
     } catch {
@@ -83,16 +98,18 @@ const NewsDetails = () => {
     }
   };
 
-  // Estimated Read Time Calculation
+  // Estimated Read Time
   const calculateReadTime = (content) => {
     if (!content) return "1 min read";
+
     const wordsPerMinute = 200;
     const wordCount = content.trim().split(/\s+/).length;
     const minutes = Math.ceil(wordCount / wordsPerMinute);
+
     return `${minutes} min read`;
   };
 
-  // Handle Share with Visual Feedback
+  // Share
   const handleShare = async () => {
     const shareData = {
       title: news?.title,
@@ -105,8 +122,12 @@ const NewsDetails = () => {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(window.location.href);
+
         setCopied(true);
-        setTimeout(() => setCopied(false), 2500);
+
+        setTimeout(() => {
+          setCopied(false);
+        }, 2500);
       }
     } catch (err) {
       if (err.name !== "AbortError") {
@@ -115,16 +136,21 @@ const NewsDetails = () => {
     }
   };
 
-  // Loading State
+  // Loading
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="mb-8 h-4 w-36 animate-pulse rounded-md bg-gray-200" />
+
           <div className="mb-4 h-6 w-24 animate-pulse rounded-full bg-gray-200" />
+
           <div className="mb-4 h-12 w-full animate-pulse rounded-xl bg-gray-200" />
+
           <div className="mb-8 h-6 w-3/4 animate-pulse rounded-lg bg-gray-200" />
+
           <div className="mb-8 aspect-video w-full animate-pulse rounded-2xl bg-gray-200" />
+
           <div className="space-y-4">
             <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
             <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
@@ -135,7 +161,7 @@ const NewsDetails = () => {
     );
   }
 
-  // Error / Not Found State
+  // Error
   if (error || !news) {
     return (
       <div className="min-h-[70vh] bg-slate-50/50 flex items-center justify-center px-4">
@@ -143,12 +169,16 @@ const NewsDetails = () => {
           <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-red-50 text-red-600">
             <Eye size={26} />
           </div>
+
           <h1 className="mb-2 text-xl font-bold text-gray-900">
             Article Not Found
           </h1>
+
           <p className="mb-6 text-sm text-gray-500">
-            {error || "The requested article could not be located or may have been unpublished."}
+            {error ||
+              "The requested article could not be located or may have been unpublished."}
           </p>
+
           <button
             onClick={() => navigate("/news")}
             className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700 active:scale-[0.98]"
@@ -165,22 +195,32 @@ const NewsDetails = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb Navigation Bar */}
-      <nav aria-label="Breadcrumb" className="border-b border-gray-100 bg-slate-50/60">
+      {/* Breadcrumb */}
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-gray-100 bg-slate-50/60"
+      >
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
               Home
             </Link>
+
             <span className="text-gray-300">/</span>
-            <Link to="/news" className="shrink-0 transition hover:text-blue-600">
+
+            <Link
+              to="/news"
+              className="shrink-0 transition hover:text-blue-600"
+            >
               News
             </Link>
+
             {category?.slug && (
               <>
                 <span className="text-gray-300">/</span>
+
                 <Link
-                  to={`/search?category=${category.slug}`}
+                  to={`/categories/${category.slug}`}
                   className="truncate text-blue-600 hover:underline"
                 >
                   {category.name}
@@ -191,12 +231,12 @@ const NewsDetails = () => {
         </div>
       </nav>
 
+      {/* Article */}
       <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        {/* Article Metadata Header */}
         <header>
           {category && (
             <Link
-              to={`/search?category=${category.slug}`}
+              to={`/categories/${category.slug}`}
               className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 transition hover:bg-blue-100"
             >
               <Tag size={13} />
@@ -209,7 +249,7 @@ const NewsDetails = () => {
           </h1>
 
           {news.summary && (
-            <p className="mt-4 text-lg text-gray-600 leading-relaxed sm:text-xl">
+            <p className="mt-4 text-lg leading-relaxed text-gray-600 sm:text-xl">
               {news.summary}
             </p>
           )}
@@ -236,7 +276,7 @@ const NewsDetails = () => {
               </span>
             </div>
 
-            {/* Share Button */}
+            {/* Share */}
             <button
               onClick={handleShare}
               className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 active:scale-[0.98]"
@@ -267,21 +307,25 @@ const NewsDetails = () => {
           </figure>
         )}
 
-        {/* Article Content Body */}
+        {/* Content */}
         <section className="prose prose-gray max-w-none prose-p:text-gray-800 prose-p:leading-relaxed sm:prose-lg">
           {news.content?.split("\n").map((paragraph, index) => {
             const trimmed = paragraph.trim();
+
             if (!trimmed) return null;
 
             return (
-              <p key={index} className="mb-6 text-base leading-8 sm:text-lg sm:leading-8">
+              <p
+                key={index}
+                className="mb-6 text-base leading-8 sm:text-lg sm:leading-8"
+              >
                 {trimmed}
               </p>
             );
           })}
         </section>
 
-        {/* Article Footer & Navigation */}
+        {/* Footer */}
         <footer className="mt-12 border-t border-gray-100 pt-8">
           <div className="flex items-center justify-between">
             <button

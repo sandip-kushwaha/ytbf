@@ -112,6 +112,24 @@ const PublicNews = () => {
   // RENDER
   return (
     <div className="min-h-screen bg-white text-gray-900">
+      {/* Breadcrumb */}
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-gray-100 bg-slate-50/60"
+      >
+        <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
+            <Link to="/" className="shrink-0 transition hover:text-blue-600">
+              Home
+            </Link>
+
+            <span className="text-gray-300">/</span>
+
+            <span className="truncate text-blue-600">News</span>
+          </div>
+        </div>
+      </nav>
+
       {/* ========= PAGE HEADER ========= */}
       <section className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -177,7 +195,7 @@ const PublicNews = () => {
               <>
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {news.map((item) => (
-                    <PublicNewsCard key={item._id} news={item} />
+                    <PublicNewsCard key={item.slug} news={item} />
                   ))}
                 </div>
 
@@ -205,7 +223,7 @@ const PublicNewsCard = ({ news }) => {
     <article className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg">
       {/* THUMBNAIL */}
       <Link
-        to={`/news/${news._id}`}
+        to={`/news/${news.slug}`}
         className="block aspect-16/10 overflow-hidden bg-gray-100"
       >
         {news.thumbnail ? (
@@ -238,7 +256,7 @@ const PublicNewsCard = ({ news }) => {
 
         {/* TITLE */}
 
-        <Link to={`/news/${news._id}`}>
+        <Link to={`/news/${news.slug}`}>
           <h2 className="mt-3 line-clamp-2 text-base font-bold leading-6 text-gray-900 transition group-hover:text-blue-600">
             {news.title}
           </h2>
@@ -271,7 +289,7 @@ const PublicNewsCard = ({ news }) => {
         {/* READ ARTICLE */}
 
         <Link
-          to={`/news/${news._id}`}
+          to={`/news/${news.slug}`}
           className="mt-4 flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2.5 text-xs font-medium text-gray-600 transition hover:bg-blue-600 hover:text-white"
         >
           Read Article

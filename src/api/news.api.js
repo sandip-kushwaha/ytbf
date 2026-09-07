@@ -62,6 +62,7 @@ export const getPublishedNews = async ({
   limit = 10,
   search = "",
   category = "",
+   signal,
 } = {}) => {
   const response = await api.get("/news/published", {
     params: {
@@ -70,6 +71,7 @@ export const getPublishedNews = async ({
       search,
       category,
     },
+    signal, // Axios option
   });
 
   return response.data;
@@ -93,3 +95,10 @@ export const getTrendingNews = async ({
 
   return response.data;
 };
+
+//Get Public News By Slug
+export const getPublicNewsBySlug = async (slug) => {
+    const response = await api.get(`/news/${slug}`);
+
+    return response.data;
+}

@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+.breaking-ticker {
+  width: 100%;
+  overflow: hidden;
+}
+
+.breaking-track {
+  display: flex;
+  width: max-content;
+  animation: breaking-scroll 30s linear infinite;
+}
+
+.breaking-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes breaking-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

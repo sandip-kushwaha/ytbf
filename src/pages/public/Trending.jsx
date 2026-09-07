@@ -123,6 +123,24 @@ const Trending = () => {
   // UI
   return (
     <main className="min-h-screen bg-white">
+      {/* Breadcrumb */}
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-gray-100 bg-slate-50/60"
+      >
+        <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
+            <Link to="/" className="shrink-0 transition hover:text-blue-600">
+              Home
+            </Link>
+
+            <span className="text-gray-300">/</span>
+
+            <span className="truncate text-blue-600">Trending</span>
+          </div>
+        </div>
+      </nav>
+
       {/* HEADER */}
       <section className="border-b border-gray-200 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -311,7 +329,7 @@ const TrendingCard = ({ article, rank }) => {
       {/* IMAGE */}
 
       <Link
-        to={`/news/${article._id}`}
+        to={`/news/${article.slug}`}
         className="relative block overflow-hidden"
       >
         <div className="aspect-video overflow-hidden bg-gray-100">
@@ -353,7 +371,7 @@ const TrendingCard = ({ article, rank }) => {
 
         {/* TITLE */}
 
-        <Link to={`/news/${article._id}`}>
+        <Link to={`/news/${article.slug}`}>
           <h2 className="line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
             {article.title}
           </h2>
@@ -384,7 +402,7 @@ const TrendingCard = ({ article, rank }) => {
         {/* READ MORE */}
 
         <Link
-          to={`/news/${article._id}`}
+          to={`/news/${article.slug}`}
           className="mt-4 flex items-center gap-1 text-sm font-semibold text-blue-600 transition group-hover:gap-2"
         >
           Read Article

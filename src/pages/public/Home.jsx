@@ -108,9 +108,6 @@ const Home = () => {
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* ========== BREAKING NEWS TICKER =========== */}
-      <BreakingNews news={latestNews} />
-
       {/* Error Notice Bar (if any sub-request fails or error state occurs) */}
       {error && (
         <div className="bg-red-50 border-b border-red-100 py-3 px-4">
@@ -144,7 +141,7 @@ const Home = () => {
               {/* MAIN HERO STORY */}
               <div className="lg:col-span-8">
                 <Link
-                  to={`/news/${mainHeroStory._id}`}
+                  to={`/news/${mainHeroStory.slug}`}
                   className="group block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition hover:shadow-lg"
                 >
                   <div className="relative aspect-video overflow-hidden bg-slate-100">
@@ -279,7 +276,7 @@ const Home = () => {
                   {latestNews.slice(0, 5).map((news, index) => (
                     <Link
                       key={news._id}
-                      to={`/news/${news._id}`}
+                      to={`/news/${news.slug}`}
                       className="group flex gap-4 border-b border-slate-100 p-4 transition last:border-0 hover:bg-slate-50"
                     >
                       <span className="text-2xl font-black text-slate-200 transition group-hover:text-blue-200">
@@ -390,7 +387,7 @@ const Home = () => {
 const FeaturedGridCard = ({ news }) => {
   return (
     <Link
-      to={`/news/${news._id}`}
+      to={`/news/${news.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition hover:shadow-md"
     >
       <div className="relative aspect-video overflow-hidden bg-slate-100">
@@ -469,7 +466,7 @@ const SectionHeader = ({ icon, title, link, linkText }) => {
 const FeaturedSideCard = ({ news, index }) => {
   return (
     <Link
-      to={`/news/${news._id}`}
+      to={`/news/${news.slug}`}
       className="group flex gap-4 border-b border-slate-200 pb-4 last:border-0"
     >
       <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
@@ -508,7 +505,7 @@ const FeaturedSideCard = ({ news, index }) => {
 /* ============ NEWS LIST ITEM ============== */
 const NewsListItem = ({ news }) => {
   return (
-    <Link to={`/news/${news._id}`} className="group flex gap-4 py-5">
+    <Link to={`/news/${news.slug}`} className="group flex gap-4 py-5">
       <div className="h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-32 sm:w-52">
         {news.thumbnail ? (
           <img

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { MoveUpRight } from "lucide-react";
 
 const PublicFooter = () => {
   return (
@@ -28,9 +29,33 @@ const PublicFooter = () => {
             <h3 className="font-semibold text-white">Quick Links</h3>
 
             <div className="mt-4 space-y-3">
-              <FooterLink to="/" label="Home" />
-              <FooterLink to="/news" label="News" />
-              <FooterLink to="/categories" label="Categories" />
+              <FooterLink
+                to="/"
+                label={
+                  <span className="flex items-center gap-1">
+                    Home{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
+              <FooterLink
+                to="/news"
+                label={
+                  <span className="flex items-center gap-1">
+                    News{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
+              <FooterLink
+                to="/trending"
+                label={
+                  <span className="flex items-center gap-1">
+                    Trending{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
             </div>
           </div>
 
@@ -39,9 +64,24 @@ const PublicFooter = () => {
             <h3 className="font-semibold text-white">Company</h3>
 
             <div className="mt-4 space-y-3">
-              <FooterLink to="/about" label="About Us" />
-
-              <FooterLink to="/contact" label="Contact" />
+              <FooterLink
+                to="/about"
+                label={
+                  <span className="flex items-center gap-1">
+                    About Us{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
+              <FooterLink
+                to="/contact"
+                label={
+                  <span className="flex items-center gap-1">
+                    Contact{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
             </div>
           </div>
         </div>
@@ -58,7 +98,7 @@ const FooterLink = ({ to, label }) => {
   return (
     <Link
       to={to}
-      className="block text-sm text-gray-500 transition hover:text-blue-400"
+      className="group block text-sm text-gray-500 transition hover:text-blue-400"
     >
       {label}
     </Link>

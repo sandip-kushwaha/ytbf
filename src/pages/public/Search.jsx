@@ -183,6 +183,24 @@ const Search = () => {
 
   return (
     <section className="min-h-screen bg-slate-50/50">
+      {/* Breadcrumb */}
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-gray-100 bg-slate-50/60"
+      >
+        <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
+            <Link to="/" className="shrink-0 transition hover:text-blue-600">
+              Home
+            </Link>
+
+            <span className="text-gray-300">/</span>
+
+            <span className="truncate text-blue-600">Search</span>
+          </div>
+        </div>
+      </nav>
+
       {/* Header */}
       <div className="border-b border-gray-200 bg-white shadow-xs">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -391,7 +409,7 @@ const Search = () => {
                   key={item._id}
                   className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xs transition duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <Link to={`/news/${item._id}`}>
+                  <Link to={`/news/${item.slug}`}>
                     <div className="relative h-52 overflow-hidden bg-gray-100">
                       {item.thumbnail ? (
                         <img
@@ -432,7 +450,7 @@ const Search = () => {
                       </span>
                     </div>
 
-                    <Link to={`/news/${item._id}`}>
+                    <Link to={`/news/${item.slug}`}>
                       <h3 className="line-clamp-2 text-base font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
                         {item.title}
                       </h3>
@@ -444,7 +462,7 @@ const Search = () => {
 
                     <div className="mt-auto pt-4">
                       <Link
-                        to={`/news/${item._id}`}
+                        to={`/news/${item.slug}`}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:gap-1.5"
                       >
                         Read Article →

@@ -262,7 +262,7 @@ const NewsModal = ({ isOpen, onClose, news, onSuccess }) => {
               onChange={handleChange}
               placeholder="Enter news title..."
               required
-              minLength={5}
+              minLength={3}
               maxLength={200}
               className="w-full rounded-xl border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-blue-500"
             />

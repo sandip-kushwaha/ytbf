@@ -8,77 +8,143 @@ import {
   Newspaper,
   Search,
 } from "lucide-react";
+
 import { getPublishedNews } from "../../api/news.api";
 import { getAllCategories } from "../../api/category.api";
+
 import NepaliDate from "nepali-date-converter";
 
 const CategoryNews = () => {
   const { slug } = useParams();
 
+
+  // STATE
   const [news, setNews] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [categoryLoading, setCategoryLoading] = useState(true);
+
   const [error, setError] = useState("");
 
+  // Search typed by user
   const [search, setSearch] = useState("");
+
+  // Search after debounce
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const [page, setPage] = useState(1);
 
-  const limit = 12;
+  const limit = 10;
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 0,
     totalNews: 0,
-    limit,
+    limit: 10,
     hasNextPage: false,
     hasPreviousPage: false,
   });
 
-  // Fetch categories
+  // DEBOUNCE SEARCH
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [search]);
+
+  
+  // FETCH ALL CATEGORIES
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchCategories = async () => {
       try {
         setCategoryLoading(true);
 
         const response = await getAllCategories();
 
+        if (!isMounted) return;
+
         setCategories(response.data || []);
       } catch (error) {
+        if (!isMounted) return;
+
         console.error("Failed to fetch categories:", error);
+
+        setCategories([]);
       } finally {
-        setCategoryLoading(false);
+        if (isMounted) {
+          setCategoryLoading(false);
+        }
       }
     };
 
     fetchCategories();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Current category
+  // CURRENT CATEGORY
   const currentCategory = useMemo(() => {
     return categories.find(
       (category) => category.slug?.toLowerCase() === slug?.toLowerCase(),
     );
   }, [categories, slug]);
 
-  // Fetch category news
+  // RESET PAGE WHEN CATEGORY CHANGES
   useEffect(() => {
+    setPage(1);
+    setSearch("");
+  }, [slug]);
+
+  // FETCH CATEGORY NEWS
+  useEffect(() => {
+    if (!slug) return;
+
+    const controller = new AbortController();
+
+    let isMounted = true;
+
     const fetchNews = async () => {
       try {
         setLoading(true);
         setError("");
 
+        // Don't search for one character
+        if (debouncedSearch.length === 1) {
+          setNews([]);
+
+          if (isMounted) {
+            setLoading(false);
+          }
+
+          return;
+        }
+
+        // API REQUEST
         const response = await getPublishedNews({
           page,
           limit,
-          search,
+          search: debouncedSearch,
           category: slug,
+          signal: controller.signal,
         });
 
+        if (!isMounted || controller.signal.aborted) {
+          return;
+        }
+
+        // NEWS
         setNews(response.data?.news || []);
 
+        // PAGINATION
         setPagination(
           response.data?.pagination || {
             currentPage: page,
@@ -90,6 +156,14 @@ const CategoryNews = () => {
           },
         );
       } catch (error) {
+
+        // IGNORE CANCELLED REQUEST
+        if (error.name === "CanceledError" || error.code === "ERR_CANCELED") {
+          return;
+        }
+
+        if (!isMounted) return;
+
         console.error("Failed to fetch category news:", error);
 
         setError(
@@ -98,36 +172,49 @@ const CategoryNews = () => {
 
         setNews([]);
       } finally {
-        setLoading(false);
+        if (isMounted && !controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
-    if (slug) {
-      fetchNews();
+    fetchNews();
+
+    // CANCEL OLD REQUEST
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [slug, page, debouncedSearch]);
+
+  // SEARCH INPUT
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+
+    // Always start from page 1
+    if (page !== 1) {
+      setPage(1);
     }
-  }, [slug, page, search]);
+  };
 
-  // Reset page when category changes
-  useEffect(() => {
-    setPage(1);
-    setSearch("");
-  }, [slug]);
 
-  // Search
+  // SEARCH FORM
   const handleSearch = (e) => {
     e.preventDefault();
 
-    setPage(1);
   };
 
-  // Clear search
+
+  // CLEAR SEARCH
   const handleClearSearch = () => {
     setSearch("");
+    setDebouncedSearch("");
     setPage(1);
   };
 
-  // Date formatter
-  //======DATE
+  // DATE FORMATTER
   const formatDate = (date) => {
     if (!date) return "—";
 
@@ -138,11 +225,11 @@ const CategoryNews = () => {
     }
   };
 
-  // Loading skeleton
-  if (loading && news.length) {
+  // LOADING SKELETON
+  if (loading && news.length === 0) {
     return (
       <div className="min-h-screen bg-white">
-        {/* Header skeleton */}
+        {/* Header Skeleton */}
         <section className="border-b border-gray-200 bg-gray-50">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
@@ -153,8 +240,19 @@ const CategoryNews = () => {
           </div>
         </section>
 
-        {/* Cards skeleton */}
+        {/* Content Skeleton */}
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="h-6 w-52 animate-pulse rounded bg-gray-200" />
+
+              <div className="mt-2 h-4 w-64 animate-pulse rounded bg-gray-200" />
+            </div>
+
+            <div className="h-11 w-full animate-pulse rounded-lg bg-gray-200 sm:w-72" />
+          </div>
+
+          {/* Cards */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, index) => (
               <div
@@ -180,7 +278,7 @@ const CategoryNews = () => {
     );
   }
 
-  // Invalid category
+  // INVALID CATEGORY
   if (!categoryLoading && categories.length > 0 && !currentCategory) {
     return (
       <div className="min-h-[70vh] bg-white">
@@ -211,38 +309,47 @@ const CategoryNews = () => {
     );
   }
 
+  // MAIN UI
+
   return (
     <div className="min-h-screen bg-white">
-      {/* ================= CATEGORY HEADER =========== */}
+      {/* =========  CATEGORY HEADER ======= */}
       <section className="border-b border-gray-200 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm">
-            <Link
-              to="/"
-              className="text-gray-500 transition hover:text-blue-600"
-            >
-              Home
-            </Link>
+          <nav
+            aria-label="Breadcrumb"
+            className="border-b border-gray-100 bg-slate-50/60"
+          >
+            <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
+              <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
+                <Link
+                  to="/"
+                  className="shrink-0 transition hover:text-blue-600"
+                >
+                  Home
+                </Link>
 
-            <span className="text-gray-300">/</span>
+                <span className="text-gray-300">/</span>
 
-            <Link
-              to="/categories"
-              className="text-gray-500 transition hover:text-blue-600"
-            >
-              Categories
-            </Link>
+                <Link
+                  to="/categories"
+                  className="shrink-0 transition hover:text-blue-600"
+                >
+                  Categories
+                </Link>
 
-            <span className="text-gray-300">/</span>
+                <span className="text-gray-300">/</span>
 
-            <span className="font-medium text-gray-900">
-              {currentCategory?.name || slug}
-            </span>
-          </div>
+                <span className="truncate text-blue-600">
+                  {currentCategory?.name || slug}
+                </span>
+              </div>
+            </div>
+          </nav>
 
           {/* Category title */}
-          <div className="mt-5 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mt-5 flex flex-col gap-5 pb-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-600">
                 <Newspaper size={14} />
@@ -264,9 +371,9 @@ const CategoryNews = () => {
         </div>
       </section>
 
-      {/* ============ CONTENT ============ */}
+      {/* ============ CONTENT ========= */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Search */}
+        {/* ===========  SEARCH HEADER ====== */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
@@ -278,36 +385,44 @@ const CategoryNews = () => {
             </p>
           </div>
 
+          {/* Search */}
           <form onSubmit={handleSearch} className="flex w-full sm:w-auto">
             <div className="relative w-full sm:w-72">
               <Search
                 size={17}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
               />
 
               <input
                 type="text"
                 value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPage(1);
-                }}
+                onChange={handleSearchChange}
                 placeholder="Search in this category..."
-                className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                autoComplete="off"
+                className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </div>
           </form>
         </div>
 
-        {/* Error */}
+        {/* ============= SEARCH STATUS ========= */}
+        {search.length > 0 && search.length < 2 && (
+          <div className="mb-6 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3">
+            <p className="text-sm text-blue-600">
+              Type at least 2 characters to search.
+            </p>
+          </div>
+        )}
+
+        {/* ============= ERROR ============= */}
         {error && (
           <div className="mb-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4">
             <p className="text-sm font-medium text-red-600">{error}</p>
           </div>
         )}
 
-        {/* ============ NEWS GRID ============= */}
-        {!loading && news.length > 0 ? (
+        {/* =========  NEWS ======= */}
+        {news.length > 0 ? (
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {news.map((item) => (
@@ -315,9 +430,9 @@ const CategoryNews = () => {
                   key={item._id}
                   className="group overflow-hidden rounded-xl border border-gray-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg"
                 >
-                  {/* Image */}
+                  {/* =====IMAGE ======= */}
                   <Link
-                    to={`/news/${item._id}`}
+                    to={`/news/${item.slug}`}
                     className="block overflow-hidden bg-gray-100"
                   >
                     <div className="relative aspect-video overflow-hidden">
@@ -335,6 +450,7 @@ const CategoryNews = () => {
                       )}
 
                       {/* Featured */}
+
                       {item.isFeatured && (
                         <span className="absolute left-3 top-3 rounded-md bg-blue-600 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm">
                           Featured
@@ -343,9 +459,10 @@ const CategoryNews = () => {
                     </div>
                   </Link>
 
-                  {/* Content */}
+                  {/* ====== CONTENT ====== */}
                   <div className="p-5">
-                    {/* Category */}
+                    {/* Category + Date */}
+
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold uppercase tracking-wide text-blue-600">
                         {item.category?.name || currentCategory?.name || "News"}
@@ -359,13 +476,15 @@ const CategoryNews = () => {
                     </div>
 
                     {/* Title */}
-                    <Link to={`/news/${item._id}`} className="mt-3 block">
+
+                    <Link to={`/news/${item.slug}`} className="mt-3 block">
                       <h3 className="line-clamp-2 text-lg font-bold leading-7 text-gray-900 transition group-hover:text-blue-600">
                         {item.title}
                       </h3>
                     </Link>
 
                     {/* Summary */}
+
                     {item.summary && (
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-500">
                         {item.summary}
@@ -373,6 +492,7 @@ const CategoryNews = () => {
                     )}
 
                     {/* Footer */}
+
                     <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
                       <div className="flex items-center gap-2 text-xs text-gray-400">
                         <Eye size={14} />
@@ -383,7 +503,7 @@ const CategoryNews = () => {
                       </div>
 
                       <Link
-                        to={`/news/${item._id}`}
+                        to={`/news/${item.slug}`}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:text-blue-700"
                       >
                         Read More
@@ -398,7 +518,10 @@ const CategoryNews = () => {
               ))}
             </div>
 
-            {/* ================= PAGINATION =========== */}
+            {/* ==========================================
+                PAGINATION
+            ========================================== */}
+
             {pagination.totalPages > 1 && (
               <div className="mt-10 flex flex-col gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-gray-500">
@@ -413,6 +536,8 @@ const CategoryNews = () => {
                 </p>
 
                 <div className="flex items-center gap-2">
+                  {/* Previous */}
+
                   <button
                     type="button"
                     disabled={!pagination.hasPreviousPage}
@@ -420,8 +545,11 @@ const CategoryNews = () => {
                     className="inline-flex h-10 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronLeft size={17} />
+
                     <span className="hidden sm:inline">Previous</span>
                   </button>
+
+                  {/* Page Numbers */}
 
                   <div className="hidden items-center gap-1 sm:flex">
                     {[...Array(pagination.totalPages)]
@@ -457,13 +585,16 @@ const CategoryNews = () => {
                       ))}
                   </div>
 
+                  {/* Next */}
+
                   <button
                     type="button"
                     disabled={!pagination.hasNextPage}
                     onClick={() => setPage((prev) => prev + 1)}
-                    className="inline-flex h-10 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="inline-flex h-10 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
                   >
                     <span className="hidden sm:inline">Next</span>
+
                     <ChevronRight size={17} />
                   </button>
                 </div>
@@ -471,7 +602,7 @@ const CategoryNews = () => {
             )}
           </>
         ) : !loading ? (
-          /* ==================== EMPTY STATE ======== */
+          /* ======== EMPTY STATE ======== */
           <div className="rounded-2xl border border-gray-200 bg-gray-50 px-6 py-16 text-center">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white text-gray-400 shadow-sm">
               {search ? <Search size={28} /> : <Newspaper size={28} />}
