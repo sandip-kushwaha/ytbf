@@ -109,7 +109,7 @@ const PublicFooter = () => {
             </div>
           </div>
 
-          {/* Company */}
+          {/* Contact */}
           <div>
             <h3 className="font-semibold text-white">सम्पर्क</h3>
 

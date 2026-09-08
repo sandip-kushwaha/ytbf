@@ -68,7 +68,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-white">
               <img
                 src={logo}
-                alt="NewsPortal Logo"
+                alt="Youth Brain news Logo"
                 className="h-full w-full object-contain "
               />
             </div>

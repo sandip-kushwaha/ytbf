@@ -74,7 +74,7 @@ const Login = () => {
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white ">
                 <img
                 src={logo}
-                alt="NewsPortal Logo"
+                alt="Youth Brain news Logo"
                 className="h-full w-full object-contain "
               />
             </div>
