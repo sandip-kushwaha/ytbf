@@ -34,9 +34,9 @@ const Login = () => {
 
     try {
       setLoading(true);
-
+      
       const response = await login(formData.username, formData.password);
-
+      
       const user = response.data.user;
 
       if(user.role === "admin"){
