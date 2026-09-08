@@ -174,7 +174,7 @@ const Home = () => {
                     )}
 
                     {/* Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
 
                     {/* Featured Badge */}
                     <div className="absolute left-3 top-3 sm:left-5 sm:top-5">
@@ -199,7 +199,7 @@ const Home = () => {
             sm:text-xs
           "
                       >
-                        <Flame size={11} className="sm:h-[13px] sm:w-[13px]" />
+                        <Flame size={11} className="sm:h-3.25 sm:w-3.25" />
                         मुख्य समाचार
                       </span>
                     </div>
@@ -254,7 +254,7 @@ const Home = () => {
                         <span className="flex items-center gap-1 text-[10px] sm:text-xs md:text-sm">
                           <Clock
                             size={12}
-                            className="shrink-0 sm:h-[14px] sm:w-[14px] md:h-4 md:w-4"
+                            className="shrink-0 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4"
                           />
 
                           {formatDate(mainHeroStory.publishedAt)}
