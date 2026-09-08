@@ -15,13 +15,22 @@ const PublicFooter = () => {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            {/* <h2 className="text-xl font-bold text-white">NewsPortal</h2> */}
-            <h2 className="text-xl font-bold text-white">समाचार पोर्टल</h2>
+            <div>
+              <div className="flex items-end">
+                <h1 className="text-[27px] font-black leading-none tracking-tight">
+                  <span className="text-blue-400">युथ</span>
+                  <span className="ml-1.5 text-red-500">ब्रेन</span>
+                </h1>
 
-            {/* <p className="mt-3 max-w-md text-sm leading-6 text-gray-500">
-              Stay informed with the latest news, stories, and updates from
-              around the world.
-            </p> */}
+                <span className="text-[9px] font-extrabold tracking-widest text-blue-800 shadow-sm">
+                  न्युज
+                </span>
+              </div>
+
+              <p className="mt-1.5 text-[8px] font-medium uppercase tracking-[0.3em] text-gray-500">
+                सधैं सत्य • सधैं अगाडि
+              </p>
+            </div>
             <p className="mt-3 max-w-md text-sm leading-6 text-gray-500">
               विश्वभरका नवीनतम समाचार, कथा तथा महत्वपूर्ण जानकारीहरूसँग सधैं
               अपडेट रहनुहोस्।
@@ -58,14 +67,14 @@ const PublicFooter = () => {
 
           {/* Navigation */}
           <div>
-            <h3 className="font-semibold text-white">Quick Links</h3>
+            <h3 className="font-semibold text-white">छिटो लिंकहरु</h3>
 
             <div className="mt-4 space-y-3">
               <FooterLink
                 to="/"
                 label={
                   <span className="flex items-center gap-1">
-                    Home{" "}
+                    गृहपृष्ठ{" "}
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -74,7 +83,7 @@ const PublicFooter = () => {
                 to="/news"
                 label={
                   <span className="flex items-center gap-1">
-                    News{" "}
+                    ताजा खबर{" "}
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -83,7 +92,7 @@ const PublicFooter = () => {
                 to="/trending"
                 label={
                   <span className="flex items-center gap-1">
-                    Trending{" "}
+                    धेरैले पढेकाे{" "}
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -93,14 +102,14 @@ const PublicFooter = () => {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-white">Get Touch Me</h3>
+            <h3 className="font-semibold text-white">सम्पर्क</h3>
 
             <div className="mt-4 space-y-3">
               <FooterLink
                 to="/contact"
                 label={
                   <span className="flex items-center gap-1">
-                    Contact{" "}
+                    हामीलाई सम्पर्क गर्नुहोस्{" "}
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }

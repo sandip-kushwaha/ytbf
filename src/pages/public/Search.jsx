@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { getAllCategories } from "../../api/category.api";
 import { getPublishedNews } from "../../api/news.api";
-import NepaliDate from "nepali-date-converter";
+
+import formatDate from "./NepaliDate";
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -166,17 +167,6 @@ const Search = () => {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  //======DATE FORMAT=====
-  const formatDate = (date) => {
-    if (!date) return "—";
-
-    try {
-      return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-    } catch {
-      return "—";
-    }
   };
 
   const selectedCategoryObj = categories.find((item) => item.slug === category);
@@ -438,7 +428,7 @@ const Search = () => {
                   </Link>
 
                   <div className="flex flex-1 flex-col p-5">
-                    <div className="mb-3 flex items-center gap-4 text-xs text-gray-500">
+                    <div className="mb-3 flex items-center gap-4 text-xs text-gray-600">
                       <span className="flex items-center gap-1.5">
                         <CalendarDays size={14} />
                         {formatDate(item.publishedAt || item.createdAt)}

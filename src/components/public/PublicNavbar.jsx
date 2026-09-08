@@ -52,7 +52,7 @@ const PublicNavbar = () => {
       icon: Home,
     },
     {
-      name: "ताजा खवर",
+      name: "ताजा खबर",
       path: "/news",
       icon: Clock3,
     },

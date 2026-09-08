@@ -12,7 +12,7 @@ import {
 
 import { getPublicNewsBySlug, incrementNewsViews } from "../../api/news.api";
 
-import NepaliDate from "nepali-date-converter";
+import formatDate from "./NepaliDate";
 
 const NewsDetails = () => {
   const { slug } = useParams();
@@ -87,16 +87,6 @@ const NewsDetails = () => {
     };
   }, [slug]);
 
-  // Date Formatter
-  const formatDate = (date) => {
-    if (!date) return "—";
-
-    try {
-      return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-    } catch {
-      return "—";
-    }
-  };
 
   // Estimated Read Time
   const calculateReadTime = (content) => {
@@ -255,7 +245,7 @@ const NewsDetails = () => {
           )}
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-y border-gray-100 py-4">
-            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-500">
+            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
               <span className="flex items-center gap-1.5">
                 <CalendarDays size={15} className="text-blue-600" />
                 {formatDate(news.publishedAt || news.createdAt)}

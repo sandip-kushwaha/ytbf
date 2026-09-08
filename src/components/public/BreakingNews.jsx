@@ -19,7 +19,8 @@ const BreakingNews = ({ news = [] }) => {
           </span>
 
           <span className="text-[10px] font-bold uppercase tracking-wider text-red-400 sm:text-xs">
-            Breaking
+            {/* Breaking */}
+            ताजा खबर
           </span>
         </div>
 
@@ -55,7 +56,8 @@ const BreakingNews = ({ news = [] }) => {
           to="/news"
           className="hidden shrink-0 items-center gap-1 border-l border-gray-800 pl-4 text-xs font-medium text-blue-400 transition hover:text-blue-300 sm:flex"
         >
-          All News
+          {/* All News */}
+          सबै न्युज
           <ArrowRight size={13} />
         </Link>
       </div>

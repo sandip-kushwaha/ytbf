@@ -11,8 +11,8 @@ import {
 
 import { getPublishedNews } from "../../api/news.api";
 import { getAllCategories } from "../../api/category.api";
+import formatDate from "./NepaliDate";
 
-import NepaliDate from "nepali-date-converter";
 
 const CategoryNews = () => {
   const { slug } = useParams();
@@ -214,16 +214,6 @@ const CategoryNews = () => {
     setPage(1);
   };
 
-  // DATE FORMATTER
-  const formatDate = (date) => {
-    if (!date) return "—";
-
-    try {
-      return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-    } catch {
-      return "—";
-    }
-  };
 
   // LOADING SKELETON
   if (loading && news.length === 0) {
@@ -377,7 +367,7 @@ const CategoryNews = () => {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
-              Latest {currentCategory?.name || ""} News
+             ताजा {currentCategory?.name || ""} खवर
             </h2>
 
             <p className="mt-1 text-sm text-gray-500">
@@ -470,7 +460,7 @@ const CategoryNews = () => {
 
                       <span className="h-1 w-1 rounded-full bg-gray-300" />
 
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-gray-600">
                         {formatDate(item.publishedAt || item.createdAt)}
                       </span>
                     </div>

@@ -12,7 +12,7 @@ import {
 
 import { getPublishedNews } from "../../api/news.api";
 
-import NepaliDate from "nepali-date-converter";
+import formatDate from "./NepaliDate";
 
 const PublicNews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -139,7 +139,9 @@ const PublicNews = () => {
               <div className="flex items-center gap-2 text-sm font-medium text-blue-600">
                 <Newspaper size={17} />
 
-                <span>Latest News</span>
+                <span>Latest News
+                  
+                </span>
               </div>
 
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -272,7 +274,7 @@ const PublicNewsCard = ({ news }) => {
 
         {/* META */}
 
-        <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
+        <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-600">
           <div className="flex items-center gap-1.5">
             <CalendarDays size={13} />
 
@@ -462,19 +464,6 @@ const NewsGridSkeleton = () => {
       ))}
     </div>
   );
-};
-
-// DATE FORMAT — BIKRAM SAMBAT
-const formatDate = (date) => {
-  if (!date) return "—";
-
-  try {
-    return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-  } catch (error) {
-    console.error("Failed to format date:", error);
-
-    return "—";
-  }
 };
 
 export default PublicNews;

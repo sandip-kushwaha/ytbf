@@ -11,7 +11,7 @@ import {
 
 import { getFeaturedNews } from "../../api/news.api";
 
-import NepaliDate from "nepali-date-converter";
+import formatDate from "./NepaliDate";
 
 // MAIN COMPONENT
 const Featured = () => {
@@ -268,17 +268,6 @@ const Featured = () => {
   );
 };
 
-// DATE
-const formatDate = (date) => {
-  if (!date) return "—";
-
-  try {
-    return new NepaliDate(new Date(date)).format("D MMMM YYYY");
-  } catch {
-    return "—";
-  }
-};
-
 // IMAGE
 const getImage = (thumbnail) => {
   return (
@@ -377,7 +366,7 @@ const FeaturedCard = ({ article }) => {
 
         {/* META */}
         <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <CalendarDays size={14} />
 
             <span>{formatDate(article.publishedAt || article.createdAt)}</span>

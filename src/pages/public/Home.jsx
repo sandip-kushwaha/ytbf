@@ -131,8 +131,9 @@ const Home = () => {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="mb-5 flex items-center gap-3">
             <span className="h-6 w-1 rounded-full bg-red-600" />
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-900">
-              Top Story
+            <h2 className=" font-bold uppercase tracking-widest text-slate-900">
+              {/* Top Story */}
+              मुख्य समाचार
             </h2>
           </div>
 
@@ -158,9 +159,10 @@ const Home = () => {
                     <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent" />
 
                     <div className="absolute left-5 top-5">
-                      <span className="inline-flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-xs">
+                      <span className="inline-flex items-center gap-1.5 rounded-md bg-red-700 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-xs">
                         <Flame size={13} />
-                        Featured
+                        {/* Featured */}
+                        मुख्य समाचार
                       </span>
                     </div>
 
@@ -194,14 +196,19 @@ const Home = () => {
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
                   <div className="flex items-center gap-2">
                     <TrendingUp size={18} className="text-red-600" />
-                    <h2 className="font-bold text-slate-900">Top Stories</h2>
+                    <h2 className="font-bold text-slate-900">
+                      {/* Top Stories */}
+                      मुख्य समाचारहरू
+                      </h2>
                   </div>
 
                   <Link
                     to="/news"
-                    className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+                    className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
                   >
-                    View all
+                    {/* View all */}
+                    सबै हेर्नुहोस् 
+                    <ArrowRight size={13} />
                   </Link>
                 </div>
 
@@ -228,7 +235,8 @@ const Home = () => {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionHeader
               icon={<Star size={19} className="text-amber-500" />}
-              title="Featured Coverage"
+              // title="Featured Coverage"
+              title="विशेष कभरेज"
             />
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -248,9 +256,11 @@ const Home = () => {
             <div className="lg:col-span-8">
               <SectionHeader
                 icon={<Newspaper size={19} />}
-                title="Latest News"
+                // title="Latest News"
+                title= "ताजा खबर"
                 link="/news"
-                linkText="View all news"
+                // linkText="View all news"
+                linkText="सबै न्युज हेर्नुहोस्"
               />
 
               {latestNews.length > 0 ? (
@@ -269,7 +279,8 @@ const Home = () => {
               <div className="sticky top-24">
                 <SectionHeader
                   icon={<Flame size={19} className="text-orange-500" />}
-                  title="Trending"
+                  // title="Trending"
+                  title="ट्रेन्डिङ"
                 />
 
                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -315,9 +326,11 @@ const Home = () => {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <SectionHeader
             icon={<Menu size={19} />}
-            title="Explore Categories"
+            // title="Explore Categories"
+            title="वर्गहरू खोज्नुहोस्"
             link="/search"
-            linkText="All categories"
+            // linkText="All categories"
+            linkText="सबै वर्गहरू हेर्नुहोस्"
           />
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -354,22 +367,26 @@ const Home = () => {
                 <Star size={22} />
               </div>
 
-              <h2 className="text-2xl font-black text-white sm:text-3xl">
-                Stay informed.
+              <h2 className="text-2xl leading-11 font-black text-white sm:text-3xl">
+                {/* Stay informed. */}
+                सधैँ सूचित रहनुहोस् |
                 <br />
-                Never miss a story.
+                {/* Never miss a story. */}
+                कुनै पनि समाचार नछुटाउनुहोस्।
               </h2>
 
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-400">
-                Get the latest news, important updates, and trending stories all
-                in one place.
+                {/* Get the latest news, important updates, and trending stories all
+                in one place. */}
+                ताजा समाचार, महत्वपूर्ण अपडेट र चर्चित खबरहरू—सबै एकै ठाउँमा पाउनुहोस्।
               </p>
 
               <Link
                 to="/news"
                 className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
               >
-                Explore News
+                {/* Explore News */}
+                सबै समाचार खोज्नुहोस् |
                 <ArrowRight size={16} />
               </Link>
             </div>
@@ -565,7 +582,10 @@ const EmptyState = () => {
   return (
     <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center">
       <Newspaper size={35} className="mx-auto text-slate-300" />
-      <h3 className="mt-3 font-bold text-slate-700">No news available</h3>
+      <h3 className="mt-3 font-bold text-slate-700">
+        {/* No news available */}
+        कुनै समाचार उपलब्ध छैन |
+        </h3>
       <p className="mt-1 text-sm text-slate-400">
         Check back later for the latest stories.
       </p>
