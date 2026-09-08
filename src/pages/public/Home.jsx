@@ -160,14 +160,7 @@ const Home = () => {
                       <img
                         src={mainHeroStory.thumbnail}
                         alt={mainHeroStory.title}
-                        className="
-            h-full
-            w-full
-            object-cover
-            transition
-            duration-700
-            group-hover:scale-105
-          "
+                        className=" h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
                     ) : (
                       <NewsPlaceholder />
@@ -178,75 +171,18 @@ const Home = () => {
 
                     {/* Featured Badge */}
                     <div className="absolute left-3 top-3 sm:left-5 sm:top-5">
-                      <span
-                        className="
-            inline-flex
-            items-center
-            gap-1
-            rounded-md
-            bg-red-700
-            px-2
-            py-1
-            text-[10px]
-            font-bold
-            uppercase
-            tracking-wide
-            text-white
-            shadow-sm
-            sm:gap-1.5
-            sm:px-3
-            sm:py-1.5
-            sm:text-xs
-          "
-                      >
+                      <span className=" inline-flex items-center gap-1 rounded-md bg-red-700 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-xs">
                         <Flame size={11} className="sm:h-3.25 sm:w-3.25" />
                         मुख्य समाचार
                       </span>
                     </div>
 
                     {/* Hero Content */}
-                    <div
-                      className="
-          absolute
-          inset-x-0
-          bottom-0
-          p-3
-          sm:p-5
-          md:p-6
-          lg:p-7
-        "
-                    >
+                    <div className="absolute inset-x-0  bottom-0  p-3  sm:p-5 md:p-6 lg:p-7 ">
                       {/* Category + Date */}
-                      <div
-                        className="
-            mb-2
-            flex
-            flex-wrap
-            items-center
-            gap-2
-            text-xs
-            text-white/80
-            sm:mb-3
-            sm:gap-3
-            sm:text-sm
-            md:text-base
-          "
-                      >
+                      <div className=" mb-2 flex flex-wrap  items-center gap-2 text-xs  text-white/80 sm:mb-3 sm:gap-3 sm:text-sm md:text-base">
                         {/* Category */}
-                        <span
-                          className="
-              rounded
-              bg-blue-600
-              px-2
-              py-1
-              text-[10px]
-              font-semibold
-              text-white
-              sm:px-2.5
-              sm:text-xs
-              md:text-sm
-            "
-                        >
+                        <span className="rounded bg-blue-600 px-2 py-1 text-[10px] font-semibold text-white sm:px-2.5 sm:text-xs md:text-sm">
                           {getCategoryName(mainHeroStory)}
                         </span>
 
@@ -262,39 +198,13 @@ const Home = () => {
                       </div>
 
                       {/* Title */}
-                      <h1
-                        className="
-            max-w-5xl
-            text-lg
-            font-black
-            leading-tight
-            text-white
-            sm:text-2xl
-            md:text-3xl
-            lg:text-4xl
-            xl:text-5xl
-          "
-                      >
+                      <h1 className=" max-w-5xl text-lg font-black leading-tight text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                         {mainHeroStory.title}
                       </h1>
 
                       {/* Summary */}
                       {mainHeroStory.summary && (
-                        <p
-                          className="
-              mt-1.5
-              max-w-4xl
-              line-clamp-2
-              text-xs
-              leading-5
-              text-white/80
-              sm:mt-2
-              sm:text-sm
-              sm:leading-6
-              md:text-base
-              lg:text-lg
-            "
-                        >
+                        <p className="mt-1.5 max-w-4xl line-clamp-2 text-xs leading-5 text-white/80 sm:mt-2 sm:text-sm sm:leading-6 md:text-base lg:text-lg">
                           {mainHeroStory.summary}
                         </p>
                       )}
