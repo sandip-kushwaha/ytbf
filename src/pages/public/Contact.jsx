@@ -20,12 +20,12 @@ const Contact = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+              गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
 
-            <span className="truncate text-blue-600">Contact</span>
+            <span className="truncate text-blue-600">सम्पर्क</span>
           </div>
         </div>
       </nav>
@@ -36,14 +36,17 @@ const Contact = () => {
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100/60 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
               <Newspaper className="h-3.5 w-3.5" />
-              Editorial Bureau
+              सम्पादकीय विभाग
             </span>
             <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-              Newsroom Directory & Contacts
+              {/* Newsroom Directory & Contacts */}
+              समाचार कक्ष र सम्पर्क
             </h1>
             <p className="mt-4 text-base text-gray-600 sm:text-lg">
-              Reach out directly to our specialized editorial desks,
-              investigative teams, or press department.
+              {/* Reach out directly to our specialized editorial desks,
+              investigative teams, or press department. */}
+              हाम्रा विशिष्ट सम्पादकीय डेस्क, खोज पत्रकारिता टोली वा प्रेस
+              विभागमा सिधै सम्पर्क गर्नुहोस्।
             </p>
           </div>
 
@@ -55,15 +58,19 @@ const Contact = () => {
                   <ShieldAlert className="h-6 w-6" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-red-400">
+                  {/* <span className="text-xs font-bold uppercase tracking-wider text-red-400">
                     Confidential & Whistleblower Leak
-                  </span>
+                  </span> */}
                   <h2 className="text-xl font-bold text-white">
-                    Have a Sensitive News Tip?
+                    {/* Have a Sensitive News Tip? */}
+                    के तपाईंसँग कुनै संवेदनशील समाचार वा सूचना छ?
                   </h2>
                   <p className="mt-1 max-w-2xl text-sm text-gray-300">
-                    Submit confidential documents or leads directly to our
-                    investigative unit. We protect source anonymity.
+                    {/* Submit confidential documents or leads directly to our
+                    investigative unit. We protect source anonymity. */}
+                    हाम्रा खोज पत्रकारिता टोलीलाई गोप्य कागजात वा सूचना सिधै
+                    पठाउनुहोस्। हामी सूचनादाताको गोपनीयता पूर्ण रूपमा सुरक्षित
+                    राख्छौँ।
                   </p>
                 </div>
               </div>
@@ -74,7 +81,7 @@ const Contact = () => {
                 className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none"
               >
                 <Mail className="h-4 w-4" />
-                Send Confidential Tip
+                सूचना पठाउनुहोस्
               </a>
             </div>
           </div>
@@ -82,11 +89,14 @@ const Contact = () => {
           {/* Social Broadcast Feeds */}
           <div className="mt-12 rounded-2xl border border-gray-200/80 bg-white p-8 text-center shadow-xs">
             <h2 className="text-xl font-bold text-gray-900">
-              Official News Outlets
+              {/* Official News Outlets */}
+              आधिकारिक समाचार माध्यमहरू
             </h2>
             <p className="mt-1 text-sm text-gray-500">
-              Follow our verified social accounts for breaking news and instant
-              alerts.
+              {/* Follow our verified social accounts for breaking news and instant
+              alerts. */}
+              ताजा समाचार र तत्काल अलर्टका लागि हाम्रा आधिकारिक सामाजिक
+              सञ्जालहरूमा जोडिनुहोस्।
             </p>
 
             <div className="mt-6 flex flex-wrap justify-center gap-4">

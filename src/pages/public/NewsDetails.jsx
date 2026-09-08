@@ -132,20 +132,17 @@ const NewsDetails = () => {
     return (
       <div className="min-h-screen bg-white">
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mb-8 h-4 w-36 animate-pulse rounded-md bg-gray-200" />
-
-          <div className="mb-4 h-6 w-24 animate-pulse rounded-full bg-gray-200" />
-
-          <div className="mb-4 h-12 w-full animate-pulse rounded-xl bg-gray-200" />
-
-          <div className="mb-8 h-6 w-3/4 animate-pulse rounded-lg bg-gray-200" />
-
-          <div className="mb-8 aspect-video w-full animate-pulse rounded-2xl bg-gray-200" />
+          <div className="mb-8 h-4 w-36 animate-pulse rounded-md bg-gray-300" />
+          <div className="mb-4 h-6 w-24 animate-pulse rounded-full bg-gray-300" />
+          <div className="mb-4 h-12 w-full animate-pulse rounded-xl bg-gray-300" />
+          <div className="mb-8 h-6 w-3/4 animate-pulse rounded-lg bg-gray-300" />
+          
+          <div className="mb-8 aspect-video w-full animate-pulse rounded-2xl bg-gray-300" />
 
           <div className="space-y-4">
-            <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
-            <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
-            <div className="h-4 w-4/5 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-300" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-300" />
+            <div className="h-4 w-4/5 animate-pulse rounded bg-gray-300" />
           </div>
         </div>
       </div>

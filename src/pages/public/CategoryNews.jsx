@@ -199,7 +199,6 @@ const CategoryNews = () => {
     }
   };
 
-
   // SEARCH FORM
   const handleSearch = (e) => {
     e.preventDefault();
@@ -220,13 +219,13 @@ const CategoryNews = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* Header Skeleton */}
-        <section className="border-b border-gray-200 bg-gray-50">
+        <section className="border-b border-gray-200 bg-gray-100">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-            <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-24 animate-pulse rounded bg-gray-300" />
 
-            <div className="mt-4 h-10 w-64 animate-pulse rounded bg-gray-200" />
+            <div className="mt-4 h-10 w-64 animate-pulse rounded bg-gray-300" />
 
-            <div className="mt-3 h-5 w-96 max-w-full animate-pulse rounded bg-gray-200" />
+            <div className="mt-3 h-5 w-96 max-w-full animate-pulse rounded bg-gray-300" />
           </div>
         </section>
 
@@ -234,12 +233,12 @@ const CategoryNews = () => {
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="h-6 w-52 animate-pulse rounded bg-gray-200" />
+              <div className="h-6 w-52 animate-pulse rounded bg-gray-300" />
 
-              <div className="mt-2 h-4 w-64 animate-pulse rounded bg-gray-200" />
+              <div className="mt-2 h-4 w-64 animate-pulse rounded bg-gray-300" />
             </div>
 
-            <div className="h-11 w-full animate-pulse rounded-lg bg-gray-200 sm:w-72" />
+            <div className="h-11 w-full animate-pulse rounded-lg bg-gray-300 sm:w-72" />
           </div>
 
           {/* Cards */}
@@ -249,16 +248,16 @@ const CategoryNews = () => {
                 key={index}
                 className="overflow-hidden rounded-xl border border-gray-200 bg-white"
               >
-                <div className="aspect-video animate-pulse bg-gray-200" />
+                <div className="aspect-video animate-pulse bg-gray-300" />
 
                 <div className="space-y-3 p-5">
-                  <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+                  <div className="h-4 w-24 animate-pulse rounded bg-gray-300" />
 
-                  <div className="h-5 w-full animate-pulse rounded bg-gray-200" />
+                  <div className="h-5 w-full animate-pulse rounded bg-gray-300" />
 
-                  <div className="h-4 w-5/6 animate-pulse rounded bg-gray-200" />
+                  <div className="h-4 w-5/6 animate-pulse rounded bg-gray-300" />
 
-                  <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
+                  <div className="h-4 w-32 animate-pulse rounded bg-gray-300" />
                 </div>
               </div>
             ))}
@@ -317,7 +316,7 @@ const CategoryNews = () => {
                   to="/"
                   className="shrink-0 transition hover:text-blue-600"
                 >
-                  Home
+                  गृहपृष्ठ
                 </Link>
 
                 <span className="text-gray-300">/</span>
@@ -326,7 +325,7 @@ const CategoryNews = () => {
                   to="/categories"
                   className="shrink-0 transition hover:text-blue-600"
                 >
-                  Categories
+                  विषय
                 </Link>
 
                 <span className="text-gray-300">/</span>
@@ -343,7 +342,8 @@ const CategoryNews = () => {
             <div>
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-600">
                 <Newspaper size={14} />
-                Category
+                {/* Category */}
+                विषय
               </div>
 
               <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
@@ -371,7 +371,8 @@ const CategoryNews = () => {
             </h2>
 
             <p className="mt-1 text-sm text-gray-500">
-              Browse the latest published stories.
+              {/* Browse the latest published stories. */}
+              नयाँ र ताजा समाचारहरू हेर्नुहोस्
             </p>
           </div>
 
@@ -387,7 +388,7 @@ const CategoryNews = () => {
                 type="text"
                 value={search}
                 onChange={handleSearchChange}
-                placeholder="Search in this category..."
+                placeholder="विषय खोज्नुहोस्..."
                 autoComplete="off"
                 className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
@@ -399,7 +400,8 @@ const CategoryNews = () => {
         {search.length > 0 && search.length < 2 && (
           <div className="mb-6 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3">
             <p className="text-sm text-blue-600">
-              Type at least 2 characters to search.
+              {/* Type at least 2 characters to search. */}
+              खोज्न कम्तीमा २ शब्द/अक्षर टाइप गर्नुहोस्।
             </p>
           </div>
         )}
@@ -443,7 +445,8 @@ const CategoryNews = () => {
 
                       {item.isFeatured && (
                         <span className="absolute left-3 top-3 rounded-md bg-blue-600 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm">
-                          Featured
+                          {/* Featured */}
+                          मुख्य समाचार
                         </span>
                       )}
                     </div>
@@ -468,7 +471,7 @@ const CategoryNews = () => {
                     {/* Title */}
 
                     <Link to={`/news/${item.slug}`} className="mt-3 block">
-                      <h3 className="line-clamp-2 text-lg font-bold leading-7 text-gray-900 transition group-hover:text-blue-600">
+                      <h3 className="line-clamp-2 text-xl font-bold leading-7 text-gray-900 transition group-hover:text-blue-600">
                         {item.title}
                       </h3>
                     </Link>
@@ -496,7 +499,8 @@ const CategoryNews = () => {
                         to={`/news/${item.slug}`}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:text-blue-700"
                       >
-                        Read More
+                        {/* Read More */}
+                        समाचार पढ्नुहोस्
                         <ArrowRight
                           size={14}
                           className="transition-transform group-hover:translate-x-0.5"
@@ -508,10 +512,7 @@ const CategoryNews = () => {
               ))}
             </div>
 
-            {/* ==========================================
-                PAGINATION
-            ========================================== */}
-
+            {/* ============== PAGINATION =================== */}
             {pagination.totalPages > 1 && (
               <div className="mt-10 flex flex-col gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-gray-500">

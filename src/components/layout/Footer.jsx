@@ -7,18 +7,9 @@ const Footer = () => {
         {/* Copyright */}
         <p>
           © {currentYear}{" "}
-          <span className="font-medium text-gray-300">NewsHub</span>. All rights
+          <span className="font-medium text-gray-300">YouTh Brain news</span>. All rights
           reserved.
         </p>
-
-        {/* Links */}
-        <div className="flex items-center gap-5">
-          <button className="transition hover:text-white">Privacy</button>
-
-          <button className="transition hover:text-white">Terms</button>
-
-          <button className="transition hover:text-white">Support</button>
-        </div>
       </div>
     </footer>
   );

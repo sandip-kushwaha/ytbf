@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { logout } = useAuth();
@@ -63,13 +64,31 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b border-gray-800 px-5">
           <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-blue-600 font-bold">
-              N
+            {/* Logo Icon */}
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-white">
+              <img
+                src={logo}
+                alt="NewsPortal Logo"
+                className="h-full w-full object-contain "
+              />
             </div>
 
+            {/* Logo Text */}
             <div>
-              <h1 className="text-lg font-bold">NewsHub</h1>
-              <p className="text-xs text-gray-500">Admin Panel</p>
+              <div className="flex items-end">
+                <h1 className="text-[27px] font-black leading-none tracking-tight">
+                  <span className="text-blue-400">युथ</span>
+                  <span className="ml-1.5 text-red-500">ब्रेन</span>
+                </h1>
+
+                <span className="text-[9px] font-extrabold tracking-widest text-blue-800 shadow-sm">
+                  न्युज
+                </span>
+              </div>
+
+              <p className="mt-1.5 text-[8px] font-medium uppercase tracking-[0.3em] text-gray-500">
+                सधैं सत्य • सधैं अगाडि
+              </p>
             </div>
           </div>
 

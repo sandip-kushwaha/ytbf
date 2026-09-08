@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import {
   AlertCircle,
   ArrowRight,
   Clock,
   Eye,
   Flame,
-  Menu,
   Newspaper,
   RefreshCw,
   Star,
@@ -14,18 +14,17 @@ import {
 } from "lucide-react";
 
 import { getFeaturedNews, getPublishedNews } from "../../api/news.api";
-import { getAllCategories } from "../../api/category.api";
 
 import formatDate from "./NepaliDate";
 
 const Home = () => {
   const [featuredNews, setFeaturedNews] = useState([]);
   const [latestNews, setLatestNews] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  /* ============== FETCH HOME DATA =========== */
   useEffect(() => {
     let isMounted = true;
 
@@ -34,37 +33,42 @@ const Home = () => {
         setLoading(true);
         setError("");
 
-        const [featuredRes, latestRes, categoryRes] = await Promise.all([
-          getFeaturedNews({ page: 1, limit: 6 }),
-          getPublishedNews({ page: 1, limit: 10 }),
-          getAllCategories(),
+        const [featuredRes, latestRes] = await Promise.all([
+          getFeaturedNews({
+            page: 1,
+            limit: 6,
+          }),
+
+          getPublishedNews({
+            page: 1,
+            limit: 10,
+          }),
         ]);
 
         if (!isMounted) return;
 
-        // Parse pagination response structures (res.data vs res.data.news vs res.data.data)
+        /* ================= FEATURED ================= */
         const featured =
           featuredRes?.data?.news ||
           featuredRes?.data?.data ||
           featuredRes?.data ||
           [];
 
+        /* ================= LATEST ================= */
         const latest =
           latestRes?.data?.news ||
           latestRes?.data?.data ||
           latestRes?.data ||
           [];
 
-        const categoryData =
-          categoryRes?.data?.categories ||
-          categoryRes?.data?.data ||
-          categoryRes?.data ||
-          [];
-
         const parsedFeatured = Array.isArray(featured) ? featured : [];
+
         const parsedLatest = Array.isArray(latest) ? latest : [];
 
-        // Fallback: If no dedicated featured news exists, use latest news for hero display
+        /* ================ FALLBACK
+           If no featured news exists,
+           use latest news for hero section.
+           ============= */
         if (parsedFeatured.length === 0 && parsedLatest.length > 0) {
           setFeaturedNews(parsedLatest);
         } else {
@@ -72,21 +76,19 @@ const Home = () => {
         }
 
         setLatestNews(parsedLatest);
-        setCategories(
-          Array.isArray(categoryData)
-            ? categoryData.filter((category) => category.isActive !== false)
-            : [],
-        );
       } catch (err) {
         if (isMounted) {
           console.error("Home page data fetch error:", err);
+
           setError(
             err?.response?.data?.message ||
-              "Failed to load news content. Please check your network connection.",
+              "समाचार लोड गर्न सकिएन। कृपया आफ्नो नेटवर्क जाँच गर्नुहोस्।",
           );
         }
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -97,53 +99,61 @@ const Home = () => {
     };
   }, []);
 
+  /* ============ LOADING =========== */
   if (loading) {
     return <HomeSkeleton />;
   }
 
-  // Extract the main hero story and secondary top stories
+  /* =========== FEATURED DATA ============ */
   const mainHeroStory = featuredNews[0];
+
   const sideFeaturedStories = featuredNews.slice(1, 4);
+
   const remainingFeaturedStories = featuredNews.slice(4);
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* Error Notice Bar (if any sub-request fails or error state occurs) */}
+      {/* ============= ERROR NOTICE ============= */}
       {error && (
-        <div className="bg-red-50 border-b border-red-100 py-3 px-4">
-          <div className="mx-auto max-w-7xl flex items-center justify-between text-xs font-semibold text-red-700">
+        <div className="border-b border-red-100 bg-red-50 px-4 py-3">
+          <div className="mx-auto flex max-w-7xl items-center justify-between text-xs font-semibold text-red-700">
             <div className="flex items-center gap-2">
               <AlertCircle size={16} />
+
               <span>{error}</span>
             </div>
+
             <button
               onClick={() => window.location.reload()}
               className="inline-flex items-center gap-1 underline hover:text-red-900"
             >
-              <RefreshCw size={12} /> Retry
+              <RefreshCw size={12} />
+              Retry
             </button>
           </div>
         </div>
       )}
 
-      {/* ============= HERO / FEATURED TOP STORIES ========= */}
+      {/* =============== HERO / FEATURED TOP STORIES ======== */}
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+          {/* Section title */}
           <div className="mb-5 flex items-center gap-3">
             <span className="h-6 w-1 rounded-full bg-red-600" />
-            <h2 className=" font-bold uppercase tracking-widest text-slate-900">
-              {/* Top Story */}
+
+            <h2 className="font-bold uppercase tracking-widest text-slate-900">
               मुख्य समाचार
             </h2>
           </div>
 
           {featuredNews.length > 0 && mainHeroStory ? (
             <div className="grid gap-6 lg:grid-cols-12">
-              {/* MAIN HERO STORY */}
+
+              {/* =========== MAIN HERO ========== */}
               <div className="lg:col-span-8">
                 <Link
                   to={`/news/${mainHeroStory.slug}`}
-                  className="group block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition hover:shadow-lg"
+                  className="group block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-lg"
                 >
                   <div className="relative aspect-video overflow-hidden bg-slate-100">
                     {mainHeroStory.thumbnail ? (
@@ -156,23 +166,27 @@ const Home = () => {
                       <NewsPlaceholder />
                     )}
 
+                    {/* Gradient */}
                     <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent" />
 
+                    {/* Featured badge */}
                     <div className="absolute left-5 top-5">
-                      <span className="inline-flex items-center gap-1.5 rounded-md bg-red-700 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-xs">
+                      <span className="inline-flex items-center gap-1.5 rounded-md bg-red-700 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-sm">
                         <Flame size={13} />
-                        {/* Featured */}
                         मुख्य समाचार
                       </span>
                     </div>
 
+                    {/* Hero content */}
                     <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7">
-                      <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-white/80">
+                      <div className="mb-3 flex flex-wrap items-center gap-3 text-base text-white/80">
                         <span className="rounded bg-blue-600 px-2.5 py-1 font-semibold text-white">
                           {getCategoryName(mainHeroStory)}
                         </span>
+
                         <span className="flex items-center gap-1">
-                          <Clock size={13} />
+                          <Clock size={16} />
+
                           {formatDate(mainHeroStory.publishedAt)}
                         </span>
                       </div>
@@ -182,7 +196,7 @@ const Home = () => {
                       </h1>
 
                       {mainHeroStory.summary && (
-                        <p className="mt-2 max-w-3xl line-clamp-2 text-lg leading-7 text-white/80 sm:text-xl md:text-2xl md:leading-9 lg:text-3xl lg:leading-11">
+                        <p className="mt-2 max-w-3xl line-clamp-2 text-lg leading-7 text-white/80 sm:text-xl md:text-2xl">
                           {mainHeroStory.summary}
                         </p>
                       )}
@@ -191,23 +205,22 @@ const Home = () => {
                 </Link>
               </div>
 
-              {/* TOP STORIES SIDEBAR */}
+              {/* ========== TOP STORIES SIDEBAR =========== */}
               <div className="lg:col-span-4">
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
                   <div className="flex items-center gap-2">
-                    <TrendingUp size={18} className="text-red-600" />
+                    <TrendingUp size={20} className="text-red-600" />
+
                     <h2 className="font-bold text-slate-900">
-                      {/* Top Stories */}
                       मुख्य समाचारहरू
-                      </h2>
+                    </h2>
                   </div>
 
                   <Link
                     to="/news"
                     className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
                   >
-                    {/* View all */}
-                    सबै हेर्नुहोस् 
+                    सबै हेर्नुहोस्
                     <ArrowRight size={13} />
                   </Link>
                 </div>
@@ -229,13 +242,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= MORE FEATURED COVERAGE SECTION ================= */}
+      {/* ============= MORE FEATURED COVERAGE ========== */}
       {remainingFeaturedStories.length > 0 && (
         <section className="border-b border-slate-200 bg-slate-50/50 py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionHeader
               icon={<Star size={19} className="text-amber-500" />}
-              // title="Featured Coverage"
               title="विशेष कभरेज"
             />
 
@@ -248,23 +260,22 @@ const Home = () => {
         </section>
       )}
 
-      {/* =========== LATEST NEWS + TRENDING SECTION ============= */}
+      {/* ============ LATEST NEWS + TRENDING ============ */}
       <section className="bg-slate-50">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-12">
-            {/* LATEST NEWS LIST */}
+
+            {/* ======== LATEST NEWS ========= */}
             <div className="lg:col-span-8">
               <SectionHeader
                 icon={<Newspaper size={19} />}
-                // title="Latest News"
-                title= "ताजा खबर"
+                title="ताजा खबर"
                 link="/news"
-                // linkText="View all news"
-                linkText="सबै न्युज हेर्नुहोस्"
+                linkText="सबै समाचार हेर्नुहोस्"
               />
 
               {latestNews.length > 0 ? (
-                <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white px-4 shadow-xs sm:px-6">
+                <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white px-4 shadow-sm sm:px-6">
                   {latestNews.map((news) => (
                     <NewsListItem key={news._id} news={news} />
                   ))}
@@ -274,32 +285,31 @@ const Home = () => {
               )}
             </div>
 
-            {/* TRENDING SIDEBAR */}
+            {/* ======== TRENDING ========= */}
             <aside className="lg:col-span-4">
               <div className="sticky top-24">
                 <SectionHeader
                   icon={<Flame size={19} className="text-orange-500" />}
-                  // title="Trending"
                   title="ट्रेन्डिङ"
                 />
 
-                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
+                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                   {latestNews.slice(0, 5).map((news, index) => (
                     <Link
                       key={news._id}
                       to={`/news/${news.slug}`}
                       className="group flex gap-4 border-b border-slate-100 p-4 transition last:border-0 hover:bg-slate-50"
                     >
-                      <span className="text-2xl font-black text-slate-200 transition group-hover:text-blue-200">
+                      <span className="text-xl font-black text-slate-200 transition group-hover:text-blue-200">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
                       <div className="min-w-0">
-                        <span className="text-[10px] font-bold uppercase tracking-wide text-blue-600">
+                        <span className="text-xs font-bold uppercase tracking-wide text-blue-600">
                           {getCategoryName(news)}
                         </span>
 
-                        <h3 className="mt-1 line-clamp-2 text-sm font-bold leading-5 text-slate-800 transition group-hover:text-blue-600">
+                        <h3 className="mt-1 line-clamp-2 text-xl font-bold leading-7 text-slate-800 transition group-hover:text-blue-600">
                           {news.title}
                         </h3>
 
@@ -308,6 +318,7 @@ const Home = () => {
 
                           <span className="flex items-center gap-1">
                             <Eye size={12} />
+
                             {Number(news.views || 0).toLocaleString()}
                           </span>
                         </div>
@@ -320,45 +331,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* =================== CATEGORIES EXPLORER ================= */}
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <SectionHeader
-            icon={<Menu size={19} />}
-            // title="Explore Categories"
-            title="वर्गहरू खोज्नुहोस्"
-            link="/search"
-            // linkText="All categories"
-            linkText="सबै वर्गहरू हेर्नुहोस्"
-          />
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-            {categories.slice(0, 6).map((category) => {
-              const categorySlug =
-                category.slug || category.name?.toLowerCase() || category._id;
-
-              return (
-                <Link
-                  key={category._id}
-                  to={`/search?category=${categorySlug}`}
-                  className="group rounded-xl border border-slate-200 bg-white p-5 text-center shadow-xs transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-md"
-                >
-                  <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-blue-50 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
-                    <Newspaper size={18} />
-                  </div>
-
-                  <h3 className="text-sm font-bold text-slate-700 group-hover:text-blue-600">
-                    {category.name}
-                  </h3>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ================ CALL TO ACTION (CTA) ================ */}
+      {/* ================ CTA ============== */}
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl bg-slate-900 px-6 py-10 sm:px-10">
@@ -367,31 +340,28 @@ const Home = () => {
                 <Star size={22} />
               </div>
 
-              <h2 className="text-2xl leading-11 font-black text-white sm:text-3xl">
-                {/* Stay informed. */}
+              <h2 className="text-2xl font-black leading-tight text-white sm:text-4xl">
                 सधैँ सूचित रहनुहोस् |
                 <br />
-                {/* Never miss a story. */}
                 कुनै पनि समाचार नछुटाउनुहोस्।
               </h2>
 
-              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-400">
-                {/* Get the latest news, important updates, and trending stories all
-                in one place. */}
-                ताजा समाचार, महत्वपूर्ण अपडेट र चर्चित खबरहरू—सबै एकै ठाउँमा पाउनुहोस्।
+              <p className="mt-3 max-w-xl text-lg leading-6 text-slate-400">
+                ताजा समाचार, महत्वपूर्ण अपडेट र चर्चित खबरहरू—सबै एकै ठाउँमा
+                पाउनुहोस्।
               </p>
 
               <Link
                 to="/news"
-                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-lg font-bold text-white transition hover:bg-blue-500"
               >
-                {/* Explore News */}
                 सबै समाचार खोज्नुहोस् |
                 <ArrowRight size={16} />
               </Link>
             </div>
 
             <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-blue-600/20 blur-3xl" />
+
             <div className="absolute -bottom-24 right-32 h-52 w-52 rounded-full bg-indigo-500/10 blur-3xl" />
           </div>
         </div>
@@ -400,12 +370,12 @@ const Home = () => {
   );
 };
 
-/* ================= FEATURED GRID CARD ================= */
+/* ========= FEATURED GRID CARD ======= */
 const FeaturedGridCard = ({ news }) => {
   return (
     <Link
       to={`/news/${news.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
     >
       <div className="relative aspect-video overflow-hidden bg-slate-100">
         {news.thumbnail ? (
@@ -417,30 +387,33 @@ const FeaturedGridCard = ({ news }) => {
         ) : (
           <NewsPlaceholder />
         )}
+
         <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
           <Flame size={11} />
-          Featured
+          धेरैले पढेको
         </span>
       </div>
 
       <div className="flex flex-1 flex-col justify-between p-5">
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wide text-blue-600">
+            <span className="text-xs font-bold uppercase tracking-wide text-blue-600">
               {getCategoryName(news)}
             </span>
+
             <span className="flex items-center gap-1 text-xs text-slate-400">
               <Clock size={12} />
+
               {formatDate(news.publishedAt)}
             </span>
           </div>
 
-          <h3 className="line-clamp-2 text-base font-bold text-slate-800 group-hover:text-blue-600">
+          <h3 className="line-clamp-2 text-xl font-bold text-slate-800 group-hover:text-blue-600">
             {news.title}
           </h3>
 
           {news.summary && (
-            <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">
+            <p className="mt-2 line-clamp-2 text-sm leading-5 text-slate-500">
               {news.summary}
             </p>
           )}
@@ -457,29 +430,31 @@ const FeaturedGridCard = ({ news }) => {
   );
 };
 
-/* ==================== SECTION HEADER ================= */
+/* ========== SECTION HEADER ======== */
 const SectionHeader = ({ icon, title, link, linkText }) => {
   return (
     <div className="mb-5 flex items-center justify-between border-b border-slate-200 pb-4">
       <div className="flex items-center gap-2">
         <span className="text-blue-600">{icon}</span>
-        <h2 className="text-xl font-black text-slate-900">{title}</h2>
+
+        <h2 className="text-2xl font-black text-slate-900">{title}</h2>
       </div>
 
       {link && (
         <Link
           to={link}
-          className="flex items-center gap-1 text-xs font-bold text-blue-600 transition hover:text-blue-700"
+          className="flex items-center gap-1 text-sm font-bold text-blue-600 transition hover:text-blue-700"
         >
           {linkText || "View all"}
-          <ArrowRight size={13} />
+
+          <ArrowRight size={15} />
         </Link>
       )}
     </div>
   );
 };
 
-/* ================ FEATURED SIDE CARD ============= */
+/* ================= FEATURED SIDE CARD ================ */
 const FeaturedSideCard = ({ news, index }) => {
   return (
     <Link
@@ -503,15 +478,15 @@ const FeaturedSideCard = ({ news, index }) => {
       </div>
 
       <div className="min-w-0 flex-1">
-        <span className="text-[11px] font-bold uppercase tracking-wide text-blue-600">
+        <span className="text-xs font-bold uppercase tracking-wide text-blue-600">
           {getCategoryName(news)}
         </span>
 
-        <h3 className="mt-1 line-clamp-3 text-lg font-bold leading-5 text-slate-800 transition group-hover:text-blue-600">
+        <h3 className="mt-1 line-clamp-3 text-xl font-bold leading-7 text-slate-800 transition group-hover:text-blue-600">
           {news.title}
         </h3>
 
-        <p className="mt-2 text-[11px] text-slate-400">
+        <p className="mt-2 text-xs text-slate-400">
           {formatDate(news.publishedAt)}
         </p>
       </div>
@@ -519,11 +494,11 @@ const FeaturedSideCard = ({ news, index }) => {
   );
 };
 
-/* ============ NEWS LIST ITEM ============== */
+/* ============ NEWS LIST ITEM =========== */
 const NewsListItem = ({ news }) => {
   return (
     <Link to={`/news/${news.slug}`} className="group flex gap-4 py-5">
-      <div className="h-28 w-42 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-32 sm:w-52">
+      <div className="h-28 w-42 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-40 sm:w-52">
         {news.thumbnail ? (
           <img
             src={news.thumbnail}
@@ -537,22 +512,23 @@ const NewsListItem = ({ news }) => {
 
       <div className="min-w-0 flex-1">
         <div className="mb-2 flex flex-wrap items-center gap-2">
-          <span className="rounded bg-blue-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-600">
+          <span className="rounded bg-blue-50 px-2 py-1 text-xs font-bold uppercase tracking-wide text-blue-600">
             {getCategoryName(news)}
           </span>
 
-          <span className="flex items-center gap-1 text-[11px] text-slate-400">
+          <span className="flex items-center gap-1 text-xs text-slate-400">
             <Clock size={12} />
+
             {formatDate(news.publishedAt)}
           </span>
         </div>
 
-        <h3 className="line-clamp-2 text-base font-black leading-6 text-slate-800 transition group-hover:text-blue-600 sm:text-lg">
+        <h3 className="line-clamp-2 text-lg font-black leading-7 text-slate-800 transition group-hover:text-blue-600 sm:text-xl">
           {news.title}
         </h3>
 
         {news.summary && (
-          <p className="mt-2 hidden line-clamp-2 text-sm leading-5 text-slate-500 sm:block">
+          <p className="mt-2 hidden line-clamp-2 text-lg leading-6 text-slate-500 sm:block">
             {news.summary}
           </p>
         )}
@@ -568,7 +544,7 @@ const NewsListItem = ({ news }) => {
   );
 };
 
-/* =========== PLACEHOLDER ============= */
+/* ================NEWS PLACEHOLDER ============= */
 const NewsPlaceholder = () => {
   return (
     <div className="flex h-full w-full items-center justify-center bg-slate-100">
@@ -577,15 +553,14 @@ const NewsPlaceholder = () => {
   );
 };
 
-/* ================= EMPTY STATE ================= */
+/* ========= EMPTY STATE============= */
 const EmptyState = () => {
   return (
     <div className="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center">
       <Newspaper size={35} className="mx-auto text-slate-300" />
-      <h3 className="mt-3 font-bold text-slate-700">
-        {/* No news available */}
-        कुनै समाचार उपलब्ध छैन |
-        </h3>
+
+      <h3 className="mt-3 font-bold text-slate-700">कुनै समाचार उपलब्ध छैन।</h3>
+
       <p className="mt-1 text-sm text-slate-400">
         Check back later for the latest stories.
       </p>
@@ -593,11 +568,12 @@ const EmptyState = () => {
   );
 };
 
-/* ================= HELPERS ================= */
+/* =========GET CATEGORY NAME ======== */
 const getCategoryName = (news) => {
   if (!news?.category) {
     return "General";
   }
+
   if (typeof news.category === "string") {
     return news.category;
   }
@@ -605,33 +581,37 @@ const getCategoryName = (news) => {
   return news.category.name || news.category.title || "General";
 };
 
-
-/* ============ LOADING SKELETON =========== */
+/* ================== HOME SKELETON ================== */
 const HomeSkeleton = () => {
   return (
     <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <div className="mb-5 flex items-center gap-3">
-          <div className="h-6 w-1 animate-pulse rounded-full bg-slate-200" />
-          <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+          <div className="h-6 w-1 animate-pulse rounded-full bg-slate-300" />
+
+          <div className="h-4 w-24 animate-pulse rounded bg-slate-300" />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-12">
           <div className="lg:col-span-8">
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-              <div className="aspect-video animate-pulse bg-slate-200" />
+              <div className="aspect-video animate-pulse bg-slate-300" />
+
               <div className="space-y-3 p-5">
-                <div className="h-3 w-24 animate-pulse rounded bg-slate-200" />
-                <div className="h-7 w-4/5 animate-pulse rounded bg-slate-200" />
-                <div className="h-4 w-3/5 animate-pulse rounded bg-slate-200" />
+                <div className="h-3 w-24 animate-pulse rounded bg-slate-300" />
+
+                <div className="h-7 w-4/5 animate-pulse rounded bg-slate-300" />
+
+                <div className="h-4 w-3/5 animate-pulse rounded bg-slate-300" />
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-4">
             <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
-              <div className="h-5 w-28 animate-pulse rounded bg-slate-200" />
-              <div className="h-3 w-14 animate-pulse rounded bg-slate-200" />
+              <div className="h-5 w-28 animate-pulse rounded bg-slate-300" />
+
+              <div className="h-3 w-14 animate-pulse rounded bg-slate-300" />
             </div>
 
             <div className="space-y-4">
@@ -640,12 +620,16 @@ const HomeSkeleton = () => {
                   key={item}
                   className="flex gap-4 border-b border-slate-200 pb-4"
                 >
-                  <div className="h-24 w-32 shrink-0 animate-pulse rounded-lg bg-slate-200" />
+                  <div className="h-24 w-32 shrink-0 animate-pulse rounded-lg bg-slate-300" />
+
                   <div className="flex-1 space-y-3">
-                    <div className="h-3 w-20 animate-pulse rounded bg-slate-200" />
-                    <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
-                    <div className="h-4 w-4/5 animate-pulse rounded bg-slate-200" />
-                    <div className="h-3 w-24 animate-pulse rounded bg-slate-200" />
+                    <div className="h-3 w-20 animate-pulse rounded bg-slate-300" />
+
+                    <div className="h-4 w-full animate-pulse rounded bg-slate-300" />
+
+                    <div className="h-4 w-4/5 animate-pulse rounded bg-slate-300" />
+
+                    <div className="h-3 w-24 animate-pulse rounded bg-slate-300" />
                   </div>
                 </div>
               ))}

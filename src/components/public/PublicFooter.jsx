@@ -80,6 +80,15 @@ const PublicFooter = () => {
                 }
               />
               <FooterLink
+                to="/categories"
+                label={
+                  <span className="flex items-center gap-1">
+                    विषयहरू{" "}
+                    <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                }
+              />
+              <FooterLink
                 to="/news"
                 label={
                   <span className="flex items-center gap-1">

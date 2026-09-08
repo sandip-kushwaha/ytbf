@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { CircleUser, UserKey } from "lucide-react";
+import logo from "../../assets/logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -70,8 +71,12 @@ const Login = () => {
           <div className="border-b border-gray-800 px-6 py-7 text-center">
 
             {/* Logo */}
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/10 ">
-              <p className="text-white">logo Image</p>
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white ">
+                <img
+                src={logo}
+                alt="NewsPortal Logo"
+                className="h-full w-full object-contain "
+              />
             </div>
 
             <h1 className="mt-5 text-3xl font-bold text-white">

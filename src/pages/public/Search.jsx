@@ -349,12 +349,12 @@ const Search = () => {
                 key={index}
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xs"
               >
-                <div className="h-52 animate-pulse bg-gray-200" />
+                <div className="h-52 animate-pulse bg-gray-300" />
                 <div className="space-y-3 p-5">
-                  <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
-                  <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
-                  <div className="h-6 w-4/5 animate-pulse rounded bg-gray-200" />
-                  <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
+                  <div className="h-4 w-24 animate-pulse rounded bg-gray-300" />
+                  <div className="h-6 w-full animate-pulse rounded bg-gray-300" />
+                  <div className="h-6 w-4/5 animate-pulse rounded bg-gray-300" />
+                  <div className="h-4 w-full animate-pulse rounded bg-gray-300" />
                 </div>
               </div>
             ))}

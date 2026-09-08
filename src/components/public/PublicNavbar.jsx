@@ -47,7 +47,7 @@ const PublicNavbar = () => {
   // MAIN LINKS
   const mainLinks = [
     {
-      name: "गृह",
+      name: " गृहपृष्ठ",
       path: "/",
       icon: Home,
     },
@@ -57,7 +57,7 @@ const PublicNavbar = () => {
       icon: Clock3,
     },
     {
-      name: "वर्गहरू",
+      name: "विषयहरू",
       path: "/categories",
       icon: LayoutGrid,
     },
@@ -87,7 +87,7 @@ const PublicNavbar = () => {
     },
     {
       name: "अन्तर्वार्ता",
-      path: "/categories/interview",
+      path: "/categories/antrvaartaa",
     },
   ];
 
@@ -221,7 +221,7 @@ const PublicNavbar = () => {
           {/* =======DESKTOP NAVIGATION ====== */}
           <nav className="hidden items-center gap-1 md:flex">
             {mainLinks
-              .filter((link) => link.name !== "वर्गहरू")
+              .filter((link) => link.name !== "विषयहरू")
               .map((link) => {
                 const Icon = link.icon;
 
@@ -385,7 +385,7 @@ const PublicNavbar = () => {
               {
                 /* ======= CATEGORIES SPECIAL ITEM ======== */
               }
-              if (link.name === "वर्गहरू") {
+              if (link.name === "विषयहरू") {
                 return (
                   <div
                     key={link.path}
@@ -413,7 +413,7 @@ const PublicNavbar = () => {
                           }
                         />
 
-                        <span>वर्गहरू</span>
+                        <span>विषयहरू</span>
                       </div>
 
                       <ChevronRight
@@ -454,7 +454,7 @@ const PublicNavbar = () => {
                           <div className="rounded-lg bg-gray-900 px-3 py-3">
                             <p className="text-xs text-gray-500">
                               {/* No categories available */}
-                              कुनै वर्गहरू उपलब्ध छैनन् |
+                              कुनै विषयहरू उपलब्ध छैनन् |
                             </p>
                           </div>
                         ) : (
@@ -582,10 +582,10 @@ const PublicNavbar = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-white">सबै वर्गहरू</h3>
+                <h3 className="text-sm font-bold text-white">सबै विषयहरू</h3>
 
                 <p className="text-[10px] text-gray-500">
-                  समाचार वर्गहरू हेर्नुहोस् |
+                  समाचार विषयहरू हेर्नुहोस् |
                 </p>
               </div>
             </div>

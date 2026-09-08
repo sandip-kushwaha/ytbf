@@ -16,12 +16,12 @@ import PublicLayout from "../components/public/PublicLayout";
 import Home from "../pages/public/Home";
 import PublicNews from "../pages/public/PublicNews";
 import NewsDetails from "../pages/public/NewsDetails";
+import NewsCategories from "../pages/public/NewsCategories";
 import CategoryNews from "../pages/public/CategoryNews";
-import Search from "../pages/public/Search";
 import Trending from "../pages/public/Trending";
+import Search from "../pages/public/Search";
 import Featured from "../pages/public/Featured";
 import Contact from "../pages/public/Contact";
-import NewsCategories from "../pages/public/NewsCategories";
 
 const AppRoute = () => {
   return (

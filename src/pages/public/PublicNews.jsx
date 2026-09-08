@@ -172,7 +172,6 @@ const PublicNews = () => {
         ) : (
           <>
             {/* RESULT HEADER */}
-
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
@@ -206,7 +205,6 @@ const PublicNews = () => {
                 </div>
 
                 {/* PAGINATION */}
-
                 {pagination.totalPages > 1 && (
                   <Pagination
                     pagination={pagination}
@@ -247,10 +245,8 @@ const PublicNewsCard = ({ news }) => {
       </Link>
 
       {/* CONTENT */}
-
       <div className="p-4">
         {/* CATEGORY */}
-
         {news.category && (
           <Link
             to={`/categories/${news.category.slug}`}
@@ -261,7 +257,6 @@ const PublicNewsCard = ({ news }) => {
         )}
 
         {/* TITLE */}
-
         <Link to={`/news/${news.slug}`}>
           <h2 className="mt-3 line-clamp-2 text-base font-bold leading-6 text-gray-900 transition group-hover:text-blue-600">
             {news.title}
@@ -269,7 +264,6 @@ const PublicNewsCard = ({ news }) => {
         </Link>
 
         {/* SUMMARY */}
-
         {news.summary && (
           <p className="mt-2 line-clamp-2 text-sm leading-5 text-gray-500">
             {news.summary}
@@ -277,7 +271,6 @@ const PublicNewsCard = ({ news }) => {
         )}
 
         {/* META */}
-
         <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-600">
           <div className="flex items-center gap-1.5">
             <CalendarDays size={13} />
@@ -293,7 +286,6 @@ const PublicNewsCard = ({ news }) => {
         </div>
 
         {/* READ ARTICLE */}
-
         <Link
           to={`/news/${news.slug}`}
           className="mt-4 flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2.5 text-xs font-medium text-gray-600 transition hover:bg-blue-600 hover:text-white"
@@ -309,6 +301,7 @@ const PublicNewsCard = ({ news }) => {
 
 // PAGINATION
 const Pagination = ({ pagination, page, setPage }) => {
+
   const totalPages = pagination.totalPages || 1;
 
   const getPageNumbers = () => {
@@ -337,16 +330,13 @@ const Pagination = ({ pagination, page, setPage }) => {
   return (
     <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-6 sm:flex-row">
       {/* INFO */}
-
       <p className="text-xs text-gray-500">
         Page {page} of {totalPages}
       </p>
 
       {/* BUTTONS */}
-
       <div className="flex items-center gap-1">
         {/* PREVIOUS */}
-
         <button
           type="button"
           disabled={page <= 1}
@@ -357,7 +347,6 @@ const Pagination = ({ pagination, page, setPage }) => {
         </button>
 
         {/* PAGES */}
-
         {getPageNumbers().map((pageNumber, index) => {
           if (pageNumber === "...") {
             return (
@@ -387,7 +376,6 @@ const Pagination = ({ pagination, page, setPage }) => {
         })}
 
         {/* NEXT */}
-
         <button
           type="button"
           disabled={page >= totalPages}

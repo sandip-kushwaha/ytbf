@@ -132,12 +132,14 @@ const Featured = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+              गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
 
-            <span className="truncate text-blue-600">Featured</span>
+            <span className="truncate text-blue-600">
+              विशेष समाचार
+            </span>
           </div>
         </div>
       </nav>
@@ -153,17 +155,20 @@ const Featured = () => {
                 </div>
 
                 <span className="text-sm font-bold uppercase tracking-wider text-blue-600">
-                  Editor's Choice
+                  {/* Editor's Choice */}
+                  सम्पादकीय रोजाइ
                 </span>
               </div>
 
               <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
-                Featured News
+                {/* Featured News */}
+                विशेष समाचार
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600 sm:text-base">
-                Explore the stories our editors have selected as the most
-                important and noteworthy.
+                {/* Explore the stories our editors have selected as the most
+                important and noteworthy. */}
+                हाम्रा सम्पादकहरूले छानेका महत्त्वपूर्ण र विशेष समाचारहरू हेर्नुहोस्।
               </p>
             </div>
 
@@ -246,7 +251,8 @@ const Featured = () => {
                     className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronLeft size={17} />
-                    Previous
+                    {/* Previous */}
+                    अघिल्लो
                   </button>
 
                   <button
@@ -255,7 +261,8 @@ const Featured = () => {
                     disabled={!pagination.hasNextPage}
                     className="flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Next
+                    {/* Next */}
+                    पछिल्लो
                     <ChevronRight size={17} />
                   </button>
                 </div>
@@ -280,25 +287,25 @@ const getImage = (thumbnail) => {
 const FeaturedSkeleton = () => {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3, 4, 5, 6].map((item) => (
+      {[1, 2, 3].map((item) => (
         <div
           key={item}
           className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
         >
-          <div className="aspect-video animate-pulse bg-gray-200" />
+          <div className="aspect-video animate-pulse bg-gray-300" />
 
           <div className="space-y-3 p-5">
-            <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-24 animate-pulse rounded bg-gray-300" />
 
-            <div className="h-5 w-full animate-pulse rounded bg-gray-200" />
+            <div className="h-5 w-full animate-pulse rounded bg-gray-300" />
 
-            <div className="h-5 w-4/5 animate-pulse rounded bg-gray-200" />
+            <div className="h-5 w-4/5 animate-pulse rounded bg-gray-300" />
 
-            <div className="h-3 w-32 animate-pulse rounded bg-gray-200" />
+            <div className="h-3 w-32 animate-pulse rounded bg-gray-300" />
 
             <div className="flex justify-between pt-2">
-              <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
-              <div className="h-3 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-3 w-24 animate-pulse rounded bg-gray-300" />
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-300" />
             </div>
           </div>
         </div>
@@ -330,7 +337,8 @@ const FeaturedCard = ({ article }) => {
 
         <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1.5 text-xs font-bold text-white shadow-lg">
           <Star size={13} fill="currentColor" />
-          Featured
+          {/* Featured */}
+          विशेष समाचार
         </div>
       </Link>
 
@@ -351,7 +359,7 @@ const FeaturedCard = ({ article }) => {
         {/* TITLE */}
 
         <Link to={`/news/${article.slug}`}>
-          <h2 className="line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
+          <h2 className="line-clamp-2 text-xl font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
             {article.title}
           </h2>
         </Link>
@@ -359,7 +367,7 @@ const FeaturedCard = ({ article }) => {
         {/* SUMMARY */}
 
         {article.summary && (
-          <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-600">
+          <p className="mt-3 line-clamp-2 text-base leading-6 text-gray-600">
             {article.summary}
           </p>
         )}
@@ -367,7 +375,7 @@ const FeaturedCard = ({ article }) => {
         {/* META */}
         <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <CalendarDays size={14} />
+            <CalendarDays size={16} />
 
             <span>{formatDate(article.publishedAt || article.createdAt)}</span>
           </div>
@@ -385,7 +393,8 @@ const FeaturedCard = ({ article }) => {
           to={`/news/${article.slug}`}
           className="mt-4 flex items-center gap-1 text-sm font-semibold text-blue-600 transition group-hover:gap-2"
         >
-          Read Article
+          {/* Read Article */}
+          समाचार पढ्नुहोस्
           <ArrowRight size={15} />
         </Link>
       </div>
