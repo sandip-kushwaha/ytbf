@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
+  ArrowRight,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -181,12 +182,12 @@ const Search = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+            गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
 
-            <span className="truncate text-blue-600">Search</span>
+            <span className="truncate text-blue-600">खोज्नुहोस्</span>
           </div>
         </div>
       </nav>
@@ -196,15 +197,18 @@ const Search = () => {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-600">
-              Newsroom Discovery
+              {/* Newsroom Discovery */}
+              न्युजरुमबाट विशेष खोज
             </p>
 
             <h1 className="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
-              Search & Filter News
+              {/* Search & Filter News */}
+              समाचार खोज तथा फिल्टर
             </h1>
 
             <p className="mt-2 text-sm text-gray-600 sm:text-base">
-              Explore coverage across topics, breaking news, and in-depth reports.
+              {/* Explore coverage across topics, breaking news, and in-depth reports. */}
+              विभिन्न विषयहरू, मुख्य समाचार र विस्तृत रिपोर्टहरू खोज्नुहोस्।
             </p>
           </div>
 
@@ -220,7 +224,7 @@ const Search = () => {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by keywords, topics, or headlines..."
+                placeholder="विषय, मुख्य शब्द वा शीर्षकबाट समाचार खोज्नुहोस्..."
                 className="w-full rounded-2xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-12 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
 
@@ -240,7 +244,7 @@ const Search = () => {
               className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98]"
             >
               <SearchIcon size={18} />
-              <span className="hidden sm:inline">Search</span>
+              <span className="hidden sm:inline">खोज्नुहोस्</span>
             </button>
           </form>
 
@@ -248,7 +252,10 @@ const Search = () => {
           <div className="mt-6 flex flex-col gap-3 pt-2">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
               <Filter size={14} className="text-blue-600" />
-              <span>Browse Categories</span>
+              <span>
+                {/* Browse Categories */}
+                सबै विषयहरू हेर्नुहोस्
+              </span>
             </div>
 
             <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:px-0">
@@ -261,7 +268,8 @@ const Search = () => {
                     : "border border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
-                All Topics
+                {/* All Topics */}
+                सबै विषयहरू
               </button>
 
               {categories.map((item) => {
@@ -297,7 +305,7 @@ const Search = () => {
                   ? `Results for "${initialSearch}"`
                   : selectedCategoryObj
                   ? `${selectedCategoryObj.name} News`
-                  : "Latest News"}
+                  : "ताजा खबर"}
               </h2>
 
               <p className="mt-1 text-xs text-gray-500">
@@ -336,7 +344,7 @@ const Search = () => {
         {/* Loading State */}
         {loading && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xs"
@@ -421,7 +429,8 @@ const Search = () => {
 
                       {item.isFeatured && (
                         <span className="absolute right-4 top-4 rounded-lg bg-red-600/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
-                          Featured
+                          {/* Featured */}
+                          मुख्य समाचार
                         </span>
                       )}
                     </div>
@@ -441,7 +450,7 @@ const Search = () => {
                     </div>
 
                     <Link to={`/news/${item.slug}`}>
-                      <h3 className="line-clamp-2 text-xl font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
+                      <h3 className="line-clamp-2 text-2xl font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
                         {item.title}
                       </h3>
                     </Link>
@@ -453,9 +462,11 @@ const Search = () => {
                     <div className="mt-auto pt-4">
                       <Link
                         to={`/news/${item.slug}`}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 transition hover:gap-1.5"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 transition hover:gap-1.5"
                       >
-                        Read Article →
+                        {/* Read Article  */}
+                        समाचार पढ्नुहोस्
+                        <ArrowRight size={18}/>
                       </Link>
                     </div>
                   </div>

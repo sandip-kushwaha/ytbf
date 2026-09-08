@@ -21,6 +21,7 @@ import Search from "../pages/public/Search";
 import Trending from "../pages/public/Trending";
 import Featured from "../pages/public/Featured";
 import Contact from "../pages/public/Contact";
+import NewsCategories from "../pages/public/NewsCategories";
 
 const AppRoute = () => {
   return (
@@ -31,7 +32,7 @@ const AppRoute = () => {
         <Route path="/news" element={<PublicNews />} />
         <Route path="/news/:slug" element={<NewsDetails />} />
 
-        {/* <Route path="/categories" element={<CategoryNews />} /> */}
+        <Route path="/categories" element={<NewsCategories />} />
         <Route path="/categories/:slug" element={<CategoryNews />} />
 
         <Route path="/trending" element={<Trending />} />

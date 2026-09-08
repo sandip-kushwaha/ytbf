@@ -54,10 +54,10 @@ const BreakingNews = ({ news = [] }) => {
         {/* ================= VIEW ALL ================= */}
         <Link
           to="/news"
-          className="hidden shrink-0 items-center gap-1 border-l border-gray-800 pl-4 text-xs font-medium text-blue-400 transition hover:text-blue-300 sm:flex"
+          className="hidden shrink-0 items-center gap-1 border-l border-gray-800 pl-4 text-sm font-medium text-blue-400 transition hover:text-blue-300 sm:flex"
         >
           {/* All News */}
-          सबै न्युज
+          सबै समाचार हेर्नुहोस्
           <ArrowRight size={13} />
         </Link>
       </div>

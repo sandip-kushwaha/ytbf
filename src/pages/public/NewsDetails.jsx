@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
+  ArrowRight,
   CalendarDays,
   Check,
   Clock,
@@ -193,7 +194,7 @@ const NewsDetails = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+               गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
@@ -202,7 +203,7 @@ const NewsDetails = () => {
               to="/news"
               className="shrink-0 transition hover:text-blue-600"
             >
-              News
+              न्युज
             </Link>
 
             {category?.slug && (
@@ -279,7 +280,11 @@ const NewsDetails = () => {
               ) : (
                 <>
                   <Share2 size={14} />
-                  <span>Share Article</span>
+                  <span>
+                    {/* Share Article */}
+                    सेयर गर्नुहोस्
+                    </span>
+                    
                 </>
               )}
             </button>
@@ -320,17 +325,20 @@ const NewsDetails = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
             >
               <ArrowLeft size={16} />
-              Go Back
+              {/* Go Back */}
+              पछाडि जानुहोस्
             </button>
 
             <Link
               to="/news"
-              className="text-xs font-semibold text-blue-600 transition hover:underline"
+              className="inline-flex text-sm font-semibold text-blue-600 transition hover:underline"
             >
-              Browse All News →
+              {/* Browse All News */}
+              सबै समाचार हेर्नुहोस् 
+              <ArrowRight size={16} />
             </Link>
           </div>
         </footer>

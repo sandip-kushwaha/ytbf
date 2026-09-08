@@ -120,12 +120,12 @@ const PublicNews = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+               गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
 
-            <span className="truncate text-blue-600">News</span>
+            <span className="truncate text-blue-600">न्युज</span>
           </div>
         </div>
       </nav>
@@ -139,18 +139,21 @@ const PublicNews = () => {
               <div className="flex items-center gap-2 text-sm font-medium text-blue-600">
                 <Newspaper size={17} />
 
-                <span>Latest News
-                  
+                <span>
+                  {/* Latest News */}
+                   ताजा समाचार
                 </span>
               </div>
 
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Latest Stories
+                {/* Latest Stories */}
+                ताजा खबरहरू
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500 sm:text-base">
-                Stay updated with the latest news, stories, and important
-                events.
+                {/* Stay updated with the latest news, stories, and important
+                events. */}
+                ताजा खबर, कथाहरू र मुख्य घटनाहरूसँग जोडिएर रहनुहोस्।
               </p>
             </div>
           </div>
@@ -173,7 +176,8 @@ const PublicNews = () => {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
-                  All Latest News
+                  {/* All Latest News */}
+                 सबै ताजा खबरहरू
                 </h2>
 
                 <p className="mt-1 text-xs text-gray-500">
@@ -294,7 +298,8 @@ const PublicNewsCard = ({ news }) => {
           to={`/news/${news.slug}`}
           className="mt-4 flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2.5 text-xs font-medium text-gray-600 transition hover:bg-blue-600 hover:text-white"
         >
-          Read Article
+          {/* Read Article */}
+          समाचार पढ्नुहोस्
           <ArrowRight size={15} />
         </Link>
       </div>

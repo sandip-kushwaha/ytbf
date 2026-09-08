@@ -14,7 +14,6 @@ import { getTrendingNews } from "../../api/news.api";
 
 import formatDate from "./NepaliDate";
 
-
 // MAIN COMPONENT
 const Trending = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -133,12 +132,12 @@ const Trending = () => {
         <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
             <Link to="/" className="shrink-0 transition hover:text-blue-600">
-              Home
+              गृहपृष्ठ
             </Link>
 
             <span className="text-gray-300">/</span>
 
-            <span className="truncate text-blue-600">Trending</span>
+            <span className="truncate text-blue-600">धेरैले पढेकाे</span>
           </div>
         </div>
       </nav>
@@ -154,21 +153,23 @@ const Trending = () => {
                 </div>
 
                 <span className="text-sm font-bold uppercase tracking-wider text-red-600">
-                  Most Read
+                  {/* Most Read */}
+                  सबैभन्दा लोकप्रिय
                 </span>
               </div>
 
               <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
-                Trending News
+                {/* Trending News */}
+                धेरैले पढेकाे
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600 sm:text-base">
-                Discover the stories readers are viewing the most right now.
+                {/* Discover the stories readers are viewing the most right now. */}
+                अहिलेका सबैभन्दा लोकप्रिय समाचारहरू हेर्नुहोस् |
               </p>
             </div>
 
             {/* TOTAL */}
-
             {!loading && (
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <TrendingUp size={17} className="text-red-500" />
@@ -252,7 +253,8 @@ const Trending = () => {
                     className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronLeft size={17} />
-                    Previous
+                    {/* Previous */}
+                    अघिल्लो
                   </button>
 
                   <button
@@ -261,7 +263,8 @@ const Trending = () => {
                     disabled={!pagination.hasNextPage}
                     className="flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Next
+                    {/* Next */}
+                    पछिल्लो
                     <ChevronRight size={17} />
                   </button>
                 </div>
@@ -342,15 +345,15 @@ const TrendingCard = ({ article, rank }) => {
 
         <div className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 text-xs font-bold text-white shadow-lg">
           <Flame size={13} />
-          Trending
+          {/* Trending */}
+          धेरैले पढेकाे
         </div>
       </Link>
 
       {/* CONTENT */}
-
       <div className="p-5">
-        {/* CATEGORY */}
 
+        {/* CATEGORY */}
         {article.category?.name && (
           <Link
             to={`/categories/${article.category.slug}`}
@@ -361,7 +364,6 @@ const TrendingCard = ({ article, rank }) => {
         )}
 
         {/* TITLE */}
-
         <Link to={`/news/${article.slug}`}>
           <h2 className="line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition group-hover:text-blue-600">
             {article.title}
@@ -369,16 +371,14 @@ const TrendingCard = ({ article, rank }) => {
         </Link>
 
         {/* SUMMARY */}
-
         {article.summary && (
-          <p className="mt-3 line-clamp-2 text-sm leading-6 text-gray-600">
+          <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-600">
             {article.summary}
-          </p>
+          </p> 
         )}
 
         {/* META */}
-
-        <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
+        <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-4">
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <CalendarDays size={14} />
             <span>{formatDate(article.publishedAt || article.createdAt)}</span>
@@ -391,12 +391,12 @@ const TrendingCard = ({ article, rank }) => {
         </div>
 
         {/* READ MORE */}
-
         <Link
           to={`/news/${article.slug}`}
           className="mt-4 flex items-center gap-1 text-sm font-semibold text-blue-600 transition group-hover:gap-2"
         >
-          Read Article
+          {/* Read Article */}
+          समाचार पढ्नुहोस्
           <ArrowRight size={15} />
         </Link>
       </div>
