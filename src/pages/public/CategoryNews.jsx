@@ -386,7 +386,7 @@ const CategoryNews = () => {
                 type="text"
                 value={search}
                 onChange={handleSearchChange}
-                placeholder="विषय खोज्नुहोस्..."
+                placeholder="विषय खोज्नुहोस् | नेपालीमा..."
                 autoComplete="off"
                 className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />

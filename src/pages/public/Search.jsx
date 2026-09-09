@@ -224,7 +224,7 @@ const Search = () => {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="विषय, मुख्य शब्द वा शीर्षकबाट समाचार खोज्नुहोस्..."
+                placeholder="विषय, मुख्य शब्द वा शीर्षकबाट समाचार खोज्नुहोस् | नेपालीमा..."
                 className="w-full rounded-2xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-12 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
 
