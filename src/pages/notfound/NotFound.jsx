@@ -19,8 +19,7 @@ const NotFound = () => {
         </h2>
 
         <p className="mt-3 text-slate-500">
-          Sorry, we couldn't find the page you're looking for. The page may have
-          been removed, renamed, or the URL may be incorrect.
+          Sorry, we couldn't find the page you're looking for.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
