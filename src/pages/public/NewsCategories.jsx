@@ -98,7 +98,7 @@ const NewsCategories = () => {
           ) : categories.length > 0 ? (
             /* ================= CATEGORIES ================= */
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              {categories.slice(0, 6).map((category) => {
+              {categories.map((category) => {
                 const categorySlug =
                   category?.slug ||
                   category?.name?.toLowerCase().trim().replace(/\s+/g, "-") ||
