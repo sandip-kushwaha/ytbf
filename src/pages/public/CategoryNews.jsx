@@ -352,7 +352,7 @@ const CategoryNews = () => {
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500 sm:text-base">
                 {currentCategory?.description ||
-                  `${currentCategory?.name || slug} जगतका ताजा समाचार र स्टोरीहरू.`}
+                  `${currentCategory?.name || slug} सम्बन्धित ताजा समाचार र स्टोरीहरू.`}
               </p>
             </div>
           </div>
