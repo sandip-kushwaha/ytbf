@@ -114,7 +114,7 @@ It provides a clean, responsive platform for publishing, managing, and reading n
  -ACCESS_TOKEN_EXPIRY=1d
 
  -REFRESH_TOKEN_SECRET=your_refresh_token_secret
- -REFRESH_TOKEN_EXPIRY=7d
+ -REFRESH_TOKEN_EXPIRY=10d
 
  -CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
  -CLOUDINARY_API_KEY=your_cloudinary_api_key
