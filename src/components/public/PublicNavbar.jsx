@@ -187,7 +187,7 @@ const PublicNavbar = () => {
     <>
       {/* ==========TOP NAVBAR ===== */}
       <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/95 backdrop-blur-xl">
-        <div className="mx-auto flex h-17 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* =========== LOGO========= */}
           <Link
             to="/"
@@ -252,7 +252,7 @@ const PublicNavbar = () => {
                 key={category.path}
                 to={category.path}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2.5 text-lg font-medium transition ${
+                  `rounded-lg px-3 py-2.5 text-base font-medium transition ${
                     isActive
                       ? "bg-blue-600/10 text-blue-400"
                       : "text-gray-300 hover:bg-gray-800 hover:text-white"
@@ -312,7 +312,7 @@ const PublicNavbar = () => {
               title="Open navigation"
               aria-label="Open navigation"
             >
-              <Menu size={22} />
+              <Menu size={24} />
             </button>
           </div>
         </div>

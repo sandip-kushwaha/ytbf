@@ -8,7 +8,7 @@ const BreakingNews = ({ news = [] }) => {
   const tickerNews = [...news.slice(0, 5), ...news.slice(0, 5)];
 
   return (
-    <div className="sticky top-17 z-40 border-b border-gray-800 bg-gray-900/95 backdrop-blur-xl">
+    <div className="sticky top-20 z-40 border-b border-gray-800 bg-gray-900/95 backdrop-blur-xl">
       <div className="mx-auto flex h-11 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
 
         {/* ================= BREAKING LABEL ================= */}
