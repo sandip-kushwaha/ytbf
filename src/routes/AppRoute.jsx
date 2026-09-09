@@ -22,6 +22,7 @@ import Trending from "../pages/public/Trending";
 import Search from "../pages/public/Search";
 import Featured from "../pages/public/Featured";
 import Contact from "../pages/public/Contact";
+import NotFound from "../pages/notfound/NotFound";
 
 const AppRoute = () => {
   return (
@@ -58,6 +59,9 @@ const AppRoute = () => {
           <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFound />} />
+
     </Routes>
   );
 };
