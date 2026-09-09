@@ -75,15 +75,15 @@ const PublicNavbar = () => {
     },
     {
       name: "समाज",
-      path: "/categories/society",
+      path: "/categories/smaaj",
     },
     {
       name: "अर्थ",
-      path: "/categories/economy",
+      path: "/categories/arth",
     },
     {
       name: "विज्ञान तथा प्रविधि",
-      path: "/categories/technology",
+      path: "/categories/vijnyaan-tthaa-prvidhi",
     },
     {
       name: "खेलकुद",
