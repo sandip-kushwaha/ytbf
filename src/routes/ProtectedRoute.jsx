@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = () => {
-    const { user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
-     if (loading) {
+  if (loading) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -25,13 +25,14 @@ const ProtectedRoute = () => {
     );
   }
 
-  if(!user){
-    return <Navigate to="/login" replace />
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  if (user.role !== "admin") {
+    return <Navigate to="/login" replace />;
   }
 
-  return (
-    <Outlet/>
-  )
-}
+  return <Outlet />;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

@@ -82,6 +82,10 @@ const PublicNavbar = () => {
       path: "/categories/economy",
     },
     {
+      name: "विज्ञान तथा प्रविधि",
+      path: "/categories/technology",
+    },
+    {
       name: "खेलकुद",
       path: "/categories/khelkud",
     },
