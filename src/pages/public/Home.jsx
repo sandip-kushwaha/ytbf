@@ -45,7 +45,6 @@ const Home = () => {
         //   }),
         // ]);
         const response = await getHomeNews();
-        console.log(response.data);
 
         if (!isMounted) return;
 
