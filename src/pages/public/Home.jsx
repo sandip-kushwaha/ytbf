@@ -164,6 +164,8 @@ const Home = () => {
                       <img
                         src={mainHeroStory.thumbnail}
                         alt={mainHeroStory.title}
+                        fetchPriority="high"
+                        decoding="async"
                         className=" h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
                     ) : (
@@ -393,6 +395,8 @@ const FeaturedGridCard = ({ news }) => {
           <img
             src={news.thumbnail}
             alt={news.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
@@ -477,6 +481,8 @@ const FeaturedSideCard = ({ news, index }) => {
           <img
             src={news.thumbnail}
             alt={news.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
@@ -514,6 +520,8 @@ const NewsListItem = ({ news }) => {
           <img
             src={news.thumbnail}
             alt={news.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
