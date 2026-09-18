@@ -102,3 +102,10 @@ export const getPublicNewsBySlug = async (slug) => {
 
     return response.data;
 }
+
+//Get Home News
+export const getHomeNews = async() => {
+  const response = await api.get("/news/home");
+
+  return response.data;
+}

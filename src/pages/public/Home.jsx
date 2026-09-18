@@ -13,7 +13,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import { getFeaturedNews, getPublishedNews } from "../../api/news.api";
+import { getFeaturedNews, getHomeNews, getPublishedNews } from "../../api/news.api";
 
 import formatDate from "./NepaliDate";
 
@@ -33,33 +33,38 @@ const Home = () => {
         setLoading(true);
         setError("");
 
-        const [featuredRes, latestRes] = await Promise.all([
-          getFeaturedNews({
-            page: 1,
-            limit: 6,
-          }),
+        // const [featuredRes, latestRes] = await Promise.all([
+        //   getFeaturedNews({
+        //     page: 1,
+        //     limit: 6,
+        //   }),
 
-          getPublishedNews({
-            page: 1,
-            limit: 10,
-          }),
-        ]);
+        //   getPublishedNews({
+        //     page: 1,
+        //     limit: 10,
+        //   }),
+        // ]);
+        const response = await getHomeNews();
+        console.log(response.data);
 
         if (!isMounted) return;
 
+
+        const featured = response?.data?.featured || [];
+        const latest = response?.data?.latest || [];
         /* ================= FEATURED ================= */
-        const featured =
-          featuredRes?.data?.news ||
-          featuredRes?.data?.data ||
-          featuredRes?.data ||
-          [];
+        // const featured =
+        //   featuredRes?.data?.news ||
+        //   featuredRes?.data?.data ||
+        //   featuredRes?.data ||
+        //   [];
 
         /* ================= LATEST ================= */
-        const latest =
-          latestRes?.data?.news ||
-          latestRes?.data?.data ||
-          latestRes?.data ||
-          [];
+        // const latest =
+        //   latestRes?.data?.news ||
+        //   latestRes?.data?.data ||
+        //   latestRes?.data ||
+        //   [];
 
         const parsedFeatured = Array.isArray(featured) ? featured : [];
 
