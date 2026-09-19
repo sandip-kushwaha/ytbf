@@ -13,9 +13,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import { getFeaturedNews, getHomeNews, getPublishedNews } from "../../api/news.api";
+import { getHomeNews, } from "../../api/news.api";
 
 import formatDate from "./NepaliDate";
+import { optimizeImage } from "../../utils/image";
 
 const Home = () => {
   const [featuredNews, setFeaturedNews] = useState([]);
@@ -162,7 +163,7 @@ const Home = () => {
                     {/* Image */}
                     {mainHeroStory.thumbnail ? (
                       <img
-                        src={mainHeroStory.thumbnail}
+                        src={optimizeImage(mainHeroStory?.thumbnail, 1200)}
                         alt={mainHeroStory.title}
                         fetchPriority="high"
                         decoding="async"
@@ -393,7 +394,7 @@ const FeaturedGridCard = ({ news }) => {
       <div className="relative aspect-video overflow-hidden bg-slate-100">
         {news.thumbnail ? (
           <img
-            src={news.thumbnail}
+            src={optimizeImage(news.thumbnail, 600)}
             alt={news.title}
             loading="lazy"
             decoding="async"
@@ -479,7 +480,7 @@ const FeaturedSideCard = ({ news, index }) => {
       <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-slate-100">
         {news.thumbnail ? (
           <img
-            src={news.thumbnail}
+            src={optimizeImage(news.thumbnail, 400)}
             alt={news.title}
             loading="lazy"
             decoding="async"
@@ -518,7 +519,7 @@ const NewsListItem = ({ news }) => {
       <div className="h-28 w-42 shrink-0 overflow-hidden rounded-lg bg-slate-100 sm:h-40 sm:w-52">
         {news.thumbnail ? (
           <img
-            src={news.thumbnail}
+            src={optimizeImage(news.thumbnail, 500)}
             alt={news.title}
             loading="lazy"
             decoding="async"
