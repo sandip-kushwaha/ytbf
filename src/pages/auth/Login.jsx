@@ -61,20 +61,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-600/10 blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-blue-600/10 blur-3xl" />
-      </div>
-
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       {/* Login Card */}
       <div className="relative w-full max-w-md">
-        <div className="overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 shadow-2xl">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-xl">
           {/* Header */}
-          <div className="border-b border-gray-800 px-6 py-7 text-center">
+          <div className="border-b border-gray-200 px-3 py-4 text-center">
             {/* Logo */}
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white">
+            <div className="mx-auto flex h-18 w-18 items-center justify-center border border-gray-50 rounded-2xl bg-white">
               <img
                 src={logo}
                 alt="Youth Brain news Logo"
@@ -82,29 +76,20 @@ const Login = () => {
               />
             </div>
 
-            <h1 className="mt-5 text-3xl font-bold text-white">Welcome Back</h1>
+            <h1 className="mt-2 text-3xl font-bold">Welcome Back</h1>
 
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-gray-500">
               Sign in to your account to continue
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 sm:p-8">
-            {/* Error */}
-            {error && (
-              <div className="mb-5 flex items-start gap-3 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-                <span className="text-base">⚠</span>
-
-                <p>{error}</p>
-              </div>
-            )}
-
             {/* Username */}
-            <div className="mb-5">
+            <div className="mb-4">
               <label
                 htmlFor="username"
-                className="mb-2 block text-sm font-medium text-gray-300"
+                className="mb-2 block text-sm font-medium text-gray-500"
               >
                 Username
               </label>
@@ -117,7 +102,7 @@ const Login = () => {
 
                 <input
                   id="username"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 py-3 pl-11 pr-4 text-white outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-100 py-3 pl-11 pr-4 outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
                   type="text"
                   name="username"
                   value={formData.username}
@@ -129,10 +114,10 @@ const Login = () => {
             </div>
 
             {/* Password */}
-            <div className="mb-6">
+            <div className="mb-4">
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-gray-300"
+                className="mb-2 block text-sm font-medium text-gray-500"
               >
                 Password
               </label>
@@ -145,7 +130,7 @@ const Login = () => {
 
                 <input
                   id="password"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800 py-3 pl-11 pr-12 text-white outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-100 py-3 pl-11 pr-12 outline-none transition placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
@@ -160,16 +145,23 @@ const Login = () => {
                   onClick={() => setShowPassword((prev) => !prev)}
                   disabled={loading}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
                 </button>
               </div>
             </div>
 
+            {/* Error */}
+            {error && (
+              <div className="mb-3 flex items-start gap-3 text-sm text-red-500">
+                <p>{error}</p>
+              </div>
+            )}
+
             {/* Login Button */}
             <button
-              className="w-full rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-1 w-full rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
               type="submit"
               disabled={loading}
             >
@@ -184,8 +176,7 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Footer */}
-          <div className="border-t border-gray-800 px-6 py-4 text-center">
+          <div className="border-t border-gray-200 px-6 py-4 text-center">
             <p className="text-xs text-gray-500">Secure admin login</p>
           </div>
         </div>
