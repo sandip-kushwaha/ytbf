@@ -107,7 +107,7 @@ Visit the website to read the latest news, explore categories, discover trending
 
 # 📁 Project Structure
 
-
+```text
  Youth-Brain-News/
  │
  ├── backend/
@@ -143,7 +143,7 @@ Visit the website to read the latest news, explore categories, discover trending
  │   └── vite.config.js
  │
  └── README.md
-
+```
 ---
 # 📄 License
 
