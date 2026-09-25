@@ -1,10 +1,20 @@
 
 # 📰 Youth Brain News
 
-**Youth Brain News (युथ ब्रेन न्युज)** is a modern news portal built with the **MERN stack**.  
-It provides a clean, responsive platform for publishing, managing, and reading news articles.
+**Youth Brain News (युथ ब्रेन न्युज)** is a modern digital news platform built to deliver timely, reliable, and relevant news to readers in Nepal and beyond.
+
+The platform covers **politics, society, business, technology, sports, entertainment, and other topics of public interest**, with a focus on clear, responsible, and accessible journalism.
 
 > **सधैं सत्य • सधैं अगाडि**
+
+---
+
+## 🌐 Official Website
+
+**Youth Brain News:**  
+https://youthbrain.vercel.app
+
+Visit the website to read the latest news, explore categories, discover trending stories, and stay updated with current events.
 
 ---
 
@@ -161,3 +171,10 @@ Youth-Brain-News/
 │
 └── README.md
 
+# 📄 License
+
+This project is developed and maintained for **Youth Brain News**.
+
+All rights reserved.
+
+Unauthorized copying, modification, distribution, or commercial use of this project or its source code is not permitted without prior permission from **Youth Brain News**.
