@@ -86,33 +86,6 @@ Visit the website to read the latest news, explore categories, discover trending
 
 ---
 
-# 🧑‍💻 Tech Stack
-
-## Frontend
-
-- React
-- Vite
-- Tailwind CSS
-- React Router DOM
-- Axios
-- Lucide React
-- React Icons
-- Nepali Date Converter
-
-## Backend
-
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
-- Cookie Parser
-- CORS
-- Multer
-- Cloudinary
-
----
-
  -PORT=8000
 
  -MONGODB_URI=your_mongodb_connection_string
@@ -134,47 +107,48 @@ Visit the website to read the latest news, explore categories, discover trending
 
 # 📁 Project Structure
 
-```text
-Youth-Brain-News/
-│
-├── backend/
-│   │
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── middlewares/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── utils/
-│   │   ├── db/
-│   │   └── app.js
-│   │
-│   ├── public/
-│   ├── .env
-│   ├── package.json
-│   └── server.js
-│
-├── frontend/
-│   │
-│   ├── src/
-│   │   ├── api/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── routes/
-│   │   └── App.jsx
-│   │
-│   ├── public/
-│   ├── .env
-│   ├── package.json
-│   └── vite.config.js
-│
-└── README.md
 
+ Youth-Brain-News/
+ │
+ ├── backend/
+ │   │
+ │   ├── src/
+ │   │   ├── controllers/
+ │   │   ├── middlewares/
+ │   │   ├── models/
+ │   │   ├── routes/
+ │   │   ├── utils/
+ │   │   ├── db/
+ │   │   └── app.js
+ │   │
+ │   ├── public/
+ │   ├── .env
+ │   ├── package.json
+ │   └── server.js
+ │
+ ├── frontend/
+ │   │
+ │   ├── src/
+ │   │   ├── api/
+ │   │   ├── assets/
+ │   │   ├── components/
+ │   │   ├── context/
+ │   │   ├── pages/
+ │   │   ├── routes/
+ │   │   └── App.jsx
+ │   │
+ │   ├── public/
+ │   ├── .env
+ │   ├── package.json
+ │   └── vite.config.js
+ │
+ └── README.md
+
+---
 # 📄 License
 
-This project is developed and maintained for **Youth Brain News**.
+ This project is developed and maintained for **Youth Brain News**.
 
-All rights reserved.
+ All rights reserved.
 
-Unauthorized copying, modification, distribution, or commercial use of this project or its source code is not permitted without prior permission from **Youth Brain News**.
+ Unauthorized copying, modification, distribution, or commercial use of this project or its source code is not permitted without prior permission from **Youth Brain News**.
