@@ -483,7 +483,7 @@ const Categories = () => {
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-gray-400">
-              Are you sure you want to delete this news article? This action
+              Are you sure you want to delete this news category? This action
               cannot be undone.
             </p>
 
