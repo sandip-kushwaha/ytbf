@@ -369,8 +369,8 @@ const Home = () => {
                 to="/categories"
                 className="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-lg font-bold text-white transition hover:bg-blue-500"
               >
-                सबै समाचारका बिषयहरु खोज्नुहोस् |
-                <ArrowRight size={16} />
+                सबै समाचारका बिषयहरु खोज्नुहोस्
+                <ArrowRight size={20} />
               </Link>
             </div>
 
