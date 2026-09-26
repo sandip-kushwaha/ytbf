@@ -80,7 +80,7 @@ const NewsCategories = () => {
           {/* ================= SECTION HEADER ================= */}
           <SectionHeader
             icon={<Menu size={25} />}
-            title="विषयहरू खोज्नुहोस्"
+            title="विषयहरू"
             link="/search"
             linkText="सबै विषयहरू हेर्नुहोस्"
           />
