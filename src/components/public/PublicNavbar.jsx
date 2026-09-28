@@ -589,7 +589,7 @@ const PublicNavbar = () => {
                 <h3 className="text-sm font-bold text-white">सबै विषयहरू</h3>
 
                 <p className="text-[10px] text-gray-500">
-                  समाचार विषयहरू हेर्नुहोस् |
+                  समाचारका विषयहरू हेर्नुहोस् |
                 </p>
               </div>
             </div>
