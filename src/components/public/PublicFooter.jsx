@@ -74,7 +74,7 @@ const PublicFooter = () => {
                 to="/"
                 label={
                   <span className="flex items-center gap-1">
-                    गृहपृष्ठ{" "}
+                    गृहपृष्ठ
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -83,7 +83,7 @@ const PublicFooter = () => {
                 to="/categories"
                 label={
                   <span className="flex items-center gap-1">
-                    विषयहरू{" "}
+                    विषयहरू
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -92,7 +92,7 @@ const PublicFooter = () => {
                 to="/news"
                 label={
                   <span className="flex items-center gap-1">
-                    ताजा खबर{" "}
+                    ताजा खबर
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -101,7 +101,7 @@ const PublicFooter = () => {
                 to="/trending"
                 label={
                   <span className="flex items-center gap-1">
-                    धेरैले पढेकाे{" "}
+                    धेरैले पढेकाे
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
@@ -118,7 +118,7 @@ const PublicFooter = () => {
                 to="/contact"
                 label={
                   <span className="flex items-center gap-1">
-                    हामीलाई सम्पर्क गर्नुहोस्{" "}
+                    हामीलाई सम्पर्क गर्नुहोस्
                     <MoveUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 }
