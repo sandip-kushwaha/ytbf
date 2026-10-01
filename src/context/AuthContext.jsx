@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
             setUser(response.data)
             
         } catch (err) {
-            console.error("Authentication check failed: ", err.response?.data || err.message);
+            // console.error("Authentication check failed: ", err.response?.data || err.message);
             setUser(null)
         }finally{
             setLoading(false);
