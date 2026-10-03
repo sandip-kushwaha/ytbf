@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { logout } = useAuth();
