@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { getPublicNewsBySlug, incrementNewsViews } from "../../api/news.api";
+import { Helmet } from "react-helmet-async";
 
 import formatDate from "./NepaliDate";
 
@@ -37,7 +38,6 @@ const NewsDetails = () => {
 
         // Get news using slug
         const response = await getPublicNewsBySlug(slug);
-
         if (!isMounted) return;
 
         setNews(response.data);
@@ -88,7 +88,6 @@ const NewsDetails = () => {
     };
   }, [slug]);
 
-
   // Estimated Read Time
   const calculateReadTime = (content) => {
     if (!content) return "1 min read";
@@ -136,7 +135,7 @@ const NewsDetails = () => {
           <div className="mb-4 h-6 w-24 animate-pulse rounded-full bg-gray-300" />
           <div className="mb-4 h-12 w-full animate-pulse rounded-xl bg-gray-300" />
           <div className="mb-8 h-6 w-3/4 animate-pulse rounded-lg bg-gray-300" />
-          
+
           <div className="mb-8 aspect-video w-full animate-pulse rounded-2xl bg-gray-300" />
 
           <div className="space-y-4">
@@ -182,165 +181,218 @@ const NewsDetails = () => {
   const category = news.category;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <nav
-        aria-label="Breadcrumb"
-        className="border-b border-gray-100 bg-slate-50/60"
-      >
-        <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
-            <Link to="/" className="shrink-0 transition hover:text-blue-600">
-               गृहपृष्ठ
-            </Link>
+    <>
+      <Helmet>
+        <title>{news.title} | YouthBrain News</title>
+        <meta name="description" content={news.summary} />
+        <link
+          rel="canonical"
+          href={`https://youthbrain.vercel.app/news/${news.slug}`}
+        />
 
-            <span className="text-gray-300">/</span>
+        <meta property="og:title" content={news.title} />
+        <meta property="og:description" content={news.summary} />
+        <meta property="og:image" content={news.thumbnail} />
+        <meta
+          property="og:url"
+          content={`https://youthbrain.vercel.app/news/${news.slug}`}
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="YouthBrain News" />
 
-            <Link
-              to="/news"
-              className="shrink-0 transition hover:text-blue-600"
-            >
-              न्युज
-            </Link>
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={news.title} />
+        <meta name="twitter:description" content={news.summary} />
+        <meta name="twitter:image" content={news.thumbnail} />
 
-            {category?.slug && (
-              <>
-                <span className="text-gray-300">/</span>
+        {/* NewsArticle JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            headline: news.title,
+            description: news.summary,
+            image: [news.thumbnail],
+            views: news.views,
+            datePublished: news.publishedAt,
+            dateModified: news.updatedAt,
+            author: {
+              "@type": "Organization",
+              name: "YouthBrain News",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "YouthBrain News",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://youthbrain.vercel.app/logo1.webp",
+              },
+            },
+          })}
+        </script>
+      </Helmet>
 
-                <Link
-                  to={`/categories/${category.slug}`}
-                  className="truncate text-blue-600 hover:underline"
-                >
-                  {category.name}
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      {/* News content */}
+      <div className="min-h-screen bg-white">
+        {/* Breadcrumb */}
+        <nav
+          aria-label="Breadcrumb"
+          className="border-b border-gray-100 bg-slate-50/60"
+        >
+          <div className="mx-auto max-w-5xl px-4 py-3 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-2 overflow-hidden text-xs font-medium text-gray-500">
+              <Link to="/" className="shrink-0 transition hover:text-blue-600">
+                गृहपृष्ठ
+              </Link>
 
-      {/* Article */}
-      <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <header>
-          {category && (
-            <Link
-              to={`/categories/${category.slug}`}
-              className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 transition hover:bg-blue-100"
-            >
-              <Tag size={13} />
-              {category.name}
-            </Link>
-          )}
+              <span className="text-gray-300">/</span>
 
-          <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-5xl lg:leading-tight">
-            {news.title}
-          </h1>
+              <Link
+                to="/news"
+                className="shrink-0 transition hover:text-blue-600"
+              >
+                न्युज
+              </Link>
 
-          {news.summary && (
-            <p className="mt-4 text-lg leading-relaxed text-gray-600 sm:text-xl">
-              {news.summary}
-            </p>
-          )}
-
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-y border-gray-100 py-4">
-            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
-              <span className="flex items-center gap-1.5">
-                <CalendarDays size={15} className="text-blue-600" />
-                {formatDate(news.publishedAt || news.createdAt)}
-              </span>
-
-              <span className="h-3 w-px bg-gray-200" />
-
-              <span className="flex items-center gap-1.5">
-                <Clock size={15} className="text-blue-600" />
-                {calculateReadTime(news.content)}
-              </span>
-
-              <span className="h-3 w-px bg-gray-200" />
-
-              <span className="flex items-center gap-1.5">
-                <Eye size={15} className="text-blue-600" />
-                {Number(news.views || 0).toLocaleString()} Views
-              </span>
-            </div>
-
-            {/* Share */}
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 active:scale-[0.98]"
-            >
-              {copied ? (
+              {category?.slug && (
                 <>
-                  <Check size={14} className="text-green-600" />
-                  <span className="text-green-600">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 size={14} />
-                  <span>
-                    {/* Share Article */}
-                    सेयर गर्नुहोस्
-                    </span>
-                    
+                  <span className="text-gray-300">/</span>
+
+                  <Link
+                    to={`/categories/${category.slug}`}
+                    className="truncate text-blue-600 hover:underline"
+                  >
+                    {category.name}
+                  </Link>
                 </>
               )}
-            </button>
+            </div>
           </div>
-        </header>
+        </nav>
 
-        {/* Featured Image */}
-        {news.thumbnail && (
-          <figure className="my-8 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-xs">
-            <img
-              src={news.thumbnail}
-              alt={news.title}
-              className="h-auto max-h-125 w-full object-cover"
-            />
-          </figure>
-        )}
-
-        {/* Content */}
-        <section className="prose prose-gray max-w-none prose-p:text-gray-800 prose-p:leading-relaxed sm:prose-lg">
-          {news.content?.split("\n").map((paragraph, index) => {
-            const trimmed = paragraph.trim();
-
-            if (!trimmed) return null;
-
-            return (
-              <p
-                key={index}
-                className="mb-6 text-base leading-8 sm:text-lg sm:leading-8"
+        {/* Article */}
+        <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+          <header>
+            {category && (
+              <Link
+                to={`/categories/${category.slug}`}
+                className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 transition hover:bg-blue-100"
               >
-                {trimmed}
+                <Tag size={13} />
+                {category.name}
+              </Link>
+            )}
+
+            <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl lg:text-5xl lg:leading-tight">
+              {news.title}
+            </h1>
+
+            {news.summary && (
+              <p className="mt-4 text-lg leading-relaxed text-gray-600 sm:text-xl">
+                {news.summary}
               </p>
-            );
-          })}
-        </section>
+            )}
 
-        {/* Footer */}
-        <footer className="mt-12 border-t border-gray-100 pt-8">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
-            >
-              <ArrowLeft size={16} />
-              {/* Go Back */}
-              पछाडि जानुहोस्
-            </button>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-y border-gray-100 py-4">
+              <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
+                <span className="flex items-center gap-1.5">
+                  <CalendarDays size={15} className="text-blue-600" />
+                  {formatDate(news.publishedAt || news.createdAt)}
+                </span>
 
-            <Link
-              to="/news"
-              className="inline-flex text-sm font-semibold text-blue-600 transition hover:underline"
-            >
-              {/* Browse All News */}
-              सबै समाचार हेर्नुहोस् 
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </footer>
-      </article>
-    </div>
+                <span className="h-3 w-px bg-gray-200" />
+
+                <span className="flex items-center gap-1.5">
+                  <Clock size={15} className="text-blue-600" />
+                  {calculateReadTime(news.content)}
+                </span>
+
+                <span className="h-3 w-px bg-gray-200" />
+
+                <span className="flex items-center gap-1.5">
+                  <Eye size={15} className="text-blue-600" />
+                  {Number(news.views || 0).toLocaleString()} Views
+                </span>
+              </div>
+
+              {/* Share */}
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 active:scale-[0.98]"
+              >
+                {copied ? (
+                  <>
+                    <Check size={14} className="text-green-600" />
+                    <span className="text-green-600">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 size={14} />
+                    <span>
+                      {/* Share Article */}
+                      सेयर गर्नुहोस्
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
+          </header>
+
+          {/* Featured Image */}
+          {news.thumbnail && (
+            <figure className="my-8 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-xs">
+              <img
+                src={news.thumbnail}
+                alt={news.title}
+                className="h-auto max-h-125 w-full object-cover"
+              />
+            </figure>
+          )}
+
+          {/* Content */}
+          <section className="prose prose-gray max-w-none prose-p:text-gray-800 prose-p:leading-relaxed sm:prose-lg">
+            {news.content?.split("\n").map((paragraph, index) => {
+              const trimmed = paragraph.trim();
+
+              if (!trimmed) return null;
+
+              return (
+                <p
+                  key={index}
+                  className="mb-6 text-base leading-8 sm:text-lg sm:leading-8"
+                >
+                  {trimmed}
+                </p>
+              );
+            })}
+          </section>
+
+          {/* Footer */}
+          <footer className="mt-12 border-t border-gray-100 pt-8">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => navigate(-1)}
+                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50"
+              >
+                <ArrowLeft size={16} />
+                {/* Go Back */}
+                पछाडि जानुहोस्
+              </button>
+
+              <Link
+                to="/news"
+                className="inline-flex text-sm font-semibold text-blue-600 transition hover:underline"
+              >
+                {/* Browse All News */}
+                सबै समाचार हेर्नुहोस्
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </>
   );
 };
 

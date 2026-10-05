@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://youthbrain.vercel.app/sitemap.xml
