@@ -183,54 +183,9 @@ const NewsDetails = () => {
   return (
     <>
       <Helmet>
-        <title>{news.title} | YouthBrain News</title>
-        <meta name="description" content={news.summary} />
-        <link
-          rel="canonical"
-          href={`https://youthbrain.vercel.app/news/${news.slug}`}
-        />
-
-        <meta property="og:title" content={news.title} />
-        <meta property="og:description" content={news.summary} />
-        <meta property="og:image" content={news.thumbnail} />
-        <meta
-          property="og:url"
-          content={`https://youthbrain.vercel.app/news/${news.slug}`}
-        />
-        <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="YouthBrain News" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={news.title} />
-        <meta name="twitter:description" content={news.summary} />
-        <meta name="twitter:image" content={news.thumbnail} />
-
-        {/* NewsArticle JSON-LD */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            headline: news.title,
-            description: news.summary,
-            image: [news.thumbnail],
-            views: news.views,
-            datePublished: news.publishedAt,
-            dateModified: news.updatedAt,
-            author: {
-              "@type": "Organization",
-              name: "YouthBrain News",
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "YouthBrain News",
-              logo: {
-                "@type": "ImageObject",
-                url: "https://youthbrain.vercel.app/logo1.webp",
-              },
-            },
-          })}
-        </script>
+        <title>{news?.title
+            ? `${news.title} --> ${news.summary} | YouthBrain News`
+            : "Categories | YouthBrain News"}</title>
       </Helmet>
 
       {/* News content */}

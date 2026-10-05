@@ -3,7 +3,6 @@ import { ArrowRight, Menu, Newspaper } from "lucide-react";
 import { Link, } from "react-router-dom";
 
 import { getAllCategories } from "../../api/category.api";
-
 const NewsCategories = () => {
 
   const [categories, setCategories] = useState([]);
@@ -20,7 +19,7 @@ const NewsCategories = () => {
 
         const response = await getAllCategories();
 
-        console.log("Categories API response:", response);
+        // console.log("Categories API response:", response);
 
         const categoryData =
           response?.data?.categories ||
@@ -56,6 +55,7 @@ const NewsCategories = () => {
   }, []);
 
   return (
+    <>
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
       <nav
@@ -140,6 +140,7 @@ const NewsCategories = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
