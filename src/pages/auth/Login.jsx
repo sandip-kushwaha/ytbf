@@ -65,6 +65,14 @@ const Login = () => {
       {/* Login Card */}
       <div className="relative w-full max-w-md">
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-xl">
+          <div className="absolute inset-0 justify-center overflow-hidden">
+          <img
+            src={logo}
+            alt="Youth Brain news Logo"
+            className="absolute top-0 left-3  w-full h-full object-cover opacity-20"
+            />
+            </div>
+
           {/* Header */}
           <div className="border-b border-gray-200 px-3 py-4 text-center">
             {/* Logo */}
