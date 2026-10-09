@@ -223,7 +223,7 @@ const PublicNavbar = () => {
           </Link>
 
           {/* =======DESKTOP NAVIGATION ====== */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             {mainLinks
               .filter((link) => link.name !== "विषयहरू")
               .map((link) => {
