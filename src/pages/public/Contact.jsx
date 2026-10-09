@@ -104,7 +104,8 @@ const Contact = () => {
                 href="https://www.facebook.com/youthbrain.media"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                className="flex items-center gap-2.5 rounded-xl bg-blue-600 text-white border border-blue-600 px-5 py-2.5 text-sm font-medium transition hover:bg-blue-500 hover:border-blue-500"
+                //  className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-blue-600 hover:text-white hover:border-blue-600"
               >
                 <FaFacebookF className="h-4 w-4" />
                 Facebook Page
@@ -113,7 +114,8 @@ const Contact = () => {
                 href="https://wa.me/977982-8058803"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-green-500 hover:bg-green-500 hover:text-white"
+                className="flex items-center gap-2.5 rounded-xl bg-green-500 text-white border border-green-500 px-5 py-2.5 text-sm font-medium transition hover:bg-green-400 hover:border-green-400"
+                // className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-green-500 hover:bg-green-500 hover:text-white"
               >
                 <FaWhatsapp className="h-4 w-4" />
                 WhatsApp
@@ -123,7 +125,8 @@ const Contact = () => {
                 href="https://www.tiktok.com/@youthbrain47"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-black hover:text-white hover:border-black"
+                className="flex items-center gap-2.5 rounded-xl bg-black text-white border border-black px-5 py-2.5 text-sm font-medium transition hover:bg-gray-800 hover:border-gray-800"
+                // className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-black hover:text-white hover:border-black"
               >
                 <FaTiktok className="h-4 w-4" />
                 Tik Tok
@@ -132,7 +135,8 @@ const Contact = () => {
                 href="https://www.instagram.com/youthbrain.media"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
+                className="flex items-center gap-2.5 rounded-xl border border-[#E1306C] bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] px-5 py-2.5 text-sm font-medium text-white transition hover:border-[#e1306bdc] hover:bg-linear-to-r hover:from-[#f58529d7] hover:via-[#e1306bd5] hover:to-[#833ab4d8]"
+                //  className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
               >
                 <FaInstagram className="h-4 w-4" />
                 Instagram
@@ -141,7 +145,8 @@ const Contact = () => {
                 href="https://www.youtube.com/@youthbrainnews"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-red-600 hover:text-white hover:border-red-600"
+                className="flex items-center gap-2.5 rounded-xl text-white bg-red-600 border border-red-600 px-5 py-2.5 text-sm font-medium transition hover:bg-red-500 hover:border-red-500"
+                // className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-red-600 hover:text-white hover:border-red-600"
               >
                 <FaYoutube className="h-4 w-4" />
                 YouTube Live
