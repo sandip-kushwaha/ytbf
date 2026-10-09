@@ -55,7 +55,7 @@ const PublicFooter = () => {
               <SocialIcon
                 icon={FaInstagram}
                 href="https://www.instagram.com/youthbrain.media"
-                className="bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] text-white hover:bg-linear-to-r hover:from-[#f79a4f] hover:via-[#eb4b80] hover:to-[#aa53e4]"
+                className="bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] text-white hover:bg-linear-to-r hover:from-[#b85f17] hover:via-[#b91a4f] hover:to-[#6f289e] focus:outline-none"
               />
               <SocialIcon
                 icon={FaYoutube}
