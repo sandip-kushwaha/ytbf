@@ -135,7 +135,7 @@ const Contact = () => {
                 href="https://www.instagram.com/youthbrain.media"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2.5 rounded-xl border border-[#E1306C] bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] px-5 py-2.5 text-sm font-medium text-white transition hover:border-[#e1306bdc] hover:bg-linear-to-r hover:from-[#f58529d7] hover:via-[#e1306bd5] hover:to-[#833ab4d8]"
+                className="flex items-center gap-2.5 rounded-xl bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] text-white px-5 py-2.5 text-sm font-medium transition hover:bg-linear-to-r hover:from-[#f58529d7] hover:via-[#e1306bd5] hover:to-[#833ab4d8]"
                 //  className="flex items-center gap-2.5 rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
               >
                 <FaInstagram className="h-4 w-4" />

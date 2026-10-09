@@ -40,27 +40,27 @@ const PublicFooter = () => {
               <SocialIcon
                 icon={FaFacebookF}
                 href="https://www.facebook.com/youthbrain.media"
-                className="hover:bg-[#1877F2] hover:text-white"
+                className="bg-blue-600 text-white border border-blue-600 hover:bg-blue-500 hover:border-blue-500"
               />
               <SocialIcon
                 icon={FaWhatsapp}
                 href="https://wa.me/977982-8058803"
-                className="hover:bg-[#25D366] hover:text-white"
+                className="bg-green-500 text-white border border-green-500 hover:bg-green-400 hover:border-green-400"
               />
               <SocialIcon
                 icon={FaTiktok}
                 href="https://www.tiktok.com/@youthbrain47"
-                className="hover:bg-black hover:text-white"
+                className="bg-black text-white border border-black hover:bg-gray-900 hover:border-gray-900"
               />
               <SocialIcon
                 icon={FaInstagram}
                 href="https://www.instagram.com/youthbrain.media"
-                className="hover:border-[#E1306C] hover:bg-linear-to-r hover:from-[#F58529] hover:via-[#E1306C] hover:to-[#833AB4] hover:text-white"
+                className="bg-linear-to-r from-[#F58529] via-[#E1306C] to-[#833AB4] text-white hover:bg-linear-to-r hover:from-[#f79a4f] hover:via-[#eb4b80] hover:to-[#aa53e4]"
               />
               <SocialIcon
                 icon={FaYoutube}
                 href="https://www.youtube.com/@youthbrainnews"
-                className="hover:bg-[#FF0000] hover:text-white"
+                className="bg-red-600 text-white border border-red-600 hover:bg-red-500 hover:border-red-500"
               />
             </div>
           </div>
@@ -152,8 +152,7 @@ const SocialIcon = ({ icon: Icon, href, className = "" }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`grid h-9 w-9 cursor-pointer place-items-center rounded-lg 
-        bg-gray-900 text-gray-500 transition duration-200 ${className}`}
+      className={`grid h-9 w-9 cursor-pointer place-items-center rounded-lg transition duration-200 ${className}`}
     >
       <Icon size={17} />
     </a>
