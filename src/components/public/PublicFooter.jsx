@@ -40,17 +40,17 @@ const PublicFooter = () => {
               <SocialIcon
                 icon={FaFacebookF}
                 href="https://www.facebook.com/youthbrain.media"
-                className="bg-blue-600 text-white border border-blue-600 hover:bg-blue-500 hover:border-blue-500"
+                className="bg-blue-600 text-white border border-blue-600 hover:bg-blue-700 hover:border-blue-700 focus:outline-none"
               />
               <SocialIcon
                 icon={FaWhatsapp}
                 href="https://wa.me/977982-8058803"
-                className="bg-green-500 text-white border border-green-500 hover:bg-green-400 hover:border-green-400"
+                className="bg-green-500 text-white border border-green-500 hover:bg-green-600 hover:border-green-600 focus:outline-none"
               />
               <SocialIcon
                 icon={FaTiktok}
                 href="https://www.tiktok.com/@youthbrain47"
-                className="bg-black text-white border border-black hover:bg-gray-900 hover:border-gray-900"
+                className="bg-gray-900 text-white border border-gray-900 hover:bg-gray-950 hover:border-gray-950 focus:outline-none"
               />
               <SocialIcon
                 icon={FaInstagram}
@@ -60,7 +60,7 @@ const PublicFooter = () => {
               <SocialIcon
                 icon={FaYoutube}
                 href="https://www.youtube.com/@youthbrainnews"
-                className="bg-red-600 text-white border border-red-600 hover:bg-red-500 hover:border-red-500"
+                className="bg-red-600 text-white border border-red-600 hover:bg-red-700 hover:border-red-700 focus:outline-none"
               />
             </div>
           </div>
